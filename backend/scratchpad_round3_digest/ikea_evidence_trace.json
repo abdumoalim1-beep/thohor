@@ -1,0 +1,224 @@
+[
+  {
+    "recommendation_id": "1a167146-aadc-41d0-b502-11953ed70bc6",
+    "title": "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+    "chain": [
+      {
+        "evidence_id": "6b66ffaa-4811-4286-af08-01353c3437a9",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs homecentre.com for 'منتجات غرف الأطفال': يجب على العميل إضافة معلومات حول خيارات الشحن والتركيب والضمان وطرق الدفع المتاحة لتعزيز كتالوج منتجات غرف الأطفال.",
+        "evidence_confidence": 0.9,
+        "source_detail": {
+          "competitor_url": "https://www.homecentre.com/sa/ar/c/babyandkids-roomfurniture",
+          "gaps": [
+            "توصيل مجاني",
+            "تركيب مجاني",
+            "خيارات دفع متعددة (تابي أو تمارا)",
+            "ضمان للمنتجات"
+          ]
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d1ce1d79-3ac3-45dd-bdc9-f3b930def383",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'غرف أطفال': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "cbdb9817-199f-4fdd-96f1-873affc88e6d",
+          "intent_topic": "منتجات غرف الأطفال",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 2,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "e2f7a57f-16a2-451c-bc78-2a01bd92a25b",
+    "title": "أنشئ صفحة مخصصة لـ 'جلسات حديقة'",
+    "chain": [
+      {
+        "evidence_id": "13f88612-6dbe-401a-9fb0-c78c10574af1",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs alamalhazazy.com for 'جلسات حديقة': يجب على العميل إضافة عنوان جذاب ووصف تفصيلي لجلسات الحديقة في كتالوجه لتحسين جاذبيته في نتائج البحث.",
+        "evidence_confidence": 0.9,
+        "source_detail": {
+          "competitor_url": "https://alamalhazazy.com/categories/442678/%D8%A7%D8%AB%D8%A7%D8%AB-%D8%A7%D9%84%D8%AC%D9%84%D8%B3%D8%A7%D8%AA-%D8%A7%D9%84%D8%AE%D8%A7%D8%B1%D8%AC%D9%8A%D8%A9",
+          "gaps": [
+            "عنوان جذاب يصف المنتج",
+            "وصف تفصيلي للمنتجات المتاحة"
+          ]
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "3f46fffc-37d3-47c2-96d7-0efc8faa6b0d",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'جلسات حديقة': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "59a8dca0-b637-4dd2-9457-fe9ad9763677",
+          "intent_topic": "جلسات حديقة",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 2,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "184daf8e-9f93-4081-84ae-ecd4a604e157",
+    "title": "حسّن ظهورك في Google لـ 'ألعاب غرف الأطفال'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  },
+  {
+    "recommendation_id": "2534bed7-d108-4ba6-b506-62f455225f75",
+    "title": "حسّن ظهورك في Google لـ 'كنب وكراسي'",
+    "chain": [
+      {
+        "evidence_id": "66664703-d95f-47f9-9132-432abc207806",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'كنب': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "65ad6a59-b221-4959-99c0-18aa9f30477e",
+          "intent_topic": "كنب وكراسي",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "ea2b042e-fd1e-4d0b-a52c-573c348e38f0",
+    "title": "حسّن ظهورك في Google لـ 'أجهزة إلكترونية منزلية'",
+    "chain": [
+      {
+        "evidence_id": "59e9ddf7-d857-4ebb-8f9f-d353a46dbf04",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أجهزة منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "8f060b6c-7542-492d-91e1-3b6ac385f58f",
+          "intent_topic": "أجهزة إلكترونية منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "664927ba-52e4-4042-b609-8572f7cbe1be",
+    "title": "حسّن ظهورك في Google لـ 'منتجات إيكيا'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  },
+  {
+    "recommendation_id": "c565e55d-318b-49f3-8079-983156f7aa64",
+    "title": "حسّن ظهورك في Google لـ 'عروض العودة إلى المدارس'",
+    "chain": [
+      {
+        "evidence_id": "b6bf3a6e-3f48-4b27-9dbc-63624405d808",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'عروض مدارس': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2421524a-3c73-4cd6-b9a7-9f700ece0d0d",
+          "intent_topic": "عروض العودة إلى المدارس",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "f5d9211c-37d6-40dd-8021-955fda7d3f43",
+    "title": "حسّن ظهورك في Google لـ 'مستلزمات الغسيل'",
+    "chain": [
+      {
+        "evidence_id": "7b2dd731-c41a-4ab5-9f70-76170869bd96",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'مستلزمات غسيل': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2f6643ff-f210-4fc2-9deb-8053fc54b86b",
+          "intent_topic": "مستلزمات الغسيل",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "26a2801f-ef28-4696-990d-989797b7c5b1",
+    "title": "حسّن ظهورك في Google لـ 'منتجات الحيوانات الأليفة'",
+    "chain": [
+      {
+        "evidence_id": "68c6c03b-7284-4c61-9c1f-8a5ceaa5cf20",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'حيوانات أليفة': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "33617ce3-1da6-4a76-a3dd-d54c71e81671",
+          "intent_topic": "منتجات الحيوانات الأليفة",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "8db03cf8-a80c-4ace-9b6e-e081dfb63065",
+    "title": "حسّن ظهورك في Google لـ 'منتجات المنزل الذكي'",
+    "chain": [
+      {
+        "evidence_id": "15137330-b32d-43ba-bdfc-7244653599e1",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'منزل ذكي': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "ad099944-bc6d-45a4-816f-0ce252dcd4b4",
+          "intent_topic": "منتجات المنزل الذكي",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  }
+]

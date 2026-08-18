@@ -1,0 +1,635 @@
+[
+  {
+    "recommendation_id": "d1d707db-6913-4c67-8cee-1480e4b3fb96",
+    "title": "أنشئ صفحة مخصصة لـ 'Hats and Caps'",
+    "chain": [
+      {
+        "evidence_id": "94f4da8b-fdf2-4e1a-a80d-f2b8e91c1ef3",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs footlocker.com.sa for 'Hats and Caps': يجب على العميل إضافة محتوى شامل حول القبعات، بما في ذلك الأوصاف التفصيلية، خيارات الشحن، وسياسات الإرجاع والدفع.",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "competitor_url": "https://www.footlocker.com.sa/en/shop-mens/accessories/caps?srsltid=AfmBOopZXa2VzcGU5JhG_kWNUm3agI-Wwai5VNIw4bFL1DvW-tkH7lbw",
+          "gaps": [
+            "وصف تفصيلي للقبعات المتاحة",
+            "مقارنة بين مجموعة من 2026 قبعة",
+            "خيارات الشحن المتاحة",
+            "سياسة الإرجاع المجانية",
+            "خيار الدفع عند الاستلام"
+          ]
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "17e21da8-034d-43e6-b3fd-0ab30e49ee74",
+    "title": "أنشئ صفحة مخصصة لـ 'Swimming Glasses'",
+    "chain": [
+      {
+        "evidence_id": "691ad6d2-2b55-40c7-92e7-14f5017521fb",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs decathlon.com.sa for 'Swimming Glasses': يجب على العميل إضافة معلومات تفصيلية حول نظارات السباحة، بما في ذلك المواصفات والأسعار وخيارات الشحن والضمانات، لتحسين تجربة التسوق.",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "competitor_url": "https://decathlon.com.sa/collections/swimming-goggles-masks?srsltid\\u003dAfmBOooKM1N7w2-J1a-QTRIBHjuNWgdjNzIH5qLB4Phz_Z-bdg7oGtDp",
+          "gaps": [
+            "لا توجد معلومات عن أنواع النظارات المتاحة",
+            "لا توجد تفاصيل عن الأسعار",
+            "لا توجد مواصفات فنية للنظارات",
+            "لا توجد خيارات شحن",
+            "لا توجد ضمانات أو سياسات إرجاع",
+            "لا توجد أدلة مقارنة بين المنتجات",
+            "لا توجد أسئلة شائعة حول النظارات"
+          ]
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "b8699cde-2b15-49ad-a0fc-777bf154ef48",
+    "title": "أنشئ صفحة مخصصة لـ 'Scarves'",
+    "chain": [
+      {
+        "evidence_id": "d23ef170-1aa4-4d28-9253-c78d97972642",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs sa.redtagfashion.com for 'Scarves': يجب على العميل إضافة محتوى شامل حول الأوشحة، بما في ذلك الأنواع، طرق التنسيق، العناية، والأسئلة الشائعة لتحسين تجربة التسوق وزيادة المبيعات.",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "competitor_url": "https://sa.redtagfashion.com/en/collections/women-scarves",
+          "gaps": [
+            "وصف شامل عن الأوشحة وفوائدها",
+            "أنواع الأوشحة المتاحة للنساء والرجال والأطفال",
+            "طرق تنسيق الأوشحة لمناسبات مختلفة",
+            "اختيار الأقمشة والأنماط المناسبة للأوشحة",
+            "نصائح للعناية وتخزين الأوشحة",
+            "مطابقة ألوان الأوشحة مع لون البشرة",
+            "اختيار الأنماط المناسبة للملابس",
+            "طرق ربط الأوشحة خطوة بخطوة",
+            "اختيار الأوشحة بناءً على الطقس والمناخ",
+            "مقارنة بين الأوشحة الخفيفة والثقيلة",
+            "كيفية التعرف على جودة الأوشحة",
+            "أسئلة شائعة حول الأوشحة"
+          ]
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "e0a1a000-ae5d-4464-b772-948f33b0c2c5",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Back to School Offers'",
+    "chain": [
+      {
+        "evidence_id": "2077b36b-a222-41b2-8096-7d2406825167",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "23d73d34-b625-4fb5-85b6-30f801ef4666",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "bc8ac127-f965-4c9b-bb9e-546314ad1500",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "677c614f-770a-4004-963e-b06f97cbddac",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f236bc66-f98d-4b87-88f0-0b1fcf90bc72",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "e7abeb40-a867-46eb-b1e7-66abd07d45f9",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "8b7c9838-cc0b-4fdc-a53c-1607d9041725",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "35f967b9-7d04-4ce9-8716-72033410fd39",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2138f891-4738-443f-b9b7-8eeca068b521",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2b2c7792-5e3d-44db-8b0d-4a9889b6b697",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9688bd09-80a5-4fcf-834b-e673ce228b55",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'back to school sale': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "977fe72e-11ef-47ba-878b-67df75572561",
+          "intent_topic": "Back to School Offers",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "9add74e5-e1f5-4b8f-ab95-b80dfb329087",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن '2026 Sale'",
+    "chain": [
+      {
+        "evidence_id": "fd101e9e-516a-4daa-ba3b-e3cc2a625387",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f65eec6c-3f78-41a3-99e3-30eb8df21089",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "3fac04f1-accf-4ff6-8db5-b3c2f5f5ddd5",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "7e7aa0f1-1e8c-4afe-a8f7-9576594ca3c8",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2de165cb-f14a-4457-865d-a22f3e4e874f",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "8303eaee-a03f-45e1-819b-9cf07addab1c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "0bf91a7e-2b79-4cbf-abbe-e68bbcb10ee7",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "acc10ac3-41d3-43a6-a42a-3af8c2a8b2e8",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "bc28598e-7d69-4c93-a430-7a2df14b05dd",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "74113a5b-b042-4151-be7d-8ffe2c94eb4c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f03dea73-e04e-4ee4-8e2e-719282a5e855",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'2026 sale': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e45f8379-8161-4ac7-843e-5b2704ccae65",
+          "intent_topic": "2026 Sale",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "fc22b0a2-932d-4da3-bfa9-85567978104a",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Water Bottles'",
+    "chain": [
+      {
+        "evidence_id": "618f815c-b795-404b-92d5-db5c075512cf",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "7bcc3417-5066-490e-b4c3-fc0efeccbcf4",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a58c5e12-4ab3-4863-963d-919ea5fc3df8",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "80e6952c-53ff-48ad-80bf-129c643a5ef7",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d1962ef8-fb49-4232-a6e2-e6f2f9193db0",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2410da53-e4ab-4c36-bbf4-e3fea30e8de0",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "37a9d651-b53b-4e3a-a4dc-04270025bd66",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f4563b20-97cc-47ca-a9ca-12e8fbec688b",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "7c45138e-abbd-42cc-bc46-60e1ef9b454c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "66b08e6c-b2d1-4b61-a06c-a4d03b096553",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "cc000090-24fa-4533-b870-4452fb1ee03a",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy water bottles': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e6e889a8-7a42-4f83-84a3-6fd3ab01240e",
+          "intent_topic": "Water Bottles",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "e16cc817-c497-4546-b1a6-bc34fc88ed28",
+    "title": "حسّن ظهورك في Google لـ 'Adidas shoes'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  },
+  {
+    "recommendation_id": "19944ff8-1c08-41a3-b584-f2384d6712ee",
+    "title": "حسّن ظهورك في Google لـ 'Adidas apparel'",
+    "chain": [
+      {
+        "evidence_id": "84bc7191-31a0-40fc-af60-37dc5d8d1155",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy branded hijab': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "e89d4fab-5f0e-4a57-919e-3e9c3f145a40",
+          "intent_topic": "Branded Hijabs",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "09b15678-b3d4-46fe-932a-3440177556cc",
+    "title": "حسّن ظهورك في Google لـ 'Tote Bags'",
+    "chain": [
+      {
+        "evidence_id": "36cb9b84-7412-47de-99df-03c956e2d435",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy tote bags': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "117774c7-2e85-4def-911f-58da50b22f1f",
+          "intent_topic": "Tote Bags",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "57a49795-8744-40d6-98ed-165d4a40143a",
+    "title": "حسّن ظهورك في Google لـ 'Adidas accessories'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  }
+]

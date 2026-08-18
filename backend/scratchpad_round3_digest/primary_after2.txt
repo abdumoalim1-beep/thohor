@@ -1,0 +1,76 @@
+=== ikea ===
+[missing_landing_page] conf=medium ev=2
+  title: أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'
+  found: 
+
+[missing_landing_page] conf=high ev=2
+  title: أنشئ صفحة مخصصة لـ 'جلسات حديقة'
+  found: يجب على العميل إضافة عنوان جذاب ووصف تفصيلي لجلسات الحديقة في كتالوجه لتحسين جاذبيته في نتائج البحث.
+
+=== niceonesa ===
+[missing_landing_page] conf=high ev=1
+  title: أنشئ صفحة مخصصة لـ 'عطر جورجيو ارماني'
+  found: يجب على العميل إضافة معلومات تفصيلية حول عطر جورجيو ارماني، بما في ذلك المواصفات، خيارات الشحن، الضمانات، وأدلة مقارنة لتحسين تجربة المستخدم وزيادة ال
+
+[missing_landing_page] conf=high ev=1
+  title: أنشئ صفحة مخصصة لـ 'مستحضرات اي سي ام'
+  found: يجب على العميل إضافة معلومات تفصيلية عن مواصفات المنتج، خيارات الشحن، وضمانات المنتج لتعزيز كتالوجه.
+
+[missing_landing_page] conf=high ev=2
+  title: أنشئ صفحة مخصصة لـ 'الجمال الكوري'
+  found: يجب على العميل إضافة معلومات حول خيارات الشحن، العروض الترويجية، وطرق الدفع المتاحة لتعزيز جاذبية كتالوجه.
+
+[ai_citation_gap] conf=high ev=12
+  title: اجعل متجرك يُذكر في إجابات AI عن 'منتجات الجمال'
+  found: لم يُذكر المتجر في 11 محاولة، بينما ذُكر 1 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=11
+  title: اجعل متجرك يُذكر في إجابات AI عن 'مكياج هدى بيوتي'
+  found: لم يُذكر المتجر في 11 محاولة، بينما ذُكر 1 منافس لنفس النية
+
+=== saco ===
+[missing_landing_page] conf=medium ev=14
+  title: أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'
+  found: 
+
+=== sssports ===
+[missing_landing_page] conf=medium ev=1
+  title: أنشئ صفحة مخصصة لـ 'Hats and Caps'
+  found: يجب على العميل إضافة محتوى شامل حول القبعات، بما في ذلك الأوصاف التفصيلية، خيارات الشحن، وسياسات الإرجاع والدفع.
+
+[missing_landing_page] conf=medium ev=1
+  title: أنشئ صفحة مخصصة لـ 'Swimming Glasses'
+  found: يجب على العميل إضافة معلومات تفصيلية حول نظارات السباحة، بما في ذلك المواصفات والأسعار وخيارات الشحن والضمانات، لتحسين تجربة التسوق.
+
+[missing_landing_page] conf=medium ev=1
+  title: أنشئ صفحة مخصصة لـ 'Scarves'
+  found: 
+
+[ai_citation_gap] conf=high ev=11
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Water Bottles'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 2 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=11
+  title: اجعل متجرك يُذكر في إجابات AI عن '2026 Sale'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 3 منافس لنفس النية
+
+=== newegg ===
+[ai_citation_gap] conf=high ev=12
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Home Audio & Home Theater'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 3 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=11
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Memory'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 1 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=13
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Digital Cameras'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 1 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=14
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Laptop / Notebook'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 4 منافس لنفس النية
+
+[ai_citation_gap] conf=high ev=12
+  title: اجعل متجرك يُذكر في إجابات AI عن 'Hard Drive'
+  found: لم يُذكر المتجر في 10 محاولة، بينما ذُكر 2 منافس لنفس النية

@@ -1,0 +1,498 @@
+{
+  "ikea": {
+    "before_count": 15,
+    "after_count": 15,
+    "before_zero_evidence": 2,
+    "after_zero_evidence": 2,
+    "after_customer_visible_count": 13,
+    "after_needs_validation_count": 2,
+    "opportunities_needs_validation": 2,
+    "primary_queue_size": 2,
+    "primary_titles": [
+      "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+      "أنشئ صفحة مخصصة لـ 'جلسات حديقة'"
+    ],
+    "after_detail": [
+      {
+        "id": "184daf8e-9f93-4081-84ae-ecd4a604e157",
+        "title": "حسّن ظهورك في Google لـ 'ألعاب غرف الأطفال'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "664927ba-52e4-4042-b609-8572f7cbe1be",
+        "title": "حسّن ظهورك في Google لـ 'منتجات إيكيا'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "f5d9211c-37d6-40dd-8021-955fda7d3f43",
+        "title": "حسّن ظهورك في Google لـ 'مستلزمات الغسيل'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "8db03cf8-a80c-4ace-9b6e-e081dfb63065",
+        "title": "حسّن ظهورك في Google لـ 'منتجات المنزل الذكي'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "e2f7a57f-16a2-451c-bc78-2a01bd92a25b",
+        "title": "أنشئ صفحة مخصصة لـ 'جلسات حديقة'",
+        "status": "new",
+        "evidence_count": 2,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "2534bed7-d108-4ba6-b506-62f455225f75",
+        "title": "حسّن ظهورك في Google لـ 'كنب وكراسي'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "c565e55d-318b-49f3-8079-983156f7aa64",
+        "title": "حسّن ظهورك في Google لـ 'عروض العودة إلى المدارس'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.7
+      },
+      {
+        "id": "baa45a92-8404-47cc-9420-9d198cbf5137",
+        "title": "حسّن ظهورك في Google لـ 'منظمات المساحات'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "66284b49-a8c9-4b79-aaa2-37fbaade76b3",
+        "title": "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+        "status": "superseded",
+        "evidence_count": 2,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "26a2801f-ef28-4696-990d-989797b7c5b1",
+        "title": "حسّن ظهورك في Google لـ 'منتجات الحيوانات الأليفة'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "e3c026d6-6758-4a48-9ba6-fcb5f5b3b98a",
+        "title": "حسّن ظهورك في Google لـ 'منسوجات المنزل'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "cfe13587-0cd7-44fb-9664-7c15e21395cc",
+        "title": "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+        "status": "superseded",
+        "evidence_count": 2,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "1a167146-aadc-41d0-b502-11953ed70bc6",
+        "title": "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+        "status": "superseded",
+        "evidence_count": 2,
+        "confidence_tier": "medium",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "ea2b042e-fd1e-4d0b-a52c-573c348e38f0",
+        "title": "حسّن ظهورك في Google لـ 'أجهزة إلكترونية منزلية'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "10f8b163-416e-4d5a-a56e-bc3319fb8629",
+        "title": "أنشئ صفحة مخصصة لـ 'منتجات غرف الأطفال'",
+        "status": "new",
+        "evidence_count": 3,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      }
+    ]
+  },
+  "niceonesa": {
+    "before_count": 9,
+    "after_count": 9,
+    "before_zero_evidence": 1,
+    "after_zero_evidence": 1,
+    "after_customer_visible_count": 8,
+    "after_needs_validation_count": 1,
+    "opportunities_needs_validation": 1,
+    "primary_queue_size": 5,
+    "primary_titles": [
+      "أنشئ صفحة مخصصة لـ 'عطر جورجيو ارماني'",
+      "أنشئ صفحة مخصصة لـ 'مستحضرات اي سي ام'",
+      "أنشئ صفحة مخصصة لـ 'الجمال الكوري'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'منتجات الجمال'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'مكياج هدى بيوتي'"
+    ],
+    "after_detail": [
+      {
+        "id": "06dd1766-3191-46a5-a98d-5dd615bcc3a1",
+        "title": "أنشئ صفحة مخصصة لـ 'مستحضرات اي سي ام'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "3b475fff-1457-4b90-afac-70bc2330e5c2",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'منتجات الجمال'",
+        "status": "new",
+        "evidence_count": 12,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "426989e5-17d7-4348-8442-d02aac1b38d8",
+        "title": "حسّن ظهورك في Google لـ 'بيوتيس و نيو لنس'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "9cf9705e-b4bf-4e5e-9d20-73307d574c4a",
+        "title": "أنشئ صفحة مخصصة لـ 'الجمال الكوري'",
+        "status": "new",
+        "evidence_count": 2,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "0cc8a1c5-faf0-45e9-8cf7-ae75bf23fc61",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'مكياج هدى بيوتي'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "142700ed-8432-48f0-b9b2-1d458125e68d",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'مكياج شارلوت تلبوري'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 0.85
+      },
+      {
+        "id": "9115b9d6-7151-4dee-ad15-38350b88246b",
+        "title": "حسّن ظهورك في Google لـ 'أدوات تنظيف البشرة'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "d755a8d1-3fde-41f9-9b68-913ecb52496f",
+        "title": "حسّن ظهورك في Google لـ 'مكملات غذائية'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "69e8bcce-3d6b-4962-8259-02b59e27f7ed",
+        "title": "أنشئ صفحة مخصصة لـ 'عطر جورجيو ارماني'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      }
+    ]
+  },
+  "saco": {
+    "before_count": 5,
+    "after_count": 5,
+    "before_zero_evidence": 1,
+    "after_zero_evidence": 1,
+    "after_customer_visible_count": 4,
+    "after_needs_validation_count": 1,
+    "opportunities_needs_validation": 1,
+    "primary_queue_size": 1,
+    "primary_titles": [
+      "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'"
+    ],
+    "after_detail": [
+      {
+        "id": "e3432e4e-4cfa-4754-b990-a2212e0e8ac6",
+        "title": "حسّن ظهورك في Google لـ 'شراء أدوات الطلاء'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "63089f31-239f-497b-8b2f-bc17490e47bf",
+        "title": "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'",
+        "status": "superseded",
+        "evidence_count": 14,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "845186f0-e7f6-46d9-ac1e-381265da5f06",
+        "title": "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'",
+        "status": "superseded",
+        "evidence_count": 14,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "0cc94cc6-4a1c-4a3f-9dfb-8b7d48603fed",
+        "title": "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'",
+        "status": "new",
+        "evidence_count": 14,
+        "confidence_tier": "high",
+        "expected_impact": 0.9
+      },
+      {
+        "id": "a1bc48a2-b9e1-4c65-b284-b8f41fdc7d74",
+        "title": "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'",
+        "status": "superseded",
+        "evidence_count": 14,
+        "confidence_tier": "medium",
+        "expected_impact": 0.9
+      }
+    ]
+  },
+  "sssports": {
+    "before_count": 14,
+    "after_count": 15,
+    "before_zero_evidence": 2,
+    "after_zero_evidence": 2,
+    "after_customer_visible_count": 13,
+    "after_needs_validation_count": 2,
+    "opportunities_needs_validation": 2,
+    "primary_queue_size": 5,
+    "primary_titles": [
+      "أنشئ صفحة مخصصة لـ 'Hats and Caps'",
+      "أنشئ صفحة مخصصة لـ 'Swimming Glasses'",
+      "أنشئ صفحة مخصصة لـ 'Scarves'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'Back to School Offers'",
+      "اجعل متجرك يُذكر في إجابات AI عن '2026 Sale'"
+    ],
+    "after_detail": [
+      {
+        "id": "b8699cde-2b15-49ad-a0fc-777bf154ef48",
+        "title": "أنشئ صفحة مخصصة لـ 'Scarves'",
+        "status": "new",
+        "evidence_count": 2,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "19944ff8-1c08-41a3-b584-f2384d6712ee",
+        "title": "حسّن ظهورك في Google لـ 'Adidas apparel'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "medium",
+        "expected_impact": 0.7
+      },
+      {
+        "id": "57a49795-8744-40d6-98ed-165d4a40143a",
+        "title": "حسّن ظهورك في Google لـ 'Adidas accessories'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "9add74e5-e1f5-4b8f-ab95-b80dfb329087",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن '2026 Sale'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "edc05c2e-5a36-4708-8b12-a57531041ade",
+        "title": "حسّن ظهورك في Google لـ 'Branded Hijabs'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "4d756f3d-10de-4f98-803b-c62068796fe0",
+        "title": "أنشئ صفحة مخصصة لـ 'Scarves'",
+        "status": "superseded",
+        "evidence_count": 1,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "e0a1a000-ae5d-4464-b772-948f33b0c2c5",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Back to School Offers'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "abc7a722-88dc-4cb0-b6fb-bd735bf7eb8c",
+        "title": "أنشئ صفحة مخصصة لـ 'Scarves'",
+        "status": "superseded",
+        "evidence_count": 1,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "e16cc817-c497-4546-b1a6-bc34fc88ed28",
+        "title": "حسّن ظهورك في Google لـ 'Adidas shoes'",
+        "status": "needs_validation",
+        "evidence_count": 0,
+        "confidence_tier": "medium",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "fc22b0a2-932d-4da3-bfa9-85567978104a",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Water Bottles'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 0.8
+      },
+      {
+        "id": "d1d707db-6913-4c67-8cee-1480e4b3fb96",
+        "title": "أنشئ صفحة مخصصة لـ 'Hats and Caps'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "17e21da8-034d-43e6-b3fd-0ab30e49ee74",
+        "title": "أنشئ صفحة مخصصة لـ 'Swimming Glasses'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "09b15678-b3d4-46fe-932a-3440177556cc",
+        "title": "حسّن ظهورك في Google لـ 'Tote Bags'",
+        "status": "new",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.6
+      },
+      {
+        "id": "e57bb935-ecd2-4fcf-9f47-010ac67f04b5",
+        "title": "حسّن ظهورك في Google لـ 'Branded Hijabs'",
+        "status": "superseded",
+        "evidence_count": 1,
+        "confidence_tier": "low",
+        "expected_impact": 0.5
+      },
+      {
+        "id": "e6f64948-d59d-4084-9180-db1412a69695",
+        "title": "أنشئ صفحة مخصصة لـ 'Scarves'",
+        "status": "superseded",
+        "evidence_count": 2,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      }
+    ]
+  },
+  "newegg": {
+    "before_count": 7,
+    "after_count": 7,
+    "before_zero_evidence": 0,
+    "after_zero_evidence": 0,
+    "after_customer_visible_count": 7,
+    "after_needs_validation_count": 0,
+    "opportunities_needs_validation": 0,
+    "primary_queue_size": 5,
+    "primary_titles": [
+      "اجعل متجرك يُذكر في إجابات AI عن 'Hard Drive'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'Laptop / Notebook'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'Home Audio & Home Theater'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'Memory'",
+      "اجعل متجرك يُذكر في إجابات AI عن 'Digital Cameras'"
+    ],
+    "after_detail": [
+      {
+        "id": "3f60cbb7-a6cf-4ff7-91fe-2af269d1d44a",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Memory'",
+        "status": "new",
+        "evidence_count": 11,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "dbd7d563-bb0e-473e-aa7c-a86711418500",
+        "title": "حسّن ظهورك في Google لـ 'Digital Games'",
+        "status": "new",
+        "evidence_count": 2,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "553329f7-46b5-48e7-b9e7-87aff77b1f24",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Home Audio & Home Theater'",
+        "status": "new",
+        "evidence_count": 12,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "d8e0afb2-37c6-4f7d-96a3-6f77f41b457a",
+        "title": "حسّن ظهورك في Google لـ 'Cell Phones'",
+        "status": "new",
+        "evidence_count": 2,
+        "confidence_tier": "medium",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "d910f0b6-1933-4b8f-ad10-c4b1add66f6c",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Digital Cameras'",
+        "status": "new",
+        "evidence_count": 13,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "d822084d-2cab-4539-bd8c-5fd204f74575",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Hard Drive'",
+        "status": "new",
+        "evidence_count": 12,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      },
+      {
+        "id": "25708575-14a5-44f8-83f6-5e70d1927347",
+        "title": "اجعل متجرك يُذكر في إجابات AI عن 'Laptop / Notebook'",
+        "status": "new",
+        "evidence_count": 14,
+        "confidence_tier": "high",
+        "expected_impact": 1.0
+      }
+    ]
+  }
+}

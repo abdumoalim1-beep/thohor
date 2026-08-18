@@ -1,0 +1,204 @@
+[
+  {
+    "recommendation_id": "e3432e4e-4cfa-4754-b990-a2212e0e8ac6",
+    "title": "حسّن ظهورك في Google لـ 'شراء أدوات الطلاء'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  },
+  {
+    "recommendation_id": "a1bc48a2-b9e1-4c65-b284-b8f41fdc7d74",
+    "title": "أنشئ صفحة مخصصة لـ 'تسوق أدوات منزلية'",
+    "chain": [
+      {
+        "evidence_id": "816af33e-ec5f-404e-b965-eefc5ce63d32",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs alsaifkitchen.com for 'تسوق أدوات منزلية': يجب على العميل إضافة وصف شامل للأدوات المنزلية المتاحة وتقديم معلومات عن الأسعار وخيارات التوصيل لتحسين تجربة التسوق.",
+        "evidence_confidence": 0.9,
+        "source_detail": {
+          "competitor_url": "https://alsaifkitchen.com/categories/243470/%D8%A3%D8%AF%D9%88%D8%A7%D8%AA-%D9%85%D9%86%D8%B2%D9%84%D9%8A%D8%A9?srsltid=AfmBOooCzNqGG2S5jKafccrwWCY9yY1mbVezqKplKmFpnhmTWA2ULyKH",
+          "gaps": [
+            "وصف شامل للأدوات المنزلية المتاحة",
+            "تشكيلة واسعة من المنتجات",
+            "أسعار منافسة",
+            "خدمة توصيل سريع لكل المملكة"
+          ]
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c72e76d6-f8d7-4828-8c2c-262fe68fffc2",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'عروض أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "26b650b6-c1ec-49fe-8085-7559efb0544b",
+          "intent_topic": "عروض أدوات منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c751a1ce-192e-463c-83bc-dac89b2a1fd4",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2fbb6a7a-f1a3-4808-99c4-a54eb22264c2",
+          "intent_topic": "أدوات المنزل",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a86968b7-f7d9-453e-8c79-476c69a99191",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'شراء أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3809af23-dc41-4781-9550-f705dfb80ad2",
+          "intent_topic": "شراء أدوات منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c3da2979-5dfd-4854-b747-6c3098b17376",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'تسوق أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "4b1a6904-caba-4509-94ba-035c6ff36d48",
+          "intent_topic": "تسوق أدوات منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "38a59b69-bb65-4034-b706-aecc1ae51ff5",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات طلاء': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "59ccd33a-fef9-4bab-99af-fc45462f2248",
+          "intent_topic": "أدوات طلاء",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "1b5a6798-d2fd-4dd0-9e60-c46ed20dcac7",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أفضل أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "7bd35555-779e-4271-abe9-a51d3baf2650",
+          "intent_topic": "أفضل أدوات منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "23743a4a-6c3b-465a-be6a-f6f3a3defd66",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'مواد بناء': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "acc77684-d258-420e-a6f7-1ebea0620882",
+          "intent_topic": "مواد البناء",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "32491f25-daa3-4ad9-baa8-ae42abdf7b0a",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أسعار أدوات منزلية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "88d81779-c539-46d6-b903-8c7baedae71a",
+          "intent_topic": "أسعار أدوات منزلية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c5b9a257-5c7f-449a-87a5-8a72ed6522fe",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات تنظيف': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "9682fce5-9bdf-421b-a9ea-14a6d6fdd1c6",
+          "intent_topic": "أدوات تنظيف",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "674a5b10-b883-4106-a716-bef115e0c2f4",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات حديقة': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "a10a1c56-e7f1-4c8d-90f4-d302b63efc17",
+          "intent_topic": "أدوات حديقة",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "56566078-895b-4ab6-8f4d-640c4a8b4dcc",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات يدوية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "bbc1a48d-1139-4e7c-8ad8-2327449c4fa7",
+          "intent_topic": "أدوات يدوية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2f4e3f75-8fdb-4c8f-a9e2-31c2fb9ad850",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات صيانة': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "eabd194a-c48e-451f-9e3c-dab5d6a8badd",
+          "intent_topic": "أدوات صيانة",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "65fc50a6-ac9d-4f62-ac89-439671c94ad2",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات كهربائية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "efe52d55-c4b3-4e34-b885-1917f03bbd28",
+          "intent_topic": "أدوات كهربائية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 14,
+    "broken_count": 0,
+    "traceable": true
+  }
+]

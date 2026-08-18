@@ -1,0 +1,212 @@
+/* ظهور — public landing + onboarding design system.
+   Ported from the Claude Design handoff ("إعادة تصميم BeVisible الرئيسية").
+   Scoped under .rasid-landing (not :root) so it never leaks into the
+   workspace app's own tokens (globals.css / .mersad-workspace). This is
+   deliberately a separate visual identity — it may become an independent
+   product surface later. */
+
+.rasid-landing {
+  --acc: #0e9d86;
+  --bg: #f6f6f7;
+  --ink: #f6f6f7;
+  --panel: #ffffff;
+  --panel2: #f1f1f3;
+  --line: rgba(17, 24, 39, 0.1);
+  --tx: #111827;
+  --mut: #4b5563;
+  --dim: #8a8f98;
+  --btn-fg: #fff;
+  --map-opacity: 0.85;
+  --map-filter: none;
+  --fade-top: rgba(246, 246, 247, 0.75);
+  --fade-core: rgba(246, 246, 247, 0.94);
+  --fade-mid: rgba(246, 246, 247, 0.6);
+  --fade-soft: rgba(246, 246, 247, 0.25);
+  --veil: linear-gradient(120deg, rgba(246, 246, 247, 0.6), rgba(246, 246, 247, 0.3));
+
+  direction: rtl;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--font-ibm-plex-arabic), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.rasid-landing[data-mode="dark"] {
+  --acc: #2bc4a8;
+  --bg: #0a0a0b;
+  --ink: #0a0a0b;
+  --panel: #121214;
+  --panel2: #191a1d;
+  --line: rgba(255, 255, 255, 0.09);
+  --tx: #fafafa;
+  --mut: #a1a1aa;
+  --dim: #71717a;
+  --btn-fg: #0a0a0b;
+  --map-opacity: 0.5;
+  --map-filter: invert(1) hue-rotate(180deg);
+  --fade-top: rgba(10, 10, 11, 0.78);
+  --fade-core: rgba(10, 10, 11, 0.94);
+  --fade-mid: rgba(10, 10, 11, 0.62);
+  --fade-soft: rgba(10, 10, 11, 0.28);
+  --veil: linear-gradient(120deg, rgba(10, 10, 11, 0.78), rgba(10, 10, 11, 0.5));
+
+  background: var(--bg);
+  color: var(--tx);
+}
+
+.rasid-landing * {
+  box-sizing: border-box;
+}
+
+.rasid-landing a {
+  color: var(--tx);
+  text-decoration: none;
+}
+
+.rasid-landing a:hover {
+  color: var(--acc);
+}
+
+.rasid-landing ::selection {
+  background: var(--acc);
+  color: #fff;
+}
+
+.rasid-landing input,
+.rasid-landing textarea {
+  font-family: var(--font-ibm-plex-arabic), sans-serif;
+}
+
+.rasid-landing input::placeholder,
+.rasid-landing textarea::placeholder {
+  color: var(--dim);
+}
+
+.rasid-landing .mono {
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+@keyframes rpulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes rrise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rfa {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -9px, 0);
+  }
+}
+@keyframes rfb {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(5px, 7px, 0);
+  }
+}
+@keyframes rfc {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-6px, -5px, 0);
+  }
+}
+@keyframes rhalo {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.14;
+  }
+}
+@keyframes rping {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+@keyframes rspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ofade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ospin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .rasid-landing [data-pin-sm="hide"] {
+    display: none;
+  }
+}
+
+/* Hover-only rules the prototype expressed as a custom style-hover attribute;
+   plain CSS classes are the idiomatic React equivalent. */
+.rl-fill:hover {
+  filter: brightness(1.25);
+}
+.rl-fill-soft:hover {
+  filter: brightness(0.9);
+}
+.rl-icon-btn:hover,
+.rl-ghost-line:hover {
+  border-color: var(--acc);
+}
+.rl-faq-row:hover {
+  background: rgba(17, 24, 39, 0.03);
+}
+.rasid-landing[data-mode="dark"] .rl-faq-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* The signup wizard's split-screen layout isn't addressed by the handoff's
+   own CSS (no responsive rules at all in that file) — this is a minimal,
+   bounded addition for real-world mobile usability, not a design change. */
+@media (max-width: 860px) {
+  .rl-signup-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .rl-signup-image {
+    display: none;
+  }
+}

@@ -1,0 +1,5 @@
+import assert from "node:assert/strict";import test from "node:test";
+import {appearanceOf,visibilityMetrics} from "./ai-product.ts";
+const base={id:"1",intent_topic:"مسكرا",prompt_text:"أفضل مسكرا؟",surface:"chatgpt",provider:"openai",model:"x",search_enabled:false,grounding_enabled:false,citations_available:false,repetition_index:0,observed_at:null,mentioned:false,mention_position:null,competitors_mentioned:[],products_mentioned:[],citations:[],linked_domains:[],cited_domains:[],response_text:null};
+test("a mention is not promoted to a recommendation",()=>{const item={...base,mentioned:true,mention_position:1};assert.equal(appearanceOf(item),"mentioned");assert.equal(visibilityMetrics([item]).recommendationRate,null);});
+test("citation rate only uses answers where citations are available",()=>{const items=[{...base,citations_available:false},{...base,id:"2",citations_available:true,citations:["https://shop.test/p"],cited_domains:["shop.test"]}];const m=visibilityMetrics(items);assert.equal(m.citationRate,100);assert.equal(m.citationCapableAnswers,1);});

@@ -1,0 +1,636 @@
+[
+  {
+    "recommendation_id": "69e8bcce-3d6b-4962-8259-02b59e27f7ed",
+    "title": "أنشئ صفحة مخصصة لـ 'عطر جورجيو ارماني'",
+    "chain": [
+      {
+        "evidence_id": "4e24c4ea-a2c6-495c-960b-3244566aed2f",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs sultanperfumes.net for 'عطر جورجيو ارماني': يجب على العميل إضافة معلومات تفصيلية حول عطر جورجيو ارماني، بما في ذلك المواصفات، خيارات الشحن، الضمانات، وأدلة مقارنة لتحسين تجربة المستخدم وزيادة المبيعات.",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "competitor_url": "https://sultanperfumes.net/categories/327559/%D8%AC%D9%88%D8%B1%D8%AC%D9%8A%D9%88-%D8%A7%D8%B1%D9%85%D8%A7%D9%86%D9%8A",
+          "gaps": [
+            "لا توجد معلومات عن مواصفات العطر",
+            "لا توجد تفاصيل عن خيارات الشحن",
+            "لا توجد ضمانات أو سياسة إرجاع",
+            "لا توجد أدلة مقارنة مع عطور أخرى",
+            "لا توجد أسئلة شائعة حول العطر"
+          ]
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "06dd1766-3191-46a5-a98d-5dd615bcc3a1",
+    "title": "أنشئ صفحة مخصصة لـ 'مستحضرات اي سي ام'",
+    "chain": [
+      {
+        "evidence_id": "989502df-224a-4d1b-a19a-97b98316cd17",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs nahdionline.com for 'مستحضرات اي سي ام': يجب على العميل إضافة معلومات تفصيلية عن مواصفات المنتج، خيارات الشحن، وضمانات المنتج لتعزيز كتالوجه.",
+        "evidence_confidence": 0.9,
+        "source_detail": {
+          "competitor_url": "https://www.nahdionline.com/ar-sa/acm-depiwhite-advanced-cream-40ml/pdp/102963123?srsltid=AfmBOor2pHgXzYY2YB0kMlYD_0-_VqUpfZLexo-B1DFEGmYTgaIyTElh",
+          "gaps": [
+            "لا توجد معلومات عن مواصفات المنتج",
+            "لا توجد معلومات عن ضمانات المنتج",
+            "لا توجد خيارات شحن متاحة",
+            "لا توجد أدلة مقارنة مع منتجات أخرى",
+            "لا توجد أسئلة شائعة حول المنتج"
+          ]
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "9cf9705e-b4bf-4e5e-9d20-73307d574c4a",
+    "title": "أنشئ صفحة مخصصة لـ 'الجمال الكوري'",
+    "chain": [
+      {
+        "evidence_id": "b8c585f0-064a-482a-b480-99bb2fc132d2",
+        "source_type": "page_gap_analysis",
+        "evidence_summary": "Gap vs faces.sa for 'الجمال الكوري': يجب على العميل إضافة معلومات حول خيارات الشحن، العروض الترويجية، وطرق الدفع المتاحة لتعزيز جاذبية كتالوجه.",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "competitor_url": "https://www.faces.sa/ar/korean-skincare?srsltid=AfmBOooAbbjMX5y65NjXeyCUszruEiwSNRfOWMwPTYfoSIfa0PDp-qun",
+          "gaps": [
+            "توصيل سريع",
+            "خصم 15٪ على طلبك الأول من تطبيقنا",
+            "الدفع عند الاستلام",
+            "اشتر الآن وادفع لاحقًا",
+            "100٪ بدون لمس"
+          ]
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "b53d0ad6-8e59-4063-91b7-9f372ae115fd",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'الجمال الكوري': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "c503672a-e2db-4674-8a6c-3104a82fd205",
+          "intent_topic": "الجمال الكوري",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 2,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "3b475fff-1457-4b90-afac-70bc2330e5c2",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'منتجات الجمال'",
+    "chain": [
+      {
+        "evidence_id": "42c15f22-c549-4459-83a6-0ed927970c3e",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9cf40b40-1024-40c4-89e8-7f1d208f5f74",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "eb4af2cf-d838-4db8-9c5f-dc5c9ad041c0",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f2c5da56-3609-48da-a0e8-28151cd8d8c5",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "115d517b-cbc1-458b-9b44-3bd81ad868f3",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "11247d81-6872-45d2-8c85-2f1ff76e102a",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "dfcf1f7d-1071-400d-b2d3-a7abbecd9c23",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "6529b820-75bf-4856-90d7-9a815b0d8c12",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "3bbe81a5-4cdd-459c-b305-adc23b83855e",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "edb48161-f37f-4201-ad6e-ad73b021a835",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "db92f3ad-cea2-4f7e-a351-24ea9a091590",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b5410e88-16dc-47e8-96d7-63ed4c3b5b10",
+          "intent_topic": "منتجات الجمال",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "0cc8a1c5-faf0-45e9-8cf7-ae75bf23fc61",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'مكياج هدى بيوتي'",
+    "chain": [
+      {
+        "evidence_id": "f77e25d8-b1ea-459e-a6bb-eae8533ae3f6",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "1e86d5d0-0d6b-4752-a156-2115c69ec5b3",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": [
+            "https://www.hudabeauty.com"
+          ]
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "21057eaf-8e33-4df9-89d1-0b5485e6d974",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "0c6c15c3-6138-44aa-bd88-11eb058545ec",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2fa4a31b-a290-469b-b21f-dd590ee7435f",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c65d9e2d-1f9e-481a-9710-5e8fd6fc134d",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d0f4d8b9-3a97-479e-9638-1c7f76ff6752",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "331fb26c-b950-4ad2-9281-ea7db8b2910a",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "3b775c50-7ae5-4a92-a737-87bd832e8204",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "6fe74348-0940-4dc3-aa3e-ee31d00641fa",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c4d14140-0ff0-4ea8-b46a-88359bb88fde",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2200b7e5-3961-4517-bdd8-e7ffdabbde1c",
+          "intent_topic": "مكياج هدى بيوتي",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "142700ed-8432-48f0-b9b2-1d458125e68d",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'مكياج شارلوت تلبوري'",
+    "chain": [
+      {
+        "evidence_id": "41f638f3-adf5-4569-9320-bd813e1a11d8",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "04683405-d13f-409a-b693-326fb70da72f",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "44086a67-8517-45ec-afe0-32c0df8dbf07",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9e48ef4d-45d6-4765-8d0c-5122416e2d64",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "390b9db3-fce3-46e6-8af3-ba9fe93e6e48",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "20d8f750-b095-4f00-97af-9ed5545e143c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c9d727c8-b93d-4010-bb81-09a54e651b61",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "e5f5a63d-e6e3-4258-895e-fbf6575357a0",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f253588b-747f-4395-862b-4c8bc463f085",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "74c4527b-dea5-424c-b80d-7ee599781943",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "8f405287-6666-43c7-a468-51e7ee712c98",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "76814428-f26c-4b1c-8dad-6017530e89eb",
+          "intent_topic": "مكياج شارلوت تلبوري",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "9115b9d6-7151-4dee-ad15-38350b88246b",
+    "title": "حسّن ظهورك في Google لـ 'أدوات تنظيف البشرة'",
+    "chain": [
+      {
+        "evidence_id": "55ce6bed-eb2d-470d-9e4c-55dd2913727f",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'أدوات تنظيف البشرة': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "f23a9db9-f8af-49b0-9775-06c22b8f7eee",
+          "intent_topic": "أدوات تنظيف البشرة",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "d755a8d1-3fde-41f9-9b68-913ecb52496f",
+    "title": "حسّن ظهورك في Google لـ 'مكملات غذائية'",
+    "chain": [
+      {
+        "evidence_id": "852a5245-f47e-48f3-9740-5e0f0d7bca1d",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'مكملات غذائية': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "556de283-cdcf-4b17-b29e-6cb51dc2283f",
+          "intent_topic": "مكملات غذائية",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 1,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "426989e5-17d7-4348-8442-d02aac1b38d8",
+    "title": "حسّن ظهورك في Google لـ 'بيوتيس و نيو لنس'",
+    "chain": [],
+    "evidence_count": 0,
+    "broken_count": 0,
+    "traceable": false
+  }
+]

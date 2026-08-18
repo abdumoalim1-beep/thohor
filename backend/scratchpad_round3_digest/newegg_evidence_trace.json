@@ -1,0 +1,973 @@
+[
+  {
+    "recommendation_id": "d910f0b6-1933-4b8f-ad10-c4b1add66f6c",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Digital Cameras'",
+    "chain": [
+      {
+        "evidence_id": "fa09acd8-7193-4701-8412-f0e966ef74a8",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "4584f80a-1ef9-4232-83b7-47f7ad425895",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d9bae2e4-60fd-45be-9367-e1c35277a691",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "b653a3d6-e9f2-458b-bf65-fb0b0da2c1ea",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a7cf12b4-ae60-4382-a773-ef08ec3f43fd",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "0f86d47b-cb41-4285-85b0-3f8c8ed72f67",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "89c08be8-db2e-4721-8908-6f9410f2b879",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d2b31259-b71b-45d5-99aa-cf62766a3fef",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "24373549-d9a4-4564-8b57-e6ff54547ed2",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "f4c8cada-89d6-4d65-af57-574eee583085",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "77b07fbc-1846-48fd-9b22-df575b54a458",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Digital Cameras': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "177e99fe-64a7-4ae1-afb7-a186716e344b",
+          "intent_topic": "Digital Cameras",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "62ebb3f5-c02a-4d2a-8917-c3e977227c3f",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'camera quality': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "2b4477ae-51af-4205-814c-251a214cdab8",
+          "intent_topic": "Camera Quality",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "52e16f87-bda7-4c1f-9c2c-ad319d818a9e",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'camera accessories': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3c62a90c-6261-4409-8bb4-b0aacf8dc8b5",
+          "intent_topic": "Camera Accessories",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 13,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "d822084d-2cab-4539-bd8c-5fd204f74575",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Hard Drive'",
+    "chain": [
+      {
+        "evidence_id": "6b1906ed-bf20-4968-bbea-395cac82bdba",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "81c8f711-892c-4af6-8225-0edd8b47b230",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "801821c7-528a-4d51-aa4c-519bb4088330",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c00dcfa5-76ce-430f-9204-827be02c0612",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "225f6592-e4b4-4ceb-932a-bd28fbee024b",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "8f61fd36-b40e-4c85-a9d4-9e159b0672d3",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9a4ee3a3-01b3-497e-9934-3897ab2c4d3d",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "253b4604-ba11-466d-a630-1de5df2752f9",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "37b1b8e6-3440-4235-b91e-1b3465ff59eb",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9663f49f-a6c5-41c6-b16b-29be12f655a7",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "2c85a7de-b68c-4bf3-ac37-5b48fed75757",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Hard Drive': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "07a09e3b-0033-451e-b13e-8fdb3a8e7ebe",
+          "intent_topic": "Hard Drive",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a50b8446-54d8-4517-a0f5-1a17aa2c021e",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy external hard drive': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "a6bc45b0-3ec5-4571-bf6a-df743a075cf6",
+          "intent_topic": "External Hard Drives",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 12,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "553329f7-46b5-48e7-b9e7-87aff77b1f24",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Home Audio & Home Theater'",
+    "chain": [
+      {
+        "evidence_id": "43a610b1-84db-431f-b64c-5deaf877ad08",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "bc1c7cb5-f9a6-4976-bcdd-2862f9761719",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d778fd55-0272-4018-ae98-ea7a8051a983",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "76bb4fd0-5807-4237-a19a-3325ae5c399a",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "dd5a8ffe-1d8f-4d25-930e-f5ff91438abf",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "83bc944a-caab-4019-9eca-70fd01433f91",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "bf19ac11-9ba1-48e6-9f4a-5e5c78399562",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "5a2883a1-b5c1-46de-aa95-5d56912c4ebd",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "e5a90a41-a8e1-4235-979d-a68a02e662dd",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "0174f4d8-6128-4410-8df0-a44107dd46a6",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a8f0af7f-30bd-4540-9023-ab24683b6e49",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Home Audio & Home Theater': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0933c33b-ff8e-4074-a493-f186f952d4be",
+          "intent_topic": "Home Audio & Home Theater",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "b6084149-37e8-4a83-9355-273c6c78d1b3",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy home theater': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "fdf5dbd5-6ac7-4a6f-bbe1-9fa3b52e2fce",
+          "intent_topic": "Home Theater Systems",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 12,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "25708575-14a5-44f8-83f6-5e70d1927347",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Laptop / Notebook'",
+    "chain": [
+      {
+        "evidence_id": "15043440-e482-4e02-8919-9f63f1319ebc",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "3585cffd-2739-4c67-af77-a4741ef5a42c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c1b9c7b6-5070-4af0-9927-ecd16b7c7a9f",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d75b6e5c-cdaf-4f30-9ad1-932888d026d2",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "d7aad8da-8876-480b-8fdd-5610cba8f318",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "c731d4aa-6872-4ea6-a562-6b0de3d1301c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "e595e4b3-33c8-49d0-9b7d-43786580e70e",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "688df0e8-0676-4555-9a0f-597a9e426475",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "5f333e2f-e0a5-471a-9050-4fa24951ed9b",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "7ce45b88-4adf-40fd-9215-c3fea0505a7e",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "cd431359-cf5c-4c1e-9283-0c4e3c8f2c0d",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Laptop / Notebook': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "3e5df258-68a2-4fb9-9703-edce4a403a5e",
+          "intent_topic": "Laptop / Notebook",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "eb9f9500-5837-4c15-b1b1-d386b34a6da5",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'laptop accessories': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "b97f78c9-7250-4200-a876-57fbdd837cb6",
+          "intent_topic": "Laptop Accessories",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "120e5c09-9660-4bc0-be23-efeb2aa9e1ac",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'gaming laptops': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "5cd92b2c-e2df-4d28-8a2a-2f076a7c9409",
+          "intent_topic": "Gaming Laptops",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "6a1785d5-7e1c-4331-af70-5ddba19a7778",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'best laptops': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "caea570d-464b-4d84-8331-9df795569c79",
+          "intent_topic": "Laptops",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 14,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "3f60cbb7-a6cf-4ff7-91fe-2af269d1d44a",
+    "title": "اجعل متجرك يُذكر في إجابات AI عن 'Memory'",
+    "chain": [
+      {
+        "evidence_id": "ef8f41ea-10b5-40a1-8934-4c906b70347c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "58127003-b75c-4482-8af2-449d378d1591",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "b91ff8c1-9874-483f-8411-95f624efbf05",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "1b08f8d7-9ad4-4bbc-95da-1014fcfd5461",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "a9c72852-8972-4f0d-ae4c-154efc401420",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "30d1c01e-612a-47c7-b412-a561e889aa96",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "929a8e12-e8b3-4374-976a-caad79e5a3f2",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "ce3e227d-881d-4a96-b241-04fa695d710c",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "0ba3c6cf-6141-4275-80d6-aa06aad6e5c2",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "9c06cfce-9fad-409c-90ab-aefdd66495af",
+        "source_type": "ai_visibility_observation",
+        "evidence_summary": "chatgpt did not mention the store",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "provider": "openai",
+          "mentioned": false,
+          "citations": []
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "73d85182-3d75-47d9-88f4-105d2f20909e",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Memory': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "d0e815c9-e193-4d96-bedb-3e1bf8fa9052",
+          "intent_topic": "Memory",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 11,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "d8e0afb2-37c6-4f7d-96a3-6f77f41b457a",
+    "title": "حسّن ظهورك في Google لـ 'Cell Phones'",
+    "chain": [
+      {
+        "evidence_id": "51875eae-72f3-4726-952f-f056e7264d36",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Cell Phones': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "036d962d-91cb-497d-845b-e74d084e51e2",
+          "intent_topic": "Cell Phones",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "28280b44-3acb-470a-858a-e08bb622c5fb",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'cell phone plans': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "0f9c88b4-c792-43a5-a64c-4a65c92b1e64",
+          "intent_topic": "Cell Phone Plans",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 2,
+    "broken_count": 0,
+    "traceable": true
+  },
+  {
+    "recommendation_id": "dbd7d563-bb0e-473e-aa7c-a86711418500",
+    "title": "حسّن ظهورك في Google لـ 'Digital Games'",
+    "chain": [
+      {
+        "evidence_id": "e4f97057-1e7f-46d4-bafa-d01e4c60e8d5",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'Digital Games': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "acb05e52-eeb0-4102-9f2c-3be56a8e2bfd",
+          "intent_topic": "Digital Games",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      },
+      {
+        "evidence_id": "b70ce05d-6bd6-4960-85ab-1aaa09b2efd5",
+        "source_type": "serp_observation",
+        "evidence_summary": "SERP لـ'buy digital games': المتجر غير ظاهر ضمن أفضل 10 نتيجة",
+        "evidence_confidence": 1.0,
+        "source_detail": {
+          "intent_id": "6f0604f1-da0e-40bc-afc1-4aef25058fa6",
+          "intent_topic": "Digital Game Sales",
+          "client_rank": null,
+          "client_url": null
+        },
+        "broken": false
+      }
+    ],
+    "evidence_count": 2,
+    "broken_count": 0,
+    "traceable": true
+  }
+]
