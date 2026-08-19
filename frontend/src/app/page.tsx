@@ -393,8 +393,8 @@ function Hero({
         <div style={{ marginTop: 6, fontSize: 11.5, color: "var(--mut)", lineHeight: 1.7 }}>«{activeQuery}»</div>
         <div style={{ marginTop: 12, display: "flex", alignItems: "baseline", gap: 7 }}>
           <span style={{ fontSize: 12, color: "var(--dim)" }}>المركز</span>
-          <span className="mono" style={{ fontSize: 20, fontWeight: 600, color: "var(--acc)" }}>٣</span>
-          <span style={{ fontSize: 11, color: "var(--dim)" }}>ذُكرت في ٤ من ٥ منصات</span>
+          <span className="mono" style={{ fontSize: 20, fontWeight: 600, color: "var(--acc)" }}>3</span>
+          <span style={{ fontSize: 11, color: "var(--dim)" }}>ذُكرت في 4 من 5 منصات</span>
         </div>
         <div style={{ marginTop: 10, display: "flex", gap: 5 }}>
           {[0, 1, 2, 3].map((i) => (
@@ -543,10 +543,10 @@ function Hero({
             ابدأ مجاناً
           </Link>
         </form>
-        <div style={{ marginTop: 10, fontSize: 12, color: "var(--dim)" }}>بدون بطاقة ائتمانية · أول تقرير خلال ٣ دقائق</div>
+        <div style={{ marginTop: 10, fontSize: 12, color: "var(--dim)" }}>بدون بطاقة ائتمانية · أول تقرير خلال 3 دقائق</div>
 
         <div style={{ margin: "18px auto 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-          <div style={{ fontSize: 13, color: "var(--mut)" }}>موثوق من أكثر من ٥٠٠ نشاط محلي</div>
+          <div style={{ fontSize: 13, color: "var(--mut)" }}>موثوق من أكثر من 500 نشاط محلي</div>
           <div style={{ display: "flex", alignItems: "center" }} dir="ltr">
             {BRAND_MARKS.map((m) => (
               <div
@@ -944,9 +944,9 @@ function Features() {
             <div style={visual}>
               <WindowChrome />
               <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-                <RankRow rank="١" name="منافس أ" pct="٪82" pctNum={82} strong />
-                <RankRow rank="٢" name="منافس ب" pct="٪61" pctNum={61} />
-                <RankRow rank="٧" name="متجرك" pct="٪28" pctNum={28} muted />
+                <RankRow rank="1" name="منافس أ" pct="82%" pctNum={82} strong />
+                <RankRow rank="2" name="منافس ب" pct="61%" pctNum={61} />
+                <RankRow rank="7" name="متجرك" pct="28%" pctNum={28} muted />
               </div>
             </div>
           </div>
@@ -1382,7 +1382,7 @@ function Footer() {
           />
           جميع الأنظمة تعمل
         </div>
-        <div style={{ fontSize: 12, color: "var(--dim)" }}>© ٢٠٢٦ ظهور. جميع الحقوق محفوظة</div>
+        <div style={{ fontSize: 12, color: "var(--dim)" }}>© 2026 ظهور. جميع الحقوق محفوظة</div>
       </div>
     </footer>
   );

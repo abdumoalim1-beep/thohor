@@ -3,7 +3,6 @@ import test from "node:test";
 
 import type { OnboardingSummary } from "./api.ts";
 import {
-  arDigits,
   bestRankLabel,
   bestStageLabel,
   classifyVisibility,
@@ -57,7 +56,7 @@ test("resultHeadline calls out majority-missing visibility honestly", () => {
 
 test("resultHeadline reports the real fraction in the middle band", () => {
   const line = resultHeadline(summary({ sample_size: 7, store_sample_appearances: 5 }));
-  assert.match(line, new RegExp(`${arDigits(5)} من ${arDigits(7)}`));
+  assert.match(line, /5 من 7/);
 });
 
 test("resultHeadline uses a qualitative line once visibility is strong, not a fabricated near-100 number", () => {
@@ -126,7 +125,7 @@ test("bestRankLabel never fabricates a rank when none was observed", () => {
 test("bestRankLabel uses Arabic ordinals for ranks we have words for, and a numbered fallback beyond that", () => {
   assert.equal(bestRankLabel(1), "المركز الأول");
   assert.equal(bestRankLabel(3), "المركز الثالث");
-  assert.equal(bestRankLabel(14), `المركز رقم ${arDigits(14)}`);
+  assert.equal(bestRankLabel(14), "المركز رقم 14");
 });
 
 test("competitorReasonLabel stays silent instead of guessing when the backend found no clear stage concentration", () => {

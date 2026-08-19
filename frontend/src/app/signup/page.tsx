@@ -17,7 +17,6 @@ import {
   type SuggestedCompetitorItem,
   type VisibilityRunDetail,
 } from "@/lib/api";
-import { arDigits } from "@/lib/visibility-score";
 
 // عمليات البحث الفعلية على ChatGPT وGoogle تُدمج دائمًا في رقم واحد باسم
 // موحّد "ظهور علامتك" — لا يظهر للمستخدم أي فرق بين المصدرين، ولا أي
@@ -32,7 +31,7 @@ import { arDigits } from "@/lib/visibility-score";
 // تحليل الظهور يبدأ تلقائيًا فور اكتمال التعرف على المتجر (في خلفية شاشة
 // brand، دون أي زر يبدأه صراحةً) — قرار مُراجَع بعد اختبار حي: انتظاران
 // متتاليان (تعرّف ثم زر "متابعة" يبدأ انتظارًا ثانيًا من الصفر) شعر
-// كتوقّفين منفصلين. بدء التحليل مبكرًا يجعل عداد "تم تحليل X من ٩٠" يبدأ
+// كتوقّفين منفصلين. بدء التحليل مبكرًا يجعل عداد "تم تحليل X من 90" يبدأ
 // من رقم متقدّم غالبًا بدل الصفر بحلول وصول المستخدم إليه.
 const STEPS = [
   "welcome", "url", "scan", "brand",
@@ -386,10 +385,10 @@ export default function SignupPage() {
                           </BrandTableRow>
                         )}
                         <BrandTableRow label="المنتجات المكتشفة" mono>
-                          {arDigits(understanding?.products_found ?? 0)}
+                          {understanding?.products_found ?? 0}
                         </BrandTableRow>
                         <BrandTableRow label="الفئات المكتشفة" mono>
-                          {arDigits(understanding?.categories_found ?? 0)}
+                          {understanding?.categories_found ?? 0}
                         </BrandTableRow>
                         {(() => {
                           const chips = understanding?.top_categories.length
@@ -436,8 +435,8 @@ export default function SignupPage() {
 
                 {understanding && (
                   <p style={captionNote}>
-                    استنادًا إلى {arDigits(understanding.pages_crawled)} صفحة و{arDigits(understanding.products_found)} منتج و
-                    {arDigits(understanding.categories_found)} فئة رصدناها فعليًا من متجرك.
+                    استنادًا إلى {understanding.pages_crawled} صفحة و{understanding.products_found} منتج و
+                    {understanding.categories_found} فئة رصدناها فعليًا من متجرك.
                   </p>
                 )}
 
@@ -716,13 +715,13 @@ function ScanStep({ storeId, domain, onReady }: { storeId: string; domain: strin
       label: "نتعرف على متجرك",
       done: hasIdentity,
       active: !hasIdentity,
-      detail: live && live.pages_crawled > 0 ? `قرأنا ${arDigits(live.pages_crawled)} صفحة حتى الآن` : null,
+      detail: live && live.pages_crawled > 0 ? `قرأنا ${live.pages_crawled} صفحة حتى الآن` : null,
     },
     {
       label: "نتعرف على منتجاتك وفئاتك",
       done: hasProducts || catalogSettled,
       active: hasIdentity && !(hasProducts || catalogSettled),
-      detail: hasProducts ? `اكتشفنا ${arDigits(live!.products_found)} منتجًا ضمن ${arDigits(live!.categories_found)} فئة` : null,
+      detail: hasProducts ? `اكتشفنا ${live!.products_found} منتجًا ضمن ${live!.categories_found} فئة` : null,
     },
     {
       label: "نلخّص نشاطك ونجهّز التحليل",
@@ -951,7 +950,7 @@ function AnalyzingStep({
       </div>
 
       <p className="mono" style={{ marginTop: 16, fontSize: 14, fontWeight: 700, textAlign: "center", color: "var(--tx)" }}>
-        تم تحليل {arDigits(completed)} من {arDigits(total)}
+        تم تحليل {completed} من {total}
       </p>
 
       {error && (
@@ -992,17 +991,17 @@ function ResultStep({
   }
 
   const appearancePercent = data.appearance_rate !== null ? Math.round(data.appearance_rate * 100) : null;
-  const avgRankText = data.avg_rank !== null ? arDigits(Math.round(data.avg_rank * 10) / 10) : "—";
+  const avgRankText = data.avg_rank !== null ? Math.round(data.avg_rank * 10) / 10 : "—";
 
   return (
     <div>
       <h1 style={{ margin: 0, fontSize: 26, fontWeight: 600, letterSpacing: "-.02em" }}>ظهور علامتك</h1>
       <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.8 }}>
-        حللنا أكثر من {arDigits(data.total_searches)} عملية بحث مرتبطة بمنتجاتك وسوقك لمعرفة متى تظهر علامتك، وما ترتيبها، ومن يظهر قبلها.
+        حللنا أكثر من {data.total_searches} عملية بحث مرتبطة بمنتجاتك وسوقك لمعرفة متى تظهر علامتك، وما ترتيبها، ومن يظهر قبلها.
       </p>
 
       <p style={{ margin: "18px 0 0", fontSize: 15, fontWeight: 700, lineHeight: 1.7, color: "var(--tx)" }}>
-        ظهرت علامتك في {arDigits(data.mentioned_count)} من {arDigits(data.total_searches)} عملية بحث
+        ظهرت علامتك في {data.mentioned_count} من {data.total_searches} عملية بحث
       </p>
       <p style={{ margin: "6px 0 0", fontSize: 13, fontWeight: 600, color: "var(--acc)" }}>
         {visibilityStrengthLabel(data.appearance_rate)}
@@ -1012,7 +1011,7 @@ function ResultStep({
         <div style={stat}>
           <div style={{ fontSize: 11, color: "var(--dim)" }}>نسبة الظهور</div>
           <div className="mono" style={{ marginTop: 6, fontSize: 15, fontWeight: 700 }}>
-            {appearancePercent !== null ? `${arDigits(appearancePercent)}%` : "—"}
+            {appearancePercent !== null ? `${appearancePercent}%` : "—"}
           </div>
         </div>
         <div style={stat}>
@@ -1020,16 +1019,16 @@ function ResultStep({
           <div className="mono" style={{ marginTop: 6, fontSize: 15, fontWeight: 700 }}>{avgRankText}</div>
         </div>
         <div style={stat}>
-          <div style={{ fontSize: 11, color: "var(--dim)" }}>ضمن أفضل ٣ نتائج</div>
+          <div style={{ fontSize: 11, color: "var(--dim)" }}>ضمن أفضل 3 نتائج</div>
           <div className="mono" style={{ marginTop: 6, fontSize: 15, fontWeight: 700 }}>
-            {arDigits(data.top3_count)} {data.top3_count === 1 ? "مرة" : "مرات"}
+            {data.top3_count} {data.top3_count === 1 ? "مرة" : "مرات"}
           </div>
         </div>
       </div>
 
       <p style={{ marginTop: 16, fontSize: 13.5, lineHeight: 1.9, color: "var(--tx)" }}>
         {data.competitors_ahead_count > 0
-          ? `${arDigits(data.competitors_ahead_count)} ${data.competitors_ahead_count === 1 ? "منافس ظهر" : "منافسين ظهروا"} قبل علامتك في نفس عمليات البحث.`
+          ? `${data.competitors_ahead_count} ${data.competitors_ahead_count === 1 ? "منافس ظهر" : "منافسين ظهروا"} قبل علامتك في نفس عمليات البحث.`
           : "لم يظهر أي منافس قبل علامتك بثبات في عمليات البحث التي قِسناها."}
       </p>
 
@@ -1159,7 +1158,7 @@ function SuggestedCompetitorsPanel({
               color: "var(--mut)", fontSize: 12.5, padding: "9px 12px",
             }}
           >
-            عرض {arDigits(remaining)} {remaining === 1 ? "آخر" : "آخرين"}
+            عرض {remaining} {remaining === 1 ? "آخر" : "آخرين"}
           </button>
         )}
       </div>
@@ -1189,7 +1188,7 @@ function VisibilityCompetitorsStep({
       </p>
       {clientRank !== null && totalConsidered > 0 && (
         <p style={{ margin: "10px 0 0", fontSize: 13, fontWeight: 600, color: "var(--tx)" }}>
-          ترتيب ظهور علامتك بين أبرز المنافسين: {arDigits(clientRank)} من {arDigits(totalConsidered)}
+          ترتيب ظهور علامتك بين أبرز المنافسين: {clientRank} من {totalConsidered}
         </p>
       )}
 
@@ -1211,21 +1210,21 @@ function VisibilityCompetitorsStep({
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.name}</div>
                   <div style={{ marginTop: 2, fontSize: 11, color: "var(--dim)" }}>
-                    ظهر {arDigits(c.appearances)} {c.appearances === 1 ? "مرة" : "مرات"}
-                    {c.avg_rank !== null && ` — بمتوسط مركز ${arDigits(Math.round(c.avg_rank * 10) / 10)}`}
+                    ظهر {c.appearances} {c.appearances === 1 ? "مرة" : "مرات"}
+                    {c.avg_rank !== null && ` — بمتوسط مركز ${Math.round(c.avg_rank * 10) / 10}`}
                     {diffPoints !== null && diffPoints !== 0 && (
-                      <> — {diffPoints > 0 ? `أعلى منك بـ ${arDigits(diffPoints)} نقطة` : `أقل منك بـ ${arDigits(Math.abs(diffPoints))} نقطة`}</>
+                      <> — {diffPoints > 0 ? `أعلى منك بـ ${diffPoints} نقطة` : `أقل منك بـ ${Math.abs(diffPoints)} نقطة`}</>
                     )}
                   </div>
                 </div>
-                <span className="mono" style={{ color: "var(--mut)", whiteSpace: "nowrap" }}>{arDigits(Math.round(c.appearance_rate * 100))}%</span>
+                <span className="mono" style={{ color: "var(--mut)", whiteSpace: "nowrap" }}>{Math.round(c.appearance_rate * 100)}%</span>
               </div>
             );
           })}
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", background: "rgba(14,157,134,.08)", fontSize: 13.5, fontWeight: 600 }}>
             <span style={{ width: 24, flex: "none", textAlign: "center" }}>—</span>
             <span style={{ flex: 1 }}>متجرك</span>
-            <span className="mono">{clientRate !== null ? `${arDigits(Math.round(clientRate * 100))}%` : "—"}</span>
+            <span className="mono">{clientRate !== null ? `${Math.round(clientRate * 100)}%` : "—"}</span>
           </div>
         </div>
       )}
@@ -1298,7 +1297,7 @@ function SearchResultsStep({
                     }}
                   >
                     {answer?.brand_mentioned
-                      ? `ظهرت${answer.mention_rank ? ` — المركز ${arDigits(answer.mention_rank)}` : ""}`
+                      ? `ظهرت${answer.mention_rank ? ` — المركز ${answer.mention_rank}` : ""}`
                       : "لم تظهر"}
                   </span>
                 </div>
@@ -1376,7 +1375,7 @@ function CitationsStep({
                 <div style={{ marginTop: 2, fontSize: 11, color: "var(--dim)" }}>{CITATION_SUPPORTS_LABEL[c.supports] ?? c.supports}</div>
               </div>
               <span className="mono" style={{ color: "var(--mut)", whiteSpace: "nowrap" }}>
-                {arDigits(c.citation_count)} {c.citation_count === 1 ? "استشهاد" : "استشهادات"}
+                {c.citation_count} {c.citation_count === 1 ? "استشهاد" : "استشهادات"}
               </span>
             </div>
           ))}

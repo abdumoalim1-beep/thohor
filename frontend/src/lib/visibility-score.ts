@@ -1,13 +1,5 @@
 import type { OnboardingSummary } from "./api.ts";
 
-const AR_DIGITS = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-export function arDigits(n: number): string {
-  return String(n)
-    .split("")
-    .map((c) => AR_DIGITS[Number(c)] ?? c)
-    .join("");
-}
-
 // The recommendation engine's what_to_do/what_we_found text is generated
 // by the (unchanged, protected) backend — it can legitimately use SEO
 // terms like "نية" that this wizard's own copy deliberately avoids. This
@@ -42,12 +34,12 @@ const ORDINALS: Record<number, string> = {
   6: "السادس", 7: "السابع", 8: "الثامن", 9: "التاسع", 10: "العاشر",
 };
 
-/** "المركز الثالث" for ranks we have a word for, "المركز رقم ١٤" beyond
+/** "المركز الثالث" for ranks we have a word for, "المركز رقم 14" beyond
  * that, or an explicit not-measured line — never a fabricated rank. */
 export function bestRankLabel(rank: number | null): string {
   if (rank === null) return "لم نسجّل ترتيبًا ضمن أول 10 نتائج بعد";
   const ordinal = ORDINALS[rank];
-  return ordinal ? `المركز ${ordinal}` : `المركز رقم ${arDigits(rank)}`;
+  return ordinal ? `المركز ${ordinal}` : `المركز رقم ${rank}`;
 }
 
 // The merchant-facing rewording of commercial_stage — deliberately separate
@@ -97,7 +89,7 @@ export function resultHeadline(summary: OnboardingSummary): string {
     return "متجرك لا يظهر في أكثر من نصف عمليات البحث المرتبطة بمنتجاتك.";
   }
   if (ratio < 0.8) {
-    return `متجرك يظهر في ${arDigits(summary.store_sample_appearances)} من ${arDigits(summary.sample_size)} عمليات بحث مرتبطة بمنتجاتك.`;
+    return `متجرك يظهر في ${summary.store_sample_appearances} من ${summary.sample_size} عمليات بحث مرتبطة بمنتجاتك.`;
   }
   return "متجرك يظهر في أغلب عمليات البحث التي اختبرناها.";
 }

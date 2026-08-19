@@ -12,7 +12,6 @@ import {
   type PreviewQuerySourceResult,
   type PreviewReportData,
 } from "@/lib/api";
-import { arDigits } from "@/lib/visibility-score";
 
 // طبقًا للمواصفات: خطوة واحدة لإدخال الرابط، انتظار واحد فقط، ثم شاشات
 // النتيجة تُعرض جميعها من نفس اللقطة (report) المجلوبة مرة واحدة — لا يوجد
@@ -193,7 +192,7 @@ function BlurredCompetitorMark({ domain }: { domain: string }) {
 // "لم يظهر" على عملية بحث لم تُنفَّذ فعليًا بنجاح.
 function googleRow(source: PreviewQuerySourceResult): string {
   if (source.status !== "success") return "غير متاح";
-  if (source.brand_found === true) return `#${arDigits(source.position ?? 0)}`;
+  if (source.brand_found === true) return `#${source.position ?? 0}`;
   if (source.brand_found === false) return "ما ظهرت";
   return "بيانات غير كافية";
 }
@@ -254,7 +253,7 @@ function computeMarketStatus(report: PreviewReportData): MarketStatus {
   let yourDisplay: string;
   let aheadCount: number | null;
   if (yourPct !== null) {
-    yourDisplay = `${arDigits(yourPct)}٪`;
+    yourDisplay = `${yourPct}%`;
     aheadCount = competitorPcts.filter((pct) => pct > yourPct).length;
   } else if (visibility.mode === "estimated" && visibility.level === "low") {
     yourDisplay = "ضعيف";
@@ -273,8 +272,8 @@ function computeMarketStatus(report: PreviewReportData): MarketStatus {
   return {
     competitorCount: competitors.length,
     yourDisplay,
-    avgDisplay: avgCompetitorPct !== null ? `${arDigits(avgCompetitorPct)}٪` : "—",
-    topDisplay: topCompetitorPct !== null ? `${arDigits(topCompetitorPct)}٪` : "—",
+    avgDisplay: avgCompetitorPct !== null ? `${avgCompetitorPct}%` : "—",
+    topDisplay: topCompetitorPct !== null ? `${topCompetitorPct}%` : "—",
     aheadCount,
     opportunityQueryCount,
   };
@@ -671,15 +670,15 @@ export default function PreviewPage() {
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 52, fontWeight: 700, color: "var(--acc)", letterSpacing: "-.02em" }}>
-                      {visibility.score !== null ? `${arDigits(visibility.score)}٪` : "—"}
+                      {visibility.score !== null ? `${visibility.score}%` : "—"}
                     </div>
                     <div style={{ fontSize: 13, color: "var(--mut)", marginTop: 6 }}>نسبة ظهورك</div>
                   </div>
                   {topCompetitorPct !== null && topCompetitorPct > (visibility.score ?? 0) && (
                     <div style={{ ...card, marginTop: 14 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5 }}>
-                        <span>متجرك — {arDigits(visibility.score ?? 0)}٪</span>
-                        <span style={{ fontWeight: 700 }}>أعلى متجر ظهر — {arDigits(topCompetitorPct)}٪</span>
+                        <span>متجرك — {visibility.score ?? 0}%</span>
+                        <span style={{ fontWeight: 700 }}>أعلى متجر ظهر — {topCompetitorPct}%</span>
                       </div>
                       <p style={{ margin: "10px 0 0", fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
                         بعض المتاجر تظهر أمام نفس العميل أكثر من متجرك بوضوح
@@ -690,20 +689,20 @@ export default function PreviewPage() {
                     <div style={{ ...card, textAlign: "center" }}>
                       <div style={{ fontSize: 12, color: "var(--dim)" }}>Google</div>
                       <div style={{ fontSize: 22, fontWeight: 700, marginTop: 4 }}>
-                        {visibility.google_score !== null ? `${arDigits(visibility.google_score)}٪` : "—"}
+                        {visibility.google_score !== null ? `${visibility.google_score}%` : "—"}
                       </div>
                     </div>
                     <div style={{ ...card, textAlign: "center" }}>
                       <div style={{ fontSize: 12, color: "var(--dim)" }}>الذكاء الاصطناعي</div>
                       <div style={{ fontSize: 22, fontWeight: 700, marginTop: 4 }}>
-                        {visibility.ai_score !== null ? `${arDigits(visibility.ai_score)}٪` : "—"}
+                        {visibility.ai_score !== null ? `${visibility.ai_score}%` : "—"}
                       </div>
                     </div>
                   </div>
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     لما يبحث العميل عن منتجات مثل اللي تبيعها، متجرك يظهر تقريبًا في{" "}
-                    {arDigits(Math.round((visibility.brand_mentions / Math.max(visibility.successful_checks, 1)) * 10))}{" "}
-                    من كل ١٠ عمليات بحث فحصناها
+                    {Math.round((visibility.brand_mentions / Math.max(visibility.successful_checks, 1)) * 10)}{" "}
+                    من كل 10 عمليات بحث فحصناها
                   </p>
                 </>
               ) : visibility.level === "low" ? (
@@ -713,7 +712,7 @@ export default function PreviewPage() {
                     ظهر متجرك بشكل محدود في عمليات البحث المرتبطة بالمنتجات والفئات اللي تبيعها
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
-                    <div style={{ fontSize: 34, fontWeight: 700, color: "var(--acc)" }}>أقل من ٥٠٪</div>
+                    <div style={{ fontSize: 34, fontWeight: 700, color: "var(--acc)" }}>أقل من 50%</div>
                     <div style={{ fontSize: 13, color: "var(--mut)", marginTop: 6 }}>نسبة ظهورك</div>
                   </div>
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
@@ -778,11 +777,11 @@ export default function PreviewPage() {
                   <h2 style={sectionTitle}>المنافسة على الظهور</h2>
                   <div style={card}>
                     <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
-                      <b className="mono">{arDigits(marketStatus.competitorCount)}</b> متاجر تتنافس معك على نفس عمليات البحث
+                      <b className="mono">{marketStatus.competitorCount}</b> متاجر تتنافس معك على نفس عمليات البحث
                     </p>
                     {marketStatus.aheadCount !== null && (
                       <p style={{ margin: "8px 0 0", fontSize: 13.5, lineHeight: 1.9 }}>
-                        <b className="mono">{arDigits(marketStatus.aheadCount)}</b> منها تظهر أكثر منك بشكل واضح
+                        <b className="mono">{marketStatus.aheadCount}</b> منها تظهر أكثر منك بشكل واضح
                       </p>
                     )}
                   </div>
@@ -791,7 +790,7 @@ export default function PreviewPage() {
                   <div style={{ ...card, background: "rgba(14,157,134,.08)", border: "1px solid rgba(14,157,134,.25)" }}>
                     {marketStatus.opportunityQueryCount > 0 ? (
                       <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
-                        هناك <b className="mono">{arDigits(marketStatus.opportunityQueryCount)}</b> عملية بحث مرتبطة بمنتجاتك يظهر فيها منافسون ولا تظهر علامتك
+                        هناك <b className="mono">{marketStatus.opportunityQueryCount}</b> عملية بحث مرتبطة بمنتجاتك يظهر فيها منافسون ولا تظهر علامتك
                       </p>
                     ) : (
                       <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
@@ -829,13 +828,13 @@ export default function PreviewPage() {
                         <BlurredCompetitorMark domain={c.domain} />
                         <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{blurDomain(c.domain)}</span>
                         <span style={{ fontSize: 13, color: "var(--mut)" }}>
-                          {c.visibility_percentage !== null ? `${arDigits(c.visibility_percentage)}٪` : "—"}
+                          {c.visibility_percentage !== null ? `${c.visibility_percentage}%` : "—"}
                         </span>
                       </div>
                     ))}
                     {report.competitors.length > 3 && (
                       <div style={{ fontSize: 13, color: "var(--dim)", textAlign: "center", padding: "4px 0" }}>
-                        + {arDigits(report.competitors.length - 3)} متاجر أخرى
+                        + {report.competitors.length - 3} متاجر أخرى
                       </div>
                     )}
                   </div>
