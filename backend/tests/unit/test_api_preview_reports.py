@@ -93,6 +93,36 @@ def test_create_preview_report_ignores_a_different_ip(client, monkeypatch):
     assert response.status_code == 200
 
 
+def test_create_preview_report_bypass_token_skips_the_cooldown(client, monkeypatch):
+    test_client, _engine = client
+    monkeypatch.setattr("app.api.preview_reports.execute_preview_report_task.delay", lambda *a, **k: None)
+    from app.core.config import Settings
+
+    monkeypatch.setattr(
+        "app.api.preview_reports.get_settings",
+        lambda: Settings(preview_report_bypass_token="s3cr3t"),
+    )
+
+    first = test_client.post("/preview-reports", json={"store_url": "zuhoor.sa"})
+    assert first.status_code == 200
+
+    # without the header, the second call from the same IP is still blocked
+    blocked = test_client.post("/preview-reports", json={"store_url": "another.sa"})
+    assert blocked.status_code == 429
+
+    # with the correct token, the cooldown is skipped entirely
+    allowed = test_client.post(
+        "/preview-reports", json={"store_url": "another.sa"}, headers={"X-Preview-Bypass": "s3cr3t"}
+    )
+    assert allowed.status_code == 200
+
+    # a wrong token is not a bypass
+    wrong_token = test_client.post(
+        "/preview-reports", json={"store_url": "another.sa"}, headers={"X-Preview-Bypass": "nope"}
+    )
+    assert wrong_token.status_code == 429
+
+
 def test_create_preview_report_prefers_x_forwarded_for_over_transport_ip(client, monkeypatch):
     """Render sits in front of the app as a proxy — request.client.host is
     always Render's own load-balancer address in production, never the

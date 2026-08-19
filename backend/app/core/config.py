@@ -107,6 +107,11 @@ class Settings(BaseSettings):
     # ~2 points, not worth the ~67% extra AI cost that jump would add.
     preview_search_google_query_count: int = 20
     preview_search_ai_query_count: int = 30
+    # Lets a trusted caller (the site owner, testing) skip the per-IP
+    # cooldown in app.api.preview_reports — sent as the X-Preview-Bypass
+    # header. None (the default) disables the bypass entirely, so this is
+    # inert unless explicitly set.
+    preview_report_bypass_token: SecretStr | None = None
 
     # SERP provider — absent key falls back to the mock provider
     serpapi_api_key: SecretStr | None = None

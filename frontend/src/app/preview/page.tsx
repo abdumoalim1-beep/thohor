@@ -80,6 +80,23 @@ const card: CSSProperties = {
 };
 const sectionTitle: CSSProperties = { margin: "22px 0 10px", fontSize: 15, fontWeight: 700 };
 
+const PREVIEW_BYPASS_STORAGE_KEY = "zuhoor_preview_bypass";
+
+// A one-time ?key=... link (shared privately with the site owner, never a
+// visible UI control) lets repeated testing skip the per-IP cooldown
+// backend enforces — see app.api.preview_reports._is_bypass. Persisted to
+// localStorage on first use so the same browser keeps working without the
+// query param on every later visit.
+function getBypassToken(): string | null {
+  if (typeof window === "undefined") return null;
+  const fromUrl = new URLSearchParams(window.location.search).get("key");
+  if (fromUrl && fromUrl.trim()) {
+    window.localStorage.setItem(PREVIEW_BYPASS_STORAGE_KEY, fromUrl.trim());
+    return fromUrl.trim();
+  }
+  return window.localStorage.getItem(PREVIEW_BYPASS_STORAGE_KEY);
+}
+
 function blurDomain(domain: string): string {
   const base = domain.split(".")[0] || domain;
   if (base.length <= 2) return `${base}••••`;
@@ -331,7 +348,7 @@ export default function PreviewPage() {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const res = await createPreviewReport(trimmed);
+      const res = await createPreviewReport(trimmed, getBypassToken());
       setReportId(res.report_id);
       setReportStatus("processing");
       setReportError(null);

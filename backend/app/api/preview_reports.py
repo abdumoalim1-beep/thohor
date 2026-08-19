@@ -12,6 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlmodel import Session, select
 
+from app.core.config import get_settings
 from app.core.db import get_session
 from app.models.preview_report import PreviewReport, PreviewReportLead
 from app.workers.tasks import execute_preview_report_task
@@ -38,6 +39,18 @@ def _client_ip(request: Request) -> str | None:
     if forwarded:
         return forwarded.split(",")[0].strip() or None
     return request.client.host if request.client else None
+
+
+def _is_bypass(request: Request) -> bool:
+    """Trusted callers (the site owner, testing repeatedly) skip the IP
+    cooldown by sending X-Preview-Bypass matching
+    settings.preview_report_bypass_token. Disabled by default — an unset
+    token means no header value can ever match."""
+    token = get_settings().preview_report_bypass_token
+    if token is None:
+        return False
+    provided = request.headers.get("x-preview-bypass")
+    return provided is not None and provided == token.get_secret_value()
 
 
 class CreatePreviewReportRequest(BaseModel):
@@ -80,7 +93,7 @@ def create_preview_report(
         store_url = f"https://{store_url}"
 
     ip_address = _client_ip(request)
-    if ip_address:
+    if ip_address and not _is_bypass(request):
         cutoff = datetime.now(timezone.utc) - timedelta(hours=PREVIEW_REPORT_IP_COOLDOWN_HOURS)
         recent = session.exec(
             select(PreviewReport)

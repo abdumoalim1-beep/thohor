@@ -716,10 +716,10 @@ async function getJson<T>(path: string): Promise<T> {
   return response.json();
 }
 
-async function postJson<T>(path: string, body?: unknown): Promise<T> {
+async function postJson<T>(path: string, body?: unknown, extraHeaders?: Record<string, string>): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...extraHeaders },
     body: body ? JSON.stringify(body) : undefined,
   });
   if (!response.ok) {
@@ -1149,8 +1149,15 @@ export type PreviewReportStatusResponse = {
   error_message: string | null;
 };
 
-export async function createPreviewReport(storeUrl: string): Promise<{ report_id: string; status: string }> {
-  return postJson("/preview-reports", { store_url: storeUrl });
+export async function createPreviewReport(
+  storeUrl: string,
+  bypassToken?: string | null
+): Promise<{ report_id: string; status: string }> {
+  return postJson(
+    "/preview-reports",
+    { store_url: storeUrl },
+    bypassToken ? { "X-Preview-Bypass": bypassToken } : undefined
+  );
 }
 
 export async function getPreviewReport(reportId: string): Promise<PreviewReportStatusResponse> {
