@@ -319,7 +319,7 @@ export default function PreviewPage() {
                 هل يجدك عملاؤك عندما يبحثون عن منتجاتك؟
               </h1>
               <p style={{ margin: "16px 0 0", fontSize: 14.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                حلّل متجرك واعرف أين يظهر، ومن يظهر بدلًا منه، وما الذي يمكنك تحسينه — بتحليل واحد سريع.
+                حلّل متجرك واعرف أين يظهر، ومن يظهر بدلًا منه، وما الذي يمكنك تحسينه — بتحليل واحد سريع
               </p>
               <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 26, width: "auto", padding: "12px 24px" }}>
                 حلّل متجري
@@ -333,7 +333,7 @@ export default function PreviewPage() {
                 خلنا نشوف كيف يظهر متجرك
               </h1>
               <p style={{ margin: "10px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                حط رابط متجرك والباقي علينا.
+                حط رابط متجرك والباقي علينا
               </p>
               <div style={fieldLabel}>رابط المتجر</div>
               <div
@@ -373,7 +373,7 @@ export default function PreviewPage() {
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تعذّر تحليل متجرك</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                    {reportError ?? "حدث خطأ غير متوقع أثناء التحليل."}
+                    {reportError ?? "حدث خطأ غير متوقع أثناء التحليل"}
                   </p>
                   <button onClick={retry} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
                     حاول مرة أخرى
@@ -383,7 +383,7 @@ export default function PreviewPage() {
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تقريرك جاهز</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                    فهمنا متجرك وبحثنا عنك — خلنا نوريك النتيجة.
+                    فهمنا متجرك وبحثنا عنك — خلنا نوريك النتيجة
                   </p>
                   <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
                     شوف النتيجة
@@ -410,7 +410,7 @@ export default function PreviewPage() {
                       </div>
                     ))}
                   </div>
-                  <p style={captionNote}>هذا قد يأخذ نصف دقيقة تقريبًا.</p>
+                  <p style={captionNote}>هذا قد يأخذ نصف دقيقة تقريبًا</p>
                 </div>
               )}
             </div>
@@ -464,7 +464,7 @@ export default function PreviewPage() {
                   </div>
                 ))}
               </div>
-              <p style={captionNote}>استخدمنا محتوى متجرك لتحديد عمليات البحث المناسبة لك.</p>
+              <p style={captionNote}>استخدمنا محتوى متجرك لتحديد عمليات البحث المناسبة لك</p>
               <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
                 التالي: شوف وضع ظهورك
               </button>
@@ -479,7 +479,7 @@ export default function PreviewPage() {
                 <>
                   <p style={{ margin: "14px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
                     متجرك ظهر في {arDigits(visibility.brand_mentions)} من {arDigits(visibility.successful_checks)}{" "}
-                    عملية بحث فحصناها.
+                    عملية بحث فحصناها
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 52, fontWeight: 700, color: "var(--acc)", letterSpacing: "-.02em" }}>
@@ -494,7 +494,7 @@ export default function PreviewPage() {
                         <span style={{ fontWeight: 700 }}>أعلى متجر ظهر — {arDigits(topCompetitorPct)}٪</span>
                       </div>
                       <p style={{ margin: "10px 0 0", fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
-                        بعض المتاجر تظهر أمام نفس العميل أكثر من متجرك بوضوح.
+                        بعض المتاجر تظهر أمام نفس العميل أكثر من متجرك بوضوح
                       </p>
                     </div>
                   )}
@@ -515,14 +515,14 @@ export default function PreviewPage() {
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     لما يبحث العميل عن منتجات مثل اللي تبيعها، متجرك يظهر تقريبًا في{" "}
                     {arDigits(Math.round((visibility.brand_mentions / Math.max(visibility.successful_checks, 1)) * 10))}{" "}
-                    من كل ١٠ عمليات بحث فحصناها.
+                    من كل ١٠ عمليات بحث فحصناها
                   </p>
                 </>
               ) : visibility.level === "low" ? (
                 <>
                   <h2 style={{ margin: "16px 0 0", fontSize: 17, fontWeight: 700 }}>ظهور متجرك ضعيف حاليًا</h2>
                   <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                    ظهر متجرك بشكل محدود في عمليات البحث المرتبطة بالمنتجات والفئات اللي تبيعها.
+                    ظهر متجرك بشكل محدود في عمليات البحث المرتبطة بالمنتجات والفئات اللي تبيعها
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 34, fontWeight: 700, color: "var(--acc)" }}>أقل من ٥٠٪</div>
@@ -530,11 +530,11 @@ export default function PreviewPage() {
                   </div>
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     هذا يعني أن العميل لما يبحث عن منتجات مثل منتجاتك، متجرك ما يكون من الخيارات الظاهرة له في كثير
-                    من الحالات.
+                    من الحالات
                   </p>
                   <p style={{ marginTop: 10, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     وفي نفس عمليات البحث تظهر متاجر أخرى تنافس على نفس العميل، وهذا يعني أن عندك فرصة واضحة لزيادة
-                    ظهور متجرك.
+                    ظهور متجرك
                   </p>
                 </>
               ) : (
@@ -542,17 +542,17 @@ export default function PreviewPage() {
                   <h2 style={{ margin: "16px 0 0", fontSize: 17, fontWeight: 700 }}>ظهورك محدود</h2>
                   <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     ما قدرنا نجمع عينة كافية من نتائج بحث فعلية لمتجرك في هذا الفحص، فما نقدر نطلع لك نسبة دقيقة
-                    الحين.
+                    الحين
                   </p>
                   <div style={{ ...card, marginTop: 16 }}>
                     <div style={{ fontSize: 12, color: "var(--dim)", fontWeight: 600 }}>وش يعني هذا؟</div>
                     <p style={{ margin: "6px 0 0", fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
                       هذا شائع لما يكون وصف منتجات المتجر مختصر جدًا، أو لما تواجه عمليات البحث ضغطًا مؤقتًا وقت
-                      الفحص — مو انعكاس لسوء ظهور متجرك فعليًا.
+                      الفحص — مو انعكاس لسوء ظهور متجرك فعليًا
                     </p>
                   </div>
                   <p style={{ marginTop: 14, fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
-                    النسخة التجريبية تعيد فحص متجرك باستمرار وتقيس ظهورك بدقة أكبر مع الوقت.
+                    النسخة التجريبية تعيد فحص متجرك باستمرار وتقيس ظهورك بدقة أكبر مع الوقت
                   </p>
                 </>
               )}
@@ -569,7 +569,7 @@ export default function PreviewPage() {
               {report.competitors.length > 0 ? (
                 <>
                   <p style={{ margin: "10px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                    لقينا متاجر تتكرر في نفس عمليات البحث اللي تخص المنتجات اللي تبيعها.
+                    لقينا متاجر تتكرر في نفس عمليات البحث اللي تخص المنتجات اللي تبيعها
                   </p>
                   <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
                     {report.competitors.slice(0, 3).map((c) => (
@@ -586,11 +586,11 @@ export default function PreviewPage() {
                       </div>
                     )}
                   </div>
-                  <p style={captionNote}>🔒 أسماء المنافسين كاملة ضمن التقرير الكامل بعد الانضمام للنسخة التجريبية.</p>
+                  <p style={captionNote}>🔒 أسماء المنافسين كاملة ضمن التقرير الكامل بعد الانضمام للنسخة التجريبية</p>
                 </>
               ) : (
                 <p style={{ margin: "18px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                  ما ظهر متجر واحد بشكل متكرر كفاية في هذا الفحص.
+                  ما ظهر متجر واحد بشكل متكرر كفاية في هذا الفحص
                 </p>
               )}
               <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
@@ -603,7 +603,7 @@ export default function PreviewPage() {
             <div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>هذه الأشياء اللي يبحث عنها عميلك</h1>
               <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.8 }}>
-                فحصنا ظهور متجرك في {arDigits(report.queries.length)} عملية بحث مرتبطة بما تبيع.
+                فحصنا ظهور متجرك في {arDigits(report.queries.length)} عملية بحث مرتبطة بما تبيع
               </p>
               <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8, maxHeight: 420, overflowY: "auto" }}>
                 {[...report.queries]
@@ -655,7 +655,7 @@ export default function PreviewPage() {
                   <p style={{ margin: "6px 0 0", fontSize: 13.5, lineHeight: 1.9 }}>{report.recommendation.action}</p>
                 </div>
               </div>
-              <p style={captionNote}>🔒 التقرير الكامل يتضمن توصيات إضافية لمتجرك.</p>
+              <p style={captionNote}>🔒 التقرير الكامل يتضمن توصيات إضافية لمتجرك</p>
               <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
                 باقي التقرير جاهز لك
               </button>
@@ -668,24 +668,24 @@ export default function PreviewPage() {
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تم! وصلنا طلبك</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                    راح نتواصل معك قريبًا لتفعيل تقريرك الكامل.
+                    راح نتواصل معك قريبًا لتفعيل تقريرك الكامل
                   </p>
                 </div>
               ) : (
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>باقي التقرير جاهز لك</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                    اللي شفته مجرد جزء من الصورة. في النسخة التجريبية نفتح لك التفاصيل ونستمر نتابع ظهور متجرك.
+                    اللي شفته مجرد جزء من الصورة. في النسخة التجريبية نفتح لك التفاصيل ونستمر نتابع ظهور متجرك
                   </p>
                   <div style={{ ...card, marginTop: 18 }}>
                     <div style={{ fontSize: 12.5, color: "var(--dim)", fontWeight: 600 }}>وش تحصل عليه؟</div>
                     <ul style={{ margin: "12px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
                       {[
-                        ["أسماء المنافسين كاملة", "تعرف مين يظهر بدالك وكم مرة."],
-                        ["كل عمليات البحث وتفاصيل ظهورك", "تشوف وين يظهر متجرك ووين تضيع الفرصة."],
-                        ["توصيات إضافية خاصة بمتجرك", "خطوات مبنية على المشاكل اللي وجدناها فعلًا."],
-                        ["متابعة ظهورك في Google والذكاء الاصطناعي", "بدل فحص واحد، نتابع ظهور متجرك باستمرار."],
-                        ["تعرف هل ظهورك يتحسن", "تشوف كيف تتغير النتيجة مع الوقت وبعد التعديلات اللي تسويها."],
+                        ["أسماء المنافسين كاملة", "تعرف مين يظهر بدالك وكم مرة"],
+                        ["كل عمليات البحث وتفاصيل ظهورك", "تشوف وين يظهر متجرك ووين تضيع الفرصة"],
+                        ["توصيات إضافية خاصة بمتجرك", "خطوات مبنية على المشاكل اللي وجدناها فعلًا"],
+                        ["متابعة ظهورك في Google والذكاء الاصطناعي", "بدل فحص واحد، نتابع ظهور متجرك باستمرار"],
+                        ["تعرف هل ظهورك يتحسن", "تشوف كيف تتغير النتيجة مع الوقت وبعد التعديلات اللي تسويها"],
                       ].map(([title, desc]) => (
                         <li key={title} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
                           <span style={{ color: "var(--acc)", flexShrink: 0 }}>✓</span>
@@ -745,7 +745,7 @@ export default function PreviewPage() {
         <div aria-hidden style={{ position: "absolute", inset: 0, background: "var(--veil)" }} />
         <div style={{ position: "absolute", inset: "auto 24px 24px 24px", color: "var(--tx)" }}>
           <div style={{ fontSize: 13, color: "var(--mut)", lineHeight: 1.9 }}>
-            ظهور يحلّل ظهور متجرك في نتائج البحث ونتائج الذكاء الاصطناعي — ويخبرك من يظهر بدلًا منك.
+            ظهور يحلّل ظهور متجرك في نتائج البحث ونتائج الذكاء الاصطناعي — ويخبرك من يظهر بدلًا منك
           </div>
         </div>
       </div>

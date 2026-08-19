@@ -33,7 +33,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "ظهور — يراقب ظهور علامتك ويخبرك ماذا تحسّن",
-  description: "ظهور يراقب ظهور علامتك التجارية في Google ومحركات الذكاء الاصطناعي، يفهم أين تخسر أمام المنافسين، ويخبرك ماذا تحسّن.",
+  description: "ظهور يراقب ظهور علامتك التجارية في Google ومحركات الذكاء الاصطناعي، يفهم أين تخسر أمام المنافسين، ويخبرك ماذا تحسّن",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
