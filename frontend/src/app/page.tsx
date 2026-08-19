@@ -765,18 +765,22 @@ function RankRow({ rank, name, pct, strong, muted }: { rank: string; name: strin
 }
 
 function Features() {
-  const card: CSSProperties = {
-    border: "1px solid var(--line)",
-    borderRadius: 24,
-    background: "var(--panel)",
-    boxShadow: "0 20px 50px rgba(17,24,39,.08)",
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
+  const rowGrid: CSSProperties = {
+    padding: "64px 0",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))",
+    gap: 48,
+    alignItems: "center",
   };
-  const h3: CSSProperties = { margin: "12px 0 0", fontSize: 19, fontWeight: 600, letterSpacing: "-.01em", lineHeight: 1.35 };
-  const body: CSSProperties = { margin: "8px 0 0", fontSize: 13.5, lineHeight: 1.8, color: "var(--mut)" };
-  const visualWrap: CSSProperties = { marginTop: "auto", background: "var(--panel2)", padding: "24px 22px 26px" };
+  const visual: CSSProperties = {
+    border: "1px solid var(--line)",
+    borderRadius: 28,
+    background: "linear-gradient(165deg, rgba(14,157,134,.07), var(--panel) 55%)",
+    boxShadow: "0 24px 60px rgba(17,24,39,.08)",
+    padding: "34px 30px",
+  };
+  const h3: CSSProperties = { margin: "16px 0 0", fontSize: "clamp(22px,2.4vw,28px)", fontWeight: 600, letterSpacing: "-.02em", lineHeight: 1.35 };
+  const body: CSSProperties = { margin: "12px 0 0", fontSize: 14.5, lineHeight: 1.9, color: "var(--mut)", maxWidth: 400 };
 
   const engines: { label: string; icon: PlatformIconName; mention: string }[] = [
     { label: "Google", icon: "search", mention: "منافس أ" },
@@ -786,7 +790,7 @@ function Features() {
   ];
 
   return (
-    <section id="features" style={{ padding: "48px 28px 60px" }}>
+    <section id="features" style={{ padding: "48px 28px 40px" }}>
       <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
         <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>01 — المشكلة</div>
         <h2
@@ -805,33 +809,33 @@ function Features() {
           تضيع وقتك بين أدوات متفرقة، ومع ذلك لا تعرف أين تقف.
         </p>
 
-        <div style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 26, textAlign: "right" }}>
+        <div style={{ marginTop: 20, display: "flex", flexDirection: "column", textAlign: "right" }}>
           {/* 1 — عملاؤك لا يجدونك: a real query, real results, your own listing absent */}
-          <div style={card}>
-            <div style={{ padding: "24px 24px 4px" }}>
+          <div style={rowGrid}>
+            <div style={{ padding: 8 }}>
               <h3 style={h3}>عملاؤك لا يجدونك</h3>
               <p style={body}>تظهر أقل في عمليات البحث التي تقود العملاء لمنتجاتك.</p>
             </div>
-            <div style={visualWrap}>
+            <div style={visual}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 8,
+                  gap: 10,
                   background: "var(--panel)",
                   border: "1px solid var(--line)",
                   borderRadius: 9999,
-                  padding: "10px 14px",
-                  fontSize: 12.5,
+                  padding: "13px 18px",
+                  fontSize: 14.5,
                   color: "var(--tx)",
                 }}
               >
-                <span style={{ width: 15, height: 15, flexShrink: 0 }}>
+                <span style={{ width: 17, height: 17, flexShrink: 0 }}>
                   <PlatformIcon name="search" />
                 </span>
                 أفضل متجر للعناية بالبشرة؟
               </div>
-              <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
                 <SearchResultRow label="متجر العناية الفاخر" />
                 <SearchResultRow label="بيوتي كلينك" />
                 <SearchResultRow label="متجرك — غير موجود" muted />
@@ -840,13 +844,13 @@ function Features() {
           </div>
 
           {/* 2 — منافسوك يسبقونك: a ranking list, your row low and faded */}
-          <div style={card}>
-            <div style={{ padding: "24px 24px 4px" }}>
+          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
+            <div style={{ padding: 8 }}>
               <h3 style={h3}>منافسوك يسبقونك</h3>
               <p style={body}>يظهرون في الأسئلة المهمة، وأنت لا تعرف لماذا.</p>
             </div>
-            <div style={visualWrap}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={visual}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <RankRow rank="١" name="منافس أ" pct="٪82" strong />
                 <RankRow rank="٢" name="منافس ب" pct="٪61" />
                 <RankRow rank="٧" name="متجرك" pct="٪28" muted />
@@ -855,50 +859,50 @@ function Features() {
           </div>
 
           {/* 3 — البحث لم يعد Google فقط: one question branching to 4 engines, none mentioning you */}
-          <div style={card}>
-            <div style={{ padding: "24px 24px 4px" }}>
+          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
+            <div style={{ padding: 8 }}>
               <h3 style={h3}>البحث لم يعد Google فقط</h3>
               <p style={body}>عملاؤك يسألون ChatGPT ومحركات الذكاء الاصطناعي قبل الشراء.</p>
             </div>
-            <div style={visualWrap}>
+            <div style={visual}>
               <div style={{ textAlign: "center" }}>
                 <span
                   style={{
                     display: "inline-block",
-                    fontSize: 12,
+                    fontSize: 13.5,
                     color: "var(--tx)",
                     background: "var(--panel)",
                     border: "1px solid var(--line)",
                     borderRadius: 9999,
-                    padding: "8px 14px",
+                    padding: "10px 18px",
                   }}
                 >
                   وين أشتري منتج عناية أصلي؟
                 </span>
               </div>
-              <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
                 <DownConnector />
               </div>
-              <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8 }}>
+              <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
                 {engines.map((e) => (
                   <div
                     key={e.label}
                     style={{
                       background: "var(--panel)",
                       border: "1px solid var(--line)",
-                      borderRadius: 12,
-                      padding: "10px 6px",
+                      borderRadius: 16,
+                      padding: "16px 8px",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      gap: 5,
+                      gap: 8,
                     }}
                   >
-                    <span style={{ width: 18, height: 18 }}>
+                    <span style={{ width: 24, height: 24 }}>
                       <PlatformIcon name={e.icon} />
                     </span>
-                    <span style={{ fontSize: 9.5, fontWeight: 600 }}>{e.label}</span>
-                    <span style={{ fontSize: 8.5, color: "var(--dim)" }}>{e.mention}</span>
+                    <span style={{ fontSize: 11.5, fontWeight: 600 }}>{e.label}</span>
+                    <span style={{ fontSize: 10, color: "var(--dim)" }}>{e.mention}</span>
                   </div>
                 ))}
               </div>
