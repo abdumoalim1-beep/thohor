@@ -19,7 +19,7 @@ import { arDigits } from "@/lib/visibility-score";
 // أي طلب شبكة جديد بين الشاشات التالية. "welcome" تمهيد سريع لشرح ظهور،
 // نفس بداية /signup القديمة، قبل خطوة إدخال الرابط.
 const STEPS = [
-  "welcome", "url", "waiting", "understanding", "visibility", "competitors", "queries", "recommendation", "beta",
+  "welcome", "url", "waiting", "understanding", "visibility", "market", "competitors", "queries", "recommendation", "beta",
 ] as const;
 type Step = (typeof STEPS)[number];
 
@@ -78,6 +78,7 @@ const card: CSSProperties = {
   borderRadius: 16,
   padding: 20,
 };
+const sectionTitle: CSSProperties = { margin: "22px 0 10px", fontSize: 15, fontWeight: 700 };
 
 function blurDomain(domain: string): string {
   const base = domain.split(".")[0] || domain;
@@ -198,6 +199,88 @@ function queryPriority(q: PreviewQueryResult): number {
   if (confirmedMissing) return 0;
   if (!confirmedFound) return 1;
   return 2;
+}
+
+type MarketStatus = {
+  competitorCount: number;
+  yourDisplay: string;
+  avgDisplay: string;
+  topDisplay: string;
+  aheadCount: number | null;
+  opportunityQueryCount: number;
+};
+
+// Aggregates the same competitors[]/queries[] the competitors/queries steps
+// already render into a single "how do you compare" snapshot for the market
+// step — no new backend computation, every number here is already present
+// in the report payload (competitors[].visibility_percentage and
+// competitors[].queries, both already sent to the client).
+function computeMarketStatus(report: PreviewReportData): MarketStatus {
+  const { visibility, competitors, queries } = report;
+
+  const competitorPcts = competitors
+    .map((c) => c.visibility_percentage)
+    .filter((pct): pct is number => pct !== null);
+  const avgCompetitorPct = competitorPcts.length
+    ? Math.round(competitorPcts.reduce((sum, pct) => sum + pct, 0) / competitorPcts.length)
+    : null;
+  const topCompetitorPct = competitorPcts.length ? Math.max(...competitorPcts) : null;
+
+  const yourPct = visibility.mode === "measured" ? visibility.score : null;
+
+  // "أي منافس نسبته أعلى منك" only has a numeric meaning once we have a real
+  // percentage for the store itself. With a confirmed-weak-but-unmeasured
+  // sample (estimated/low) we still know competitors with any real presence
+  // are ahead of it; with no usable sample at all (estimated/limited) we
+  // can't honestly claim a comparison, so aheadCount stays null and the UI
+  // skips that line rather than guessing.
+  let yourDisplay: string;
+  let aheadCount: number | null;
+  if (yourPct !== null) {
+    yourDisplay = `${arDigits(yourPct)}٪`;
+    aheadCount = competitorPcts.filter((pct) => pct > yourPct).length;
+  } else if (visibility.mode === "estimated" && visibility.level === "low") {
+    yourDisplay = "ضعيف";
+    aheadCount = competitorPcts.filter((pct) => pct > 0).length;
+  } else {
+    yourDisplay = "غير كافٍ للقياس";
+    aheadCount = null;
+  }
+
+  const competitorQuerySet = new Set(competitors.flatMap((c) => c.queries));
+  const opportunityQueryCount = queries.filter((q) => {
+    const youAppeared = q.google.brand_found === true || q.ai.brand_found === true;
+    return !youAppeared && competitorQuerySet.has(q.query);
+  }).length;
+
+  return {
+    competitorCount: competitors.length,
+    yourDisplay,
+    avgDisplay: avgCompetitorPct !== null ? `${arDigits(avgCompetitorPct)}٪` : "—",
+    topDisplay: topCompetitorPct !== null ? `${arDigits(topCompetitorPct)}٪` : "—",
+    aheadCount,
+    opportunityQueryCount,
+  };
+}
+
+function MarketStatRow({ label, value, strong, last }: { label: string; value: string; strong?: boolean; last?: boolean }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 14,
+        padding: "12px 16px",
+        borderBottom: last ? "none" : "1px solid var(--line)",
+      }}
+    >
+      <span style={{ fontSize: 12.5, color: "var(--dim)" }}>{label}</span>
+      <span className="mono" style={{ fontSize: strong ? 16 : 13, fontWeight: 700, color: strong ? "var(--acc)" : "var(--tx)" }}>
+        {value}
+      </span>
+    </div>
+  );
 }
 
 const REPORT_FEEDBACK_OPTIONS: Array<{ value: string; label: string }> = [
@@ -370,6 +453,7 @@ export default function PreviewPage() {
     report && report.competitors.length > 0
       ? Math.max(...report.competitors.map((c) => c.visibility_percentage ?? 0))
       : null;
+  const marketStatus = report ? computeMarketStatus(report) : null;
 
   const showBack = stepIndex > 0 && step !== "waiting";
   const showDots = stepIndex >= 3;
@@ -566,8 +650,7 @@ export default function PreviewPage() {
               {visibility.mode === "measured" ? (
                 <>
                   <p style={{ margin: "14px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                    متجرك ظهر في {arDigits(visibility.brand_mentions)} من {arDigits(visibility.successful_checks)}{" "}
-                    عملية بحث فحصناها
+                    هذا ظهور متجرك في عمليات البحث المرتبطة بمنتجاتك
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 52, fontWeight: 700, color: "var(--acc)", letterSpacing: "-.02em" }}>
@@ -652,6 +735,63 @@ export default function PreviewPage() {
                   </button>
                 )}
                 <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  التالي: وضع السوق
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === "market" && report && marketStatus && (
+            <div>
+              <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>وضع السوق</h1>
+
+              {marketStatus.competitorCount === 0 ? (
+                <p style={{ margin: "18px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
+                  ما لقينا سوق منافس واضح لمتجرك في عمليات البحث اللي فحصناها
+                </p>
+              ) : (
+                <>
+                  <h2 style={sectionTitle}>موقعك في السوق</h2>
+                  <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+                    <MarketStatRow label="ظهور متجرك" value={marketStatus.yourDisplay} strong />
+                    <MarketStatRow label="متوسط المتاجر المشابهة" value={marketStatus.avgDisplay} />
+                    <MarketStatRow label="أعلى متجر" value={marketStatus.topDisplay} last />
+                  </div>
+
+                  <h2 style={sectionTitle}>المنافسة على الظهور</h2>
+                  <div style={card}>
+                    <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
+                      <b className="mono">{arDigits(marketStatus.competitorCount)}</b> متاجر تتنافس معك على نفس عمليات البحث
+                    </p>
+                    {marketStatus.aheadCount !== null && (
+                      <p style={{ margin: "8px 0 0", fontSize: 13.5, lineHeight: 1.9 }}>
+                        <b className="mono">{arDigits(marketStatus.aheadCount)}</b> منها تظهر أكثر منك بشكل واضح
+                      </p>
+                    )}
+                  </div>
+
+                  <h2 style={sectionTitle}>أكبر فرصة لك</h2>
+                  <div style={{ ...card, background: "rgba(14,157,134,.08)", border: "1px solid rgba(14,157,134,.25)" }}>
+                    {marketStatus.opportunityQueryCount > 0 ? (
+                      <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
+                        هناك <b className="mono">{arDigits(marketStatus.opportunityQueryCount)}</b> عملية بحث مرتبطة بمنتجاتك يظهر فيها منافسون ولا تظهر علامتك
+                      </p>
+                    ) : (
+                      <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.9 }}>
+                        ما لقينا عمليات بحث ظهر فيها منافس بشكل مؤكد وما ظهرت فيها أنت
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
                   التالي: شوف المنافسين
                 </button>
               </div>
@@ -706,7 +846,7 @@ export default function PreviewPage() {
             <div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>هذه الأشياء اللي يبحث عنها عميلك</h1>
               <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.8 }}>
-                فحصنا ظهور متجرك في {arDigits(report.queries.length)} عملية بحث مرتبطة بما تبيع
+                فحصنا ظهور متجرك في عمليات البحث المرتبطة بما تبيع
               </p>
               <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8, maxHeight: 420, overflowY: "auto" }}>
                 {[...report.queries]
