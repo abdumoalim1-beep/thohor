@@ -885,24 +885,106 @@ function Features() {
   );
 }
 
+type OrbitIconName =
+  | "questions"
+  | "visibility"
+  | "answers"
+  | "citations"
+  | "competitors"
+  | "content"
+  | "publish"
+  | "reports";
+
+function OrbitIcon({ name }: { name: OrbitIconName }) {
+  const common = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
+  const stroke = { stroke: "var(--acc)", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  switch (name) {
+    case "questions":
+      return (
+        <svg {...common}>
+          <rect x="3" y="4.5" width="18" height="11.5" rx="4" {...stroke} />
+          <path d="M8 20l2.5-4" {...stroke} />
+          <circle cx="8.2" cy="10.2" r="1" fill="var(--acc)" />
+          <circle cx="12" cy="10.2" r="1" fill="var(--acc)" />
+          <circle cx="15.8" cy="10.2" r="1" fill="var(--acc)" />
+        </svg>
+      );
+    case "visibility":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8" {...stroke} />
+          <circle cx="12" cy="12" r="4.3" {...stroke} />
+          <circle cx="12" cy="12" r="1.2" fill="var(--acc)" />
+        </svg>
+      );
+    case "answers":
+      return (
+        <svg {...common}>
+          <rect x="4.6" y="12" width="3.4" height="7" rx="1" {...stroke} />
+          <rect x="10.3" y="8" width="3.4" height="11" rx="1" {...stroke} />
+          <rect x="16" y="4.5" width="3.4" height="14.5" rx="1" {...stroke} />
+        </svg>
+      );
+    case "citations":
+      return (
+        <svg {...common}>
+          <path d="M8.5 8c-2.2 0-3.9 1.8-3.9 4v3.5h3.9V12H6.7c0-1.2.9-2.1 1.8-2.1V8z" {...stroke} strokeLinejoin="round" />
+          <path d="M17.4 8c-2.2 0-3.9 1.8-3.9 4v3.5h3.9V12h-1.8c0-1.2.9-2.1 1.8-2.1V8z" {...stroke} strokeLinejoin="round" />
+        </svg>
+      );
+    case "competitors":
+      return (
+        <svg {...common}>
+          <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" {...stroke} />
+          <circle cx="12" cy="12" r="2.7" {...stroke} />
+        </svg>
+      );
+    case "content":
+      return (
+        <svg {...common}>
+          <path d="M4.5 19.5l1-4.6L14.7 5.7l3.6 3.6-9.2 9.2-4.6 1z" {...stroke} />
+          <path d="M13.2 7.2l3.6 3.6" {...stroke} />
+        </svg>
+      );
+    case "publish":
+      return (
+        <svg {...common}>
+          <path d="M3 12L20 4l-8 17-2.7-6.3L3 12z" {...stroke} strokeLinejoin="round" />
+        </svg>
+      );
+    case "reports":
+      return (
+        <svg {...common}>
+          <rect x="4" y="5.5" width="16" height="14.5" rx="2.5" {...stroke} />
+          <path d="M4 9.5h16" {...stroke} />
+          <path d="M8 3.5v4M16 3.5v4" {...stroke} />
+        </svg>
+      );
+  }
+}
+
 function Solution() {
   // 8 items on a circle, 45° apart starting from the top — positions
   // pre-computed (θ=0° at top, clockwise) so no client-side layout math
   // is needed to place them.
-  const items: { label: string; top: string; left: string }[] = [
-    { label: "رصد الأسئلة", top: "8%", left: "50%" },
-    { label: "قياس الظهور", top: "20.3%", left: "79.7%" },
-    { label: "تحليل الإجابات", top: "50%", left: "92%" },
-    { label: "تتبّع الاستشهادات", top: "79.7%", left: "79.7%" },
-    { label: "مراقبة المنافسين", top: "92%", left: "50%" },
-    { label: "توليد المحتوى", top: "79.7%", left: "20.3%" },
-    { label: "النشر إلى موقعك", top: "50%", left: "8%" },
-    { label: "تقارير أسبوعية", top: "20.3%", left: "20.3%" },
+  const items: { label: string; icon: OrbitIconName; top: string; left: string }[] = [
+    { label: "رصد الأسئلة", icon: "questions", top: "8%", left: "50%" },
+    { label: "قياس الظهور", icon: "visibility", top: "20.3%", left: "79.7%" },
+    { label: "تحليل الإجابات", icon: "answers", top: "50%", left: "92%" },
+    { label: "تتبّع الاستشهادات", icon: "citations", top: "79.7%", left: "79.7%" },
+    { label: "مراقبة المنافسين", icon: "competitors", top: "92%", left: "50%" },
+    { label: "توليد المحتوى", icon: "content", top: "79.7%", left: "20.3%" },
+    { label: "النشر إلى موقعك", icon: "publish", top: "50%", left: "8%" },
+    { label: "تقارير أسبوعية", icon: "reports", top: "20.3%", left: "20.3%" },
   ];
 
+  // translate(-50%,-50%) centers the card on its top/left orbit point —
+  // kept on a static outer wrapper, never animated, so the per-card
+  // float/fade animation (on the inner element below) can set its own
+  // `transform` in keyframes without clobbering this centering offset
+  // (nested transforms compose; a shared one on the same element doesn't).
+  const cellOuter: CSSProperties = { position: "absolute", display: "inline-block", transform: "translate(-50%,-50%)" };
   const cell: CSSProperties = {
-    position: "absolute",
-    transform: "translate(-50%,-50%)",
     border: "1px solid var(--line)",
     borderRadius: 16,
     background: "var(--panel)",
@@ -940,7 +1022,7 @@ function Solution() {
             margin: "56px auto 0",
           }}
         >
-          {/* dashed orbit path */}
+          {/* dashed orbit path — slow continuous rotation for ambient motion */}
           <div
             aria-hidden
             style={{
@@ -948,6 +1030,7 @@ function Solution() {
               inset: "8%",
               borderRadius: "50%",
               border: "1.5px dashed var(--line)",
+              animation: "rspin 60s linear infinite",
             }}
           />
 
@@ -1001,10 +1084,23 @@ function Solution() {
             <span style={{ fontSize: 19, fontWeight: 600 }}>ظهور</span>
           </div>
 
-          {items.map((item) => (
-            <div key={item.label} className="rl-orbit-item" style={{ ...cell, top: item.top, left: item.left, zIndex: 1 }}>
-              <span className="rl-orbit-item-icon" style={{ borderRadius: 10, background: "var(--panel2)", display: "block" }} />
-              <span className="rl-orbit-item-label" style={{ fontWeight: 600, textAlign: "center", lineHeight: 1.4 }}>{item.label}</span>
+          {items.map((item, i) => (
+            <div key={item.label} style={{ ...cellOuter, top: item.top, left: item.left, zIndex: 1 }}>
+              <div
+                className="rl-orbit-item"
+                style={{
+                  ...cell,
+                  animation: `ofade .5s ${i * 0.06}s ease both, rfa ${6 + (i % 3)}s ${i * 0.3 + 0.5}s ease-in-out infinite`,
+                }}
+              >
+                <span
+                  className="rl-orbit-item-icon"
+                  style={{ borderRadius: 10, background: "rgba(14,157,134,.12)", display: "flex", alignItems: "center", justifyContent: "center", padding: 5 }}
+                >
+                  <OrbitIcon name={item.icon} />
+                </span>
+                <span className="rl-orbit-item-label" style={{ fontWeight: 600, textAlign: "center", lineHeight: 1.4 }}>{item.label}</span>
+              </div>
             </div>
           ))}
         </div>
