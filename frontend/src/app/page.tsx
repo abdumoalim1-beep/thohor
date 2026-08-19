@@ -29,6 +29,11 @@ type Pin = {
   hideSm?: boolean;
 };
 
+// All floating query pins are decorative flourish around the hero text —
+// at mobile widths there's no room for them without covering the H1/
+// badge/CTA underneath (that's exactly what real-device testing caught),
+// so every pin hides below the 900px breakpoint via data-pin-sm="hide"
+// (see hideSm below and the matching landing.css media query).
 const PINS: Pin[] = [
   {
     q: DEMOS[0].q,
@@ -38,6 +43,7 @@ const PINS: Pin[] = [
     size: 26,
     labelSize: 11.5,
     labelPad: "7px 14px",
+    hideSm: true,
   },
   {
     q: DEMOS[1].q,
@@ -47,6 +53,7 @@ const PINS: Pin[] = [
     size: 26,
     labelSize: 11.5,
     labelPad: "7px 14px",
+    hideSm: true,
   },
   {
     q: DEMOS[2].q,
@@ -56,6 +63,7 @@ const PINS: Pin[] = [
     size: 26,
     labelSize: 11.5,
     labelPad: "7px 14px",
+    hideSm: true,
   },
   {
     q: DEMOS[3].q,
@@ -75,6 +83,7 @@ const PINS: Pin[] = [
     size: 23,
     labelSize: 11,
     labelPad: "6px 13px",
+    hideSm: true,
   },
   {
     q: DEMOS[5].q,
@@ -116,27 +125,12 @@ const FAQS: [string, string][] = [
 ];
 
 export default function Home() {
-  const [dark, setDark] = useState(false);
   const [rotIndex, setRotIndex] = useState(0);
   const [rotOn, setRotOn] = useState(true);
   const [ping, setPing] = useState(0);
   const [activeDemo, setActiveDemo] = useState<number | null>(null);
   const [domain, setDomain] = useState("");
   const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({ 0: true });
-
-  useEffect(() => {
-    let saved: string | null = null;
-    try {
-      saved = localStorage.getItem("rasid-mode");
-    } catch {
-      // localStorage unavailable (private mode, etc.) — fall back to light.
-    }
-    // Deliberately deferred to an effect (not a lazy useState initializer):
-    // localStorage is unavailable during SSR, so reading it during render
-    // would desync the server-rendered HTML from the client's first paint.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (saved === "dark") setDark(true);
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -155,29 +149,14 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const toggleDark = () => {
-    const next = !dark;
-    setDark(next);
-    try {
-      localStorage.setItem("rasid-mode", next ? "dark" : "light");
-    } catch {
-      // ignore
-    }
-  };
-
   const toggleFaq = (index: number) => setOpenFaqs((s) => ({ ...s, [index]: !s[index] }));
 
   const activeQuery = (activeDemo != null ? DEMOS[activeDemo] : DEMOS[ping]).q;
 
   return (
-    <div
-      dir="rtl"
-      data-mode={dark ? "dark" : undefined}
-      className="rasid-landing"
-      style={{ position: "relative", minHeight: "100vh", overflowX: "clip" }}
-    >
+    <div dir="rtl" className="rasid-landing" style={{ position: "relative", minHeight: "100vh", overflowX: "clip" }}>
       <div style={{ position: "relative", zIndex: 1 }}>
-        <Header dark={dark} onToggleDark={toggleDark} />
+        <Header />
         <Hero
           ping={ping}
           onPick={setActiveDemo}
@@ -196,7 +175,7 @@ export default function Home() {
   );
 }
 
-function Header({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => void }) {
+function Header() {
   return (
     <header
       style={{
@@ -224,9 +203,9 @@ function Header({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => voi
           ظهور
         </a>
         <div
+          className="hidden md:flex"
           style={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: 26,
@@ -238,27 +217,7 @@ function Header({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => voi
           <a href="#solution" style={{ color: "inherit" }}>الحل</a>
           <a href="#faq" style={{ color: "inherit" }}>الأسئلة الشائعة</a>
         </div>
-        <button
-          onClick={onToggleDark}
-          aria-label="تغيير المود"
-          className="rl-icon-btn"
-          style={{
-            width: 34,
-            height: 34,
-            flex: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "1px solid var(--line)",
-            borderRadius: 9999,
-            background: "var(--panel)",
-            cursor: "pointer",
-            fontSize: 14,
-            color: "var(--tx)",
-          }}
-        >
-          {dark ? "☀" : "☾"}
-        </button>
+        <div style={{ flex: 1 }} className="md:hidden" />
         <Link
           href="/preview"
           className="rl-fill"

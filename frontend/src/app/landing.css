@@ -175,8 +175,15 @@
 }
 
 @media (max-width: 900px) {
+  /* !important is load-bearing here: every pin/alert-card element also
+     sets `display` inline (position/flex layout), and an inline style
+     always wins over an external stylesheet rule regardless of
+     selector specificity — without !important this rule silently never
+     applied, which is exactly how these elements ended up visible and
+     overlapping the hero text on real mobile devices despite already
+     being marked data-pin-sm="hide". */
   .rasid-landing [data-pin-sm="hide"] {
-    display: none;
+    display: none !important;
   }
 }
 
