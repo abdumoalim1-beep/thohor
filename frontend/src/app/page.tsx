@@ -640,9 +640,9 @@ type PlatformIconName = "search" | "chat" | "assistant" | "social" | "article" |
 // assistants / social platforms" — deliberately not reproductions of any
 // specific brand's logo (trademark risk), just enough visual variety to
 // read as "different platforms" at a glance, in our own line-icon style.
-function PlatformIcon({ name }: { name: PlatformIconName }) {
+function PlatformIcon({ name, color }: { name: PlatformIconName; color?: string }) {
   const common = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
-  const s = { stroke: "var(--acc)", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const s = { stroke: color ?? "var(--acc)", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (name) {
     case "search":
       return (
@@ -716,9 +716,22 @@ function DownConnector() {
   );
 }
 
-// A single result row inside the card-1 "search" scene — solid for a
-// real result, dashed+faded for the merchant's own missing listing.
-function SearchResultRow({ label, muted }: { label: string; muted?: boolean }) {
+// Three small traffic-light dots atop a "visual" panel — a cheap, familiar
+// signal that reads as "a real app window" instead of an abstract diagram.
+function WindowChrome() {
+  return (
+    <div aria-hidden style={{ display: "flex", gap: 5, marginBottom: 18 }}>
+      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e5646b" }} />
+      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e8b34a" }} />
+      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#3fae6a" }} />
+    </div>
+  );
+}
+
+// A single result row inside the card-1 "search" scene — solid for a real
+// result (with a favicon-style monogram + fake URL line, like an actual
+// search result), dashed+faded for the merchant's own missing listing.
+function SearchResultRow({ label, url, muted }: { label: string; url?: string; muted?: boolean }) {
   return (
     <div
       style={{
@@ -729,17 +742,57 @@ function SearchResultRow({ label, muted }: { label: string; muted?: boolean }) {
         borderRadius: 10,
         border: muted ? "1px dashed var(--line)" : "1px solid var(--line)",
         background: muted ? "transparent" : "var(--panel)",
+        boxShadow: muted ? "none" : "0 3px 10px rgba(17,24,39,.05)",
         opacity: muted ? 0.6 : 1,
       }}
     >
-      <span style={{ width: 7, height: 7, borderRadius: "50%", background: muted ? "var(--line)" : "var(--acc)", flexShrink: 0 }} />
-      <span style={{ fontSize: 12.5, color: muted ? "var(--dim)" : "var(--tx)" }}>{label}</span>
+      <span
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 7,
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 10.5,
+          fontWeight: 700,
+          color: "#fff",
+          background: muted ? "var(--line)" : "var(--acc)",
+        }}
+      >
+        {muted ? "" : label.trim().charAt(0)}
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: 12.5, color: muted ? "var(--dim)" : "var(--tx)", fontWeight: muted ? 400 : 600 }}>{label}</div>
+        {!muted && url && (
+          <div className="mono" dir="ltr" style={{ fontSize: 10, color: "var(--acc)", marginTop: 2, textAlign: "right" }}>
+            {url}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-// A single ranking row inside the card-2 "ranking" scene.
-function RankRow({ rank, name, pct, strong, muted }: { rank: string; name: string; pct: string; strong?: boolean; muted?: boolean }) {
+// A single ranking row inside the card-2 "ranking" scene — a colored
+// monogram chip per store plus a share-of-visibility bar, so the rank
+// isn't just a bare number.
+function RankRow({
+  rank,
+  name,
+  pct,
+  pctNum,
+  strong,
+  muted,
+}: {
+  rank: string;
+  name: string;
+  pct: string;
+  pctNum: number;
+  strong?: boolean;
+  muted?: boolean;
+}) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, opacity: muted ? 0.65 : 1 }}>
       <span
@@ -757,11 +810,41 @@ function RankRow({ rank, name, pct, strong, muted }: { rank: string; name: strin
           background: strong ? "var(--acc)" : "var(--panel)",
           border: strong ? "none" : "1px solid var(--line)",
           color: strong ? "#fff" : "var(--mut)",
+          boxShadow: strong ? "0 0 0 4px rgba(14,157,134,.15)" : "none",
         }}
       >
         {rank}
       </span>
-      <span style={{ flex: 1, fontSize: 12.5, fontWeight: strong ? 600 : 400 }}>{name}</span>
+      <span
+        style={{
+          width: 22,
+          height: 22,
+          borderRadius: 6,
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 10,
+          fontWeight: 700,
+          color: "#fff",
+          background: muted ? "var(--dim)" : strong ? "#0b7c69" : "#5b7a9d",
+        }}
+      >
+        {name.trim().charAt(0)}
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12.5, fontWeight: strong ? 600 : 400 }}>{name}</div>
+        <div style={{ marginTop: 5, height: 3, borderRadius: 9999, background: "var(--line)", overflow: "hidden" }}>
+          <div
+            style={{
+              height: "100%",
+              width: `${pctNum}%`,
+              borderRadius: 9999,
+              background: strong ? "var(--acc)" : muted ? "var(--dim)" : "#5b7a9d",
+            }}
+          />
+        </div>
+      </div>
       <span className="mono" style={{ fontSize: 11.5, fontWeight: 700, color: strong ? "var(--acc)" : "var(--dim)" }}>{pct}</span>
     </div>
   );
@@ -785,11 +868,11 @@ function Features() {
   const h3: CSSProperties = { margin: "16px 0 0", fontSize: "clamp(22px,2.4vw,28px)", fontWeight: 600, letterSpacing: "-.02em", lineHeight: 1.35 };
   const body: CSSProperties = { margin: "12px 0 0", fontSize: 14.5, lineHeight: 1.9, color: "var(--mut)", maxWidth: 400 };
 
-  const engines: { label: string; icon: PlatformIconName; mention: string }[] = [
-    { label: "Google", icon: "search", mention: "منافس أ" },
-    { label: "ChatGPT", icon: "assistant", mention: "منافس ب" },
-    { label: "Gemini", icon: "chat", mention: "منافس أ" },
-    { label: "Perplexity", icon: "social", mention: "منافس ج" },
+  const engines: { label: string; icon: PlatformIconName; mention: string; color: string }[] = [
+    { label: "Google", icon: "search", mention: "منافس أ", color: "#4C8DFF" },
+    { label: "ChatGPT", icon: "assistant", mention: "منافس ب", color: "#1a1a1a" },
+    { label: "Gemini", icon: "chat", mention: "منافس أ", color: "#8B5CF6" },
+    { label: "Perplexity", icon: "social", mention: "منافس ج", color: "#F0A34D" },
   ];
 
   return (
@@ -820,6 +903,7 @@ function Features() {
               <p style={body}>تظهر أقل في عمليات البحث التي تقود العملاء لمنتجاتك</p>
             </div>
             <div style={visual}>
+              <WindowChrome />
               <div
                 style={{
                   display: "flex",
@@ -831,16 +915,21 @@ function Features() {
                   padding: "13px 18px",
                   fontSize: 14.5,
                   color: "var(--tx)",
+                  boxShadow: "0 3px 10px rgba(17,24,39,.05)",
                 }}
               >
                 <span style={{ width: 17, height: 17, flexShrink: 0 }}>
                   <PlatformIcon name="search" />
                 </span>
-                أفضل متجر للعناية بالبشرة؟
+                <span style={{ flex: 1 }}>أفضل متجر للعناية بالبشرة؟</span>
+                <span
+                  aria-hidden
+                  style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--acc)", flexShrink: 0, animation: "rpulse 1.8s ease-in-out infinite" }}
+                />
               </div>
               <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
-                <SearchResultRow label="متجر العناية الفاخر" />
-                <SearchResultRow label="بيوتي كلينك" />
+                <SearchResultRow label="متجر العناية الفاخر" url="luxury-care.sa" />
+                <SearchResultRow label="بيوتي كلينك" url="beautyclinic.sa" />
                 <SearchResultRow label="متجرك — غير موجود" muted />
               </div>
             </div>
@@ -853,10 +942,11 @@ function Features() {
               <p style={body}>يظهرون في الأسئلة المهمة، وأنت لا تعرف لماذا</p>
             </div>
             <div style={visual}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                <RankRow rank="١" name="منافس أ" pct="٪82" strong />
-                <RankRow rank="٢" name="منافس ب" pct="٪61" />
-                <RankRow rank="٧" name="متجرك" pct="٪28" muted />
+              <WindowChrome />
+              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <RankRow rank="١" name="منافس أ" pct="٪82" pctNum={82} strong />
+                <RankRow rank="٢" name="منافس ب" pct="٪61" pctNum={61} />
+                <RankRow rank="٧" name="متجرك" pct="٪28" pctNum={28} muted />
               </div>
             </div>
           </div>
@@ -868,6 +958,7 @@ function Features() {
               <p style={body}>عملاؤك يسألون ChatGPT ومحركات الذكاء الاصطناعي قبل الشراء</p>
             </div>
             <div style={visual}>
+              <WindowChrome />
               <div style={{ textAlign: "center" }}>
                 <span
                   style={{
@@ -878,6 +969,7 @@ function Features() {
                     border: "1px solid var(--line)",
                     borderRadius: 9999,
                     padding: "10px 18px",
+                    boxShadow: "0 3px 10px rgba(17,24,39,.05)",
                   }}
                 >
                   وين أشتري منتج عناية أصلي؟
@@ -899,10 +991,23 @@ function Features() {
                       flexDirection: "column",
                       alignItems: "center",
                       gap: 8,
+                      boxShadow: `0 10px 22px ${e.color}22`,
                     }}
                   >
-                    <span style={{ width: 24, height: 24 }}>
-                      <PlatformIcon name={e.icon} />
+                    <span
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 11,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: `${e.color}17`,
+                      }}
+                    >
+                      <span style={{ width: 19, height: 19 }}>
+                        <PlatformIcon name={e.icon} color={e.color} />
+                      </span>
                     </span>
                     <span style={{ fontSize: 11.5, fontWeight: 600 }}>{e.label}</span>
                     <span style={{ fontSize: 10, color: "var(--dim)" }}>{e.mention}</span>
