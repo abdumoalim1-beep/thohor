@@ -721,9 +721,23 @@ function PlatformIcon({ name }: { name: PlatformIconName }) {
   }
 }
 
+// A short dashed line into a downward chevron — the "many things feed
+// into one" connector reused wherever a panel needs to show convergence
+// (row 1: one question -> platforms; row 3: sources -> one answer).
+function DownConnector() {
+  return (
+    <div aria-hidden style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+      <span style={{ width: 1.5, height: 14, background: "var(--line)" }} />
+      <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
+        <path d="M1 1l6 6 6-6" stroke="var(--dim)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
 function Features() {
   const rowGrid: CSSProperties = {
-    padding: "26px 0",
+    padding: "72px 0",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
     gap: 44,
@@ -745,7 +759,12 @@ function Features() {
   };
   const body: CSSProperties = { margin: "14px 0 0", fontSize: 15, lineHeight: 1.95, color: "var(--mut)", maxWidth: 420 };
 
-  const scatteredPlatforms: PlatformIconName[] = ["assistant", "search", "chat", "social"];
+  const scatteredPlatforms: { icon: PlatformIconName; label: string; found: boolean }[] = [
+    { icon: "assistant", label: "المساعد الذكي", found: true },
+    { icon: "search", label: "محرك البحث", found: false },
+    { icon: "chat", label: "منصة المحادثة", found: false },
+    { icon: "social", label: "المنصة الاجتماعية", found: true },
+  ];
 
   const platformBars: { name: string; icon: PlatformIconName; pct: number; display: string }[] = [
     { name: "المساعد الذكي", icon: "assistant", pct: 32, display: "٪32" },
@@ -788,9 +807,10 @@ function Features() {
               <h3 style={h3}>لا تعرف ما يسأل عنه عملاؤك</h3>
               <p style={body}>الأسئلة موزعة بين منصات ونماذج مختلفة، ولا توجد رؤية موحدة لما يبحث عنه عملاؤك.</p>
             </div>
-            <div style={panel}>
+            <div style={{ ...panel, display: "flex", flexDirection: "column", alignItems: "center" }}>
               <div
                 style={{
+                  width: "100%",
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
@@ -806,16 +826,17 @@ function Features() {
                 <span style={{ flex: 1 }} />
                 <span className="mono" style={{ fontSize: 12, color: "var(--dim)" }}>بحث</span>
               </div>
-              <div style={{ position: "relative", marginTop: 28, height: 88 }}>
-                <div
-                  aria-hidden
-                  style={{ position: "absolute", top: "50%", right: 0, left: 0, borderTop: "1.5px dashed var(--line)" }}
-                />
-                <div style={{ position: "relative", display: "flex", justifyContent: "space-between" }}>
-                  {scatteredPlatforms.map((icon, i) => (
+
+              <div style={{ marginTop: 18 }}>
+                <DownConnector />
+              </div>
+
+              <div style={{ marginTop: 14, display: "flex", justifyContent: "center", gap: 16 }}>
+                {scatteredPlatforms.map((p) => (
+                  <div key={p.icon} style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                     <span
-                      key={icon}
                       style={{
+                        position: "relative",
                         width: 52,
                         height: 52,
                         borderRadius: 16,
@@ -825,19 +846,40 @@ function Features() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: 12,
-                        marginTop: i % 2 === 0 ? 0 : 36,
+                        padding: 13,
                       }}
                     >
-                      <PlatformIcon name={icon} />
+                      <PlatformIcon name={p.icon} />
+                      <span
+                        aria-hidden
+                        style={{
+                          position: "absolute",
+                          top: -6,
+                          left: -6,
+                          width: 19,
+                          height: 19,
+                          borderRadius: "50%",
+                          background: p.found ? "var(--acc)" : "var(--panel)",
+                          border: p.found ? "none" : "1.5px solid var(--line)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          color: p.found ? "#fff" : "var(--dim)",
+                        }}
+                      >
+                        {p.found ? "✓" : "؟"}
+                      </span>
                     </span>
-                  ))}
-                </div>
+                    <span style={{ fontSize: 10.5, color: "var(--dim)" }}>{p.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          <div style={rowGrid}>
+          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
             <div style={{ padding: 8 }}>
               <EyebrowTag>قياس الظهور</EyebrowTag>
               <h3 style={h3}>لا تعرف أين تظهر علامتك</h3>
@@ -894,43 +936,50 @@ function Features() {
             </div>
           </div>
 
-          <div style={rowGrid}>
+          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
             <div style={{ padding: 8 }}>
               <EyebrowTag>تتبّع الاستشهادات</EyebrowTag>
               <h3 style={h3}>لا تعرف لماذا يظهر المنافس بدلاً منك</h3>
               <p style={body}>لا تعرف الصفحات والمنتديات والناشرين التي تعتمدها الإجابات كدليل، ولا كيف تتفوّق عليها.</p>
             </div>
-            <div style={{ ...panel, display: "flex", alignItems: "center", gap: 18 }}>
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ ...panel, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ fontSize: 12.5, color: "var(--dim)" }}>مصادر تُبنى منها الإجابة</div>
+
+              <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 14 }}>
                 {sourceRows.map((row) => (
-                  <div key={row.label} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13 }}>
+                  <div key={row.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 7 }}>
                     <span
                       style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 10,
+                        width: 42,
+                        height: 42,
+                        borderRadius: 12,
                         background: "var(--panel2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: 7,
-                        flexShrink: 0,
+                        padding: 9,
                       }}
                     >
                       <PlatformIcon name={row.icon} />
                     </span>
-                    <span style={{ flex: 1 }}>{row.label}</span>
-                    <span aria-hidden style={{ flexShrink: 0, color: "var(--dim)", fontSize: 15 }}>←</span>
+                    <span style={{ fontSize: 10, color: "var(--dim)", whiteSpace: "nowrap" }}>{row.label}</span>
                   </div>
                 ))}
               </div>
+
+              <div style={{ marginTop: 12 }}>
+                <DownConnector />
+              </div>
+
               <div
                 style={{
-                  ...panel,
-                  flexShrink: 0,
-                  width: 150,
+                  marginTop: 12,
+                  width: "100%",
+                  maxWidth: 260,
+                  border: "1px solid var(--line)",
+                  borderRadius: 16,
+                  background: "var(--panel2)",
                   padding: 16,
-                  boxShadow: "0 14px 32px rgba(17,24,39,.10)",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -949,11 +998,11 @@ function Features() {
                   >
                     <PlatformIcon name="assistant" />
                   </span>
-                  <span style={{ fontSize: 11.5, fontWeight: 700 }}>إجابة الذكاء الاصطناعي</span>
+                  <span style={{ fontSize: 12.5, fontWeight: 700 }}>إجابة الذكاء الاصطناعي</span>
                 </div>
-                <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+                <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 7 }}>
                   {[100, 85, 60].map((w, i) => (
-                    <span key={i} style={{ display: "block", height: 7, borderRadius: 4, width: `${w}%`, background: "var(--panel2)" }} />
+                    <span key={i} style={{ display: "block", height: 6, borderRadius: 4, width: `${w}%`, background: "var(--panel)" }} />
                   ))}
                 </div>
               </div>
