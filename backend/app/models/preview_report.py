@@ -8,7 +8,7 @@ state for a client to observe or race against — status is only ever
 processing -> ready or processing -> failed.
 
 report (PortableJSONB) holds the entire snapshot the frontend consumes —
-store identity, visibility scores, competitors, all 30 query results, and
+store identity, visibility scores, competitors, every query result, and
 the one recommendation — so every report screen after "ready" reads from
 this one blob with zero further API calls, per the explicit requirement
 that nothing between report screens may trigger new loading."""
@@ -36,6 +36,11 @@ class PreviewReport(TimestampedModel, table=True):
     error_message: str | None = None
     report: dict | None = Field(default=None, sa_column=Column(PortableJSONB))
     completed_at: datetime | None = None
+    # Abuse guard (spec follow-up) — the real client IP (see
+    # app.api.preview_reports._client_ip), used to reject a second report
+    # from the same address within PREVIEW_REPORT_IP_COOLDOWN_HOURS. Never
+    # shown to the client, only read back for that one check.
+    ip_address: str | None = Field(default=None, index=True)
 
 
 class PreviewReportLead(TimestampedModel, table=True):

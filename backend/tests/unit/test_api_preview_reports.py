@@ -3,6 +3,9 @@
 tests/unit/test_api_stores.py. Verifies routing/request/response wiring
 only — the pipeline itself is covered by test_preview_orchestration.py."""
 
+import uuid
+from datetime import datetime, timedelta, timezone
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.pool import StaticPool
@@ -45,6 +48,69 @@ def test_create_preview_report_rejects_empty_url(client, monkeypatch):
 
     response = test_client.post("/preview-reports", json={"store_url": "   "})
     assert response.status_code == 422
+
+
+def test_create_preview_report_blocks_same_ip_within_cooldown(client, monkeypatch):
+    test_client, _engine = client
+    monkeypatch.setattr("app.api.preview_reports.execute_preview_report_task.delay", lambda *a, **k: None)
+
+    first = test_client.post("/preview-reports", json={"store_url": "zuhoor.sa"})
+    assert first.status_code == 200
+
+    second = test_client.post("/preview-reports", json={"store_url": "another-store.sa"})
+    assert second.status_code == 429
+    assert second.json()["detail"]
+
+
+def test_create_preview_report_allows_same_ip_after_cooldown(client, monkeypatch):
+    test_client, engine = client
+    monkeypatch.setattr("app.api.preview_reports.execute_preview_report_task.delay", lambda *a, **k: None)
+
+    with Session(engine) as session:
+        old_report = PreviewReport(
+            store_url="https://old.sa",
+            status="ready",
+            ip_address="testclient",  # Starlette TestClient's fixed request.client.host
+            created_at=datetime.now(timezone.utc) - timedelta(hours=49),
+        )
+        session.add(old_report)
+        session.commit()
+
+    response = test_client.post("/preview-reports", json={"store_url": "zuhoor.sa"})
+    assert response.status_code == 200
+
+
+def test_create_preview_report_ignores_a_different_ip(client, monkeypatch):
+    test_client, engine = client
+    monkeypatch.setattr("app.api.preview_reports.execute_preview_report_task.delay", lambda *a, **k: None)
+
+    with Session(engine) as session:
+        other_ip_report = PreviewReport(store_url="https://other.sa", status="ready", ip_address="203.0.113.5")
+        session.add(other_ip_report)
+        session.commit()
+
+    response = test_client.post("/preview-reports", json={"store_url": "zuhoor.sa"})
+    assert response.status_code == 200
+
+
+def test_create_preview_report_prefers_x_forwarded_for_over_transport_ip(client, monkeypatch):
+    """Render sits in front of the app as a proxy — request.client.host is
+    always Render's own load-balancer address in production, never the
+    visitor's, so the real IP must come from X-Forwarded-For instead (set
+    by the proxy, first entry = the actual client)."""
+    test_client, engine = client
+    monkeypatch.setattr("app.api.preview_reports.execute_preview_report_task.delay", lambda *a, **k: None)
+
+    response = test_client.post(
+        "/preview-reports",
+        json={"store_url": "zuhoor.sa"},
+        headers={"X-Forwarded-For": "203.0.113.9, 10.0.0.1"},
+    )
+    assert response.status_code == 200
+
+    with Session(engine) as session:
+        report = session.get(PreviewReport, uuid.UUID(response.json()["report_id"]))
+        assert report.ip_address == "203.0.113.9"
 
 
 def test_get_processing_report_returns_no_blob(client, monkeypatch):

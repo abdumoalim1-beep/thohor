@@ -6,16 +6,38 @@ failed — nothing more granular ever reaches the client), and submit a
 beta-trial lead once the merchant has seen their report."""
 
 import uuid
+from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.core.db import get_session
 from app.models.preview_report import PreviewReport, PreviewReportLead
 from app.workers.tasks import execute_preview_report_task
 
 router = APIRouter(prefix="/preview-reports", tags=["preview-reports"])
+
+# Abuse guard — each real search/AI run costs real money (see
+# app.preview_reports.search), so one IP gets one report per this window
+# rather than an unbounded number of free runs. A time window instead of a
+# lifetime ban on purpose: a shared IP (office wifi, mobile carrier NAT)
+# would otherwise permanently lock out every other real visitor behind it
+# after the first one uses the tool once.
+PREVIEW_REPORT_IP_COOLDOWN_HOURS = 48
+
+
+def _client_ip(request: Request) -> str | None:
+    """The app has no ProxyHeaders/TrustedHost middleware, so
+    request.client.host is Render's own load-balancer IP in production, not
+    the visitor's — every request arrives with the real IP as the first
+    entry of X-Forwarded-For instead (set by Render's proxy, not spoofable
+    by the client through it). Falls back to request.client.host for local
+    dev, where there is no proxy and no such header."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip() or None
+    return request.client.host if request.client else None
 
 
 class CreatePreviewReportRequest(BaseModel):
@@ -47,7 +69,7 @@ class PreviewReportJoinResponse(BaseModel):
 
 @router.post("", response_model=CreatePreviewReportResponse)
 def create_preview_report(
-    payload: CreatePreviewReportRequest, session: Session = Depends(get_session)
+    payload: CreatePreviewReportRequest, request: Request, session: Session = Depends(get_session)
 ) -> CreatePreviewReportResponse:
     from app.workers.tasks import execute_preview_report_task  # deferred: avoids a celery/app.main import cycle
 
@@ -57,7 +79,21 @@ def create_preview_report(
     if not store_url.startswith(("http://", "https://")):
         store_url = f"https://{store_url}"
 
-    report = PreviewReport(store_url=store_url, status="processing")
+    ip_address = _client_ip(request)
+    if ip_address:
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=PREVIEW_REPORT_IP_COOLDOWN_HOURS)
+        recent = session.exec(
+            select(PreviewReport)
+            .where(PreviewReport.ip_address == ip_address, PreviewReport.created_at >= cutoff)
+            .limit(1)
+        ).first()
+        if recent is not None:
+            raise HTTPException(
+                status_code=429,
+                detail="تم استخدام تحليل مجاني من هذا الجهاز مؤخرًا — جرّب مرة أخرى بعد قليل",
+            )
+
+    report = PreviewReport(store_url=store_url, status="processing", ip_address=ip_address)
     session.add(report)
     session.commit()
     session.refresh(report)
