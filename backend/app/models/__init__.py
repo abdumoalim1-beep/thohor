@@ -15,6 +15,7 @@ from app.models.onboarding_lead import OnboardingLead
 from app.models.opportunity import Opportunity, OpportunityStatus
 from app.models.org import Organization, User
 from app.models.page_intelligence import PageGapAnalysis
+from app.models.preview_report import PreviewReport, PreviewReportLead
 from app.models.recommendation import Recommendation, RecommendationHistory, RecommendationStatus
 from app.models.research import AgentRun, ResearchRun, ResearchRunType, RunStatus
 from app.models.research_task import ResearchTask, TaskStatus, TaskType
@@ -79,6 +80,8 @@ __all__ = [
     "EvaluationSummary",
     "StoreFeedback",
     "OnboardingLead",
+    "PreviewReport",
+    "PreviewReportLead",
     "VisibilityQuestion",
     "VisibilityRun",
     "EngineAnswer",

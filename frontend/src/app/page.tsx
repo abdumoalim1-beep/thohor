@@ -260,7 +260,7 @@ function Header({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => voi
           {dark ? "☀" : "☾"}
         </button>
         <Link
-          href="/signup"
+          href="/preview"
           className="rl-fill"
           style={{
             display: "inline-flex",
@@ -565,7 +565,7 @@ function Hero({
             />
           </div>
           <Link
-            href={domain.trim() ? `/signup?domain=${encodeURIComponent(domain.trim())}` : "/signup"}
+            href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
             className="rl-fill"
             style={{
               display: "inline-flex",
@@ -1048,7 +1048,7 @@ function Faq({
             ابدأ من الأسئلة التي يطرحها عملاؤك فعلاً، وتابع كيف يتغيّر حضورك أسبوعاً بعد أسبوع.
           </p>
           <Link
-            href="/signup"
+            href="/preview"
             className="rl-fill"
             style={{
               display: "inline-block",

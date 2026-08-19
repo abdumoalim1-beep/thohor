@@ -76,6 +76,24 @@ class Settings(BaseSettings):
     competitor_discovery_max_suggestions: int = 10
     crawler_user_agent: str = "MersadBot/0.1 (+https://mersad.example/bot)"
 
+    # PreviewReport (MVP) — a smaller, independent budget from the main
+    # crawler settings above. This crawl is one stage of a ~30-60s total
+    # report, so it must stay small and bounded on purpose, not tuned
+    # toward completeness.
+    preview_crawler_max_pages: int = 24
+    preview_crawler_min_pages_for_sufficiency: int = 14
+    preview_crawler_max_depth: int = 2
+    preview_crawler_overall_timeout_seconds: float = 18.0
+    preview_crawler_max_concurrency: int = 4
+    preview_crawler_max_playwright_fallbacks: int = 2
+    # Stage 5 — exactly two sources (Google + one AI engine), bounded
+    # concurrency shared across both, same idiom as multi_engine_runner.py's
+    # DEFAULT_MAX_CONCURRENCY but tuned smaller since this is one stage of a
+    # ~30-45s total report, not a standalone weekly job.
+    preview_search_max_concurrency: int = 10
+    preview_search_google_timeout_seconds: float = 20.0
+    preview_search_ai_timeout_seconds: float = 45.0
+
     # SERP provider — absent key falls back to the mock provider
     serpapi_api_key: SecretStr | None = None
     serp_default_country: str = "sa"

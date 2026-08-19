@@ -120,6 +120,42 @@ export default function SignupPage() {
     if (saved === "dark") setDark(true);
   }, []);
 
+  // نفس نمط الخلل اللي أصلحناه لتحليل الظهور: شاشة "brand" تنتقل إليها
+  // فور اكتمال الهوية — عمدًا، حتى تبقى سريعة — لكن اكتشاف المنافسين خطوة
+  // لاحقة منفصلة في نفس الـ pipeline قد لا تكون انتهت بعد عند لحظة
+  // الانتقال، و suggested_competitors كانت تُؤخذ كلقطة واحدة لا تُحدَّث
+  // أبدًا بعدها. هذا يعيد الجلب دوريًا لفترة محدودة بعد الوصول لشاشة
+  // "brand" فقط، ويحدّث القائمة إن ظهر منافسون جدد — دون التأثير على أي
+  // تعديل يدوي للاسم/الوصف (تلك حالة منفصلة).
+  useEffect(() => {
+    if (step !== "brand" || !storeId) return;
+    let disposed = false;
+    let timer: ReturnType<typeof setTimeout>;
+    let attempts = 0;
+    const maxAttempts = 10; // كل 5 ثوانٍ تقريبًا — يغطي مدة اكتشاف المنافسين المعتادة
+    const poll = async () => {
+      attempts += 1;
+      try {
+        const fresh = await getStoreUnderstanding(storeId);
+        if (disposed) return;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setUnderstanding((prev) =>
+          prev && fresh.suggested_competitors.length > prev.suggested_competitors.length ? fresh : prev
+        );
+        if (fresh.suggested_competitors.length === 0 && attempts < maxAttempts) {
+          timer = setTimeout(poll, 5000);
+        }
+      } catch {
+        if (!disposed && attempts < maxAttempts) timer = setTimeout(poll, 5000);
+      }
+    };
+    poll();
+    return () => {
+      disposed = true;
+      clearTimeout(timer);
+    };
+  }, [step, storeId]);
+
   const go = (n: number) => setStepIndex(Math.max(0, Math.min(STEPS.length - 1, n)));
   const next = () => go(stepIndex + 1);
   const back = () => go(stepIndex - 1);

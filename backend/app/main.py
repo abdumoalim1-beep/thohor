@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.api.alerts import router as alerts_router
+from app.api.preview_reports import router as preview_reports_router
 from app.api.recommendations import router as recommendations_router
 from app.api.stores import router as stores_router
 from app.api.visibility import router as visibility_router
@@ -22,6 +23,7 @@ app.include_router(stores_router)
 app.include_router(recommendations_router)
 app.include_router(alerts_router)
 app.include_router(visibility_router)
+app.include_router(preview_reports_router)
 
 
 @app.get("/health")

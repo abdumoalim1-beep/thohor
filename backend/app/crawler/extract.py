@@ -40,6 +40,8 @@ class PageFacts:
     h2: list[str] = field(default_factory=list)
     meta_description: str | None = None
     og_site_name: str | None = None
+    og_image: str | None = None
+    favicon: str | None = None
     canonical: str | None = None
     hreflang: dict[str, str] = field(default_factory=dict)
     json_ld: list[dict] = field(default_factory=list)
@@ -62,6 +64,8 @@ class PageFacts:
             "h2": self.h2,
             "meta_description": self.meta_description,
             "og_site_name": self.og_site_name,
+            "og_image": self.og_image,
+            "favicon": self.favicon,
             "canonical": self.canonical,
             "hreflang": self.hreflang,
             "json_ld": self.json_ld,
@@ -72,6 +76,28 @@ class PageFacts:
             "content_hash": self.content_hash,
             "html_lang": self.html_lang,
         }
+
+
+def _flatten_json_ld(data: object) -> list[dict]:
+    """schema.org allows a single '@graph' wrapper dict whose real entries
+    (Product, CollectionPage, ...) live one level deeper — a pattern used
+    by Salla (and other site builders) instead of a flat top-level list.
+    Every consumer of json_ld (extract_product_facts, looks_like_category_
+    page, the FAQPage scan below) only ever checks a flat list of dicts'
+    own "@type", so unwrap @graph here once rather than in every
+    consumer — otherwise Product/CollectionPage entries wrapped this way
+    are silently invisible and their pages misclassify as "other"."""
+    if isinstance(data, list):
+        flattened: list[dict] = []
+        for item in data:
+            flattened.extend(_flatten_json_ld(item))
+        return flattened
+    if isinstance(data, dict):
+        graph = data.get("@graph")
+        if isinstance(graph, list):
+            return _flatten_json_ld(graph)
+        return [data]
+    return []
 
 
 def extract_page_facts(url: str, html: str, site_hostname: str | None) -> PageFacts:
@@ -92,6 +118,18 @@ def extract_page_facts(url: str, html: str, site_hostname: str | None) -> PageFa
     og_site_name_tag = soup.find("meta", attrs={"property": "og:site_name"})
     og_site_name = og_site_name_tag.get("content", "").strip() if og_site_name_tag else None
 
+    og_image_tag = soup.find("meta", attrs={"property": "og:image"})
+    og_image_raw = og_image_tag.get("content", "").strip() if og_image_tag else None
+    og_image = urljoin(url, og_image_raw) if og_image_raw else None
+
+    favicon = None
+    for link_tag in soup.find_all("link", href=True):
+        rel = link_tag.get("rel") or []
+        rel_text = " ".join(rel) if isinstance(rel, list) else str(rel)
+        if "icon" in rel_text.lower():
+            favicon = urljoin(url, link_tag["href"])
+            break
+
     canonical_tag = soup.find("link", attrs={"rel": "canonical"})
     canonical = canonical_tag.get("href") if canonical_tag else None
 
@@ -108,10 +146,7 @@ def extract_page_facts(url: str, html: str, site_hostname: str | None) -> PageFa
             data = json.loads(script.string or "")
         except (ValueError, TypeError):
             continue
-        if isinstance(data, list):
-            json_ld.extend(d for d in data if isinstance(d, dict))
-        elif isinstance(data, dict):
-            json_ld.append(data)
+        json_ld.extend(_flatten_json_ld(data))
 
     internal_links: set[str] = set()
     if site_hostname:
@@ -160,6 +195,8 @@ def extract_page_facts(url: str, html: str, site_hostname: str | None) -> PageFa
         h2=h2,
         meta_description=meta_description,
         og_site_name=og_site_name,
+        og_image=og_image,
+        favicon=favicon,
         canonical=canonical,
         hreflang=hreflang,
         json_ld=json_ld,

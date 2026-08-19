@@ -1060,3 +1060,113 @@ export async function waitForOnDemandJob(storeId: string, runId: string): Promis
   }
   throw new Error("ما زالت المهمة تعمل. يمكنك العودة لاحقًا وستجدها محفوظة في السجل.");
 }
+
+// ---------------------------------------------------------------------------
+// PreviewReport (MVP) — deliberately isolated from every type/function above:
+// no store_id, no ResearchRun. One create call, one poll loop, one fetch of
+// the finished report — every screen after that reads from the same object,
+// never a new request. See backend/app/models/preview_report.py.
+
+export type PreviewQuerySourceResult = {
+  status: "success" | "failed";
+  brand_found: boolean | null;
+  position: number | null;
+  results?: Array<{ rank: number; domain: string; url: string; title: string | null }>;
+  raw_result?: string;
+  sources?: Array<{ url: string }>;
+};
+
+export type PreviewQueryResult = {
+  query: string;
+  subject: string | null;
+  subject_type: "category" | "product" | null;
+  google: PreviewQuerySourceResult;
+  ai: PreviewQuerySourceResult;
+};
+
+export type PreviewCompetitor = {
+  domain: string;
+  appearances: number;
+  average_rank: number | null;
+  visibility_percentage: number | null;
+  queries: string[];
+};
+
+// measured: enough successful search checks to trust an exact percentage.
+// estimated: too thin a sample to trust an exact number — can flag a
+// confirmed weakness (level "low" + display_range "under_50") but can
+// never certify strong visibility from a thin sample (level "limited").
+export type PreviewVisibilityMeasured = {
+  mode: "measured";
+  score: number | null;
+  brand_mentions: number;
+  successful_checks: number;
+  google_score: number | null;
+  ai_score: number | null;
+};
+
+export type PreviewVisibilityEstimated = {
+  mode: "estimated";
+  score: null;
+  level: "low" | "limited";
+  display_range?: "under_50";
+  reasons?: string[];
+};
+
+export type PreviewVisibility = PreviewVisibilityMeasured | PreviewVisibilityEstimated;
+
+export type PreviewRecommendation = {
+  title: string;
+  reason: string;
+  action: string;
+  topic: string | null;
+  evidence: string[];
+};
+
+export type PreviewReportData = {
+  id: string;
+  status: string;
+  store: {
+    url: string;
+    domain: string;
+    logo: string | null;
+    brand_name: string;
+    category: string;
+    categories: string[];
+    products: string[];
+  };
+  visibility: PreviewVisibility;
+  competitors: PreviewCompetitor[];
+  queries: PreviewQueryResult[];
+  recommendation: PreviewRecommendation;
+  generated_at: string;
+};
+
+export type PreviewReportStatusResponse = {
+  id: string;
+  status: "processing" | "ready" | "failed";
+  report: PreviewReportData | null;
+  error_message: string | null;
+};
+
+export async function createPreviewReport(storeUrl: string): Promise<{ report_id: string; status: string }> {
+  return postJson("/preview-reports", { store_url: storeUrl });
+}
+
+export async function getPreviewReport(reportId: string): Promise<PreviewReportStatusResponse> {
+  return getJson(`/preview-reports/${reportId}`);
+}
+
+export type PreviewJoinBetaRequest = {
+  name: string;
+  email: string;
+  report_feedback: string;
+  interest_level: string;
+};
+
+export async function joinPreviewReportBeta(
+  reportId: string,
+  payload: PreviewJoinBetaRequest
+): Promise<{ id: string }> {
+  return postJson(`/preview-reports/${reportId}/join`, payload);
+}

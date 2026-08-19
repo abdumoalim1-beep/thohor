@@ -105,6 +105,17 @@ DEFAULT_ROUTES: dict[str, TaskRoute] = {
         primary=ModelChoice("openai", "gpt-4o-mini"),
         fallback=ModelChoice("anthropic", "claude-haiku-4-5-20251001"),
     ),
+    # PreviewReport Stage 3 — organizes already-crawled deterministic facts
+    # into simple JSON, no web_search (the website itself is the identity
+    # source for this flow, not a search call). Same cheap/fast tier.
+    "preview_store_understanding": TaskRoute(
+        primary=ModelChoice("openai", "gpt-4o-mini"),
+        fallback=ModelChoice("anthropic", "claude-haiku-4-5-20251001"),
+    ),
+    "preview_recommendation": TaskRoute(
+        primary=ModelChoice("openai", "gpt-4o-mini"),
+        fallback=ModelChoice("anthropic", "claude-haiku-4-5-20251001"),
+    ),
 }
 
 

@@ -9,10 +9,12 @@ from app.models.visibility_run import VisibilityRun
 from app.core.config import get_settings
 from app.core.db import engine
 from app.core.storage import get_storage
+from app.models.preview_report import PreviewReport
 from app.models.recommendation import Recommendation
 from app.models.research import AgentRun, ResearchRun, ResearchRunType, RunStatus
 from app.models.store import Store
 from app.orchestrator.research_orchestrator import ResearchOrchestrator
+from app.preview_reports.orchestration import generate_preview_report
 from app.providers.ai import get_router
 from app.providers.search import get_search_provider
 from app.services.on_demand_jobs import (
@@ -125,6 +127,21 @@ def execute_visibility_run_task(store_id: str, visibility_run_id: str | None = N
             )
         )
         return str(run.id)
+
+
+@celery_app.task(name="preview_reports.generate")
+def execute_preview_report_task(report_id: str) -> str:
+    """Execution layer only, same division of responsibility as the other
+    tasks here — all sequencing/degrade logic lives in
+    generate_preview_report, this just runs it inside a worker."""
+    with Session(engine) as session:
+        report = session.get(PreviewReport, uuid.UUID(report_id))
+        if report is None:
+            raise ValueError(f"preview_report {report_id} not found")
+        report = asyncio.run(
+            generate_preview_report(session=session, report=report, router=get_router(), settings=get_settings())
+        )
+        return str(report.id)
 
 
 def _load_job(session: Session, store_id: str, run_id: str, agent_type: str):

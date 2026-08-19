@@ -1,4 +1,5 @@
 import asyncio
+import re
 import time
 from dataclasses import dataclass
 from urllib.parse import urlparse
@@ -12,18 +13,43 @@ from app.crawler.subprocess_fetch import PageFetchFailed, fetch_and_extract_in_s
 
 CATEGORY_SEGMENTS = ("/category/", "/categories/", "/collections/", "/c/")
 PRODUCT_SEGMENTS = ("/product/", "/products/", "/p/", "/item/")
+# Explicit-segment product patterns only — deliberately excludes the bare
+# "/p/" entry from PRODUCT_SEGMENTS above, which is ambiguous on its own
+# (see _TRAILING_PRODUCT_ID below): some site builders use "/p/<slug>"
+# for real products, but Salla uses it for CMS/policy pages instead.
+STRONG_PRODUCT_SEGMENTS = ("/product/", "/products/", "/item/")
 CONTENT_SEGMENTS = ("/blog/", "/article/", "/articles/", "/faq", "/news/")
 LOW_VALUE_SEGMENTS = ("/login", "/cart", "/search", "/account", "/filter", "/tag/", "?page=", "?sort=")
 BUSINESS_INFO_SEGMENTS = ("/shipping", "/delivery", "/contact", "/about", "التوصيل", "الشحن", "تواصل")
+
+# Salla (a common Saudi/Gulf storefront builder) and some other site
+# builders put the category/product id as a trailing "c<digits>" /
+# "p<digits>" token glued directly onto the URL's last path segment, with
+# no literal /category/ or /product/ segment anywhere
+# (e.g. "/تل-لمعة/c1214531674", "/32/p29831506") — none of the segment
+# lists above catch this shape, so those pages fell through to "other"
+# and got the same low crawl priority as generic/CMS pages. Requiring no
+# separating slash between the letter and the digits is what keeps this
+# from also matching the unrelated bare "/p/<slug>" CMS-page convention.
+_TRAILING_CATEGORY_ID = re.compile(r"/c\d+/?$")
+_TRAILING_PRODUCT_ID = re.compile(r"/p\d+/?$")
+
+
+def _looks_like_category_url(path: str) -> bool:
+    return any(seg in path for seg in CATEGORY_SEGMENTS) or bool(_TRAILING_CATEGORY_ID.search(path))
+
+
+def _looks_like_strong_product_url(path: str) -> bool:
+    return any(seg in path for seg in STRONG_PRODUCT_SEGMENTS) or bool(_TRAILING_PRODUCT_ID.search(path))
 
 
 def classify_page_type(url: str) -> str:
     path = urlparse(url).path.lower()
     if path in ("", "/"):
         return "home"
-    if any(seg in path for seg in PRODUCT_SEGMENTS):
+    if _looks_like_strong_product_url(path) or "/p/" in path or "/item/" in path:
         return "product"
-    if any(seg in path for seg in CATEGORY_SEGMENTS):
+    if _looks_like_category_url(path):
         return "category"
     if any(seg in path for seg in CONTENT_SEGMENTS):
         return "content"
@@ -110,16 +136,25 @@ async def crawl_store(
 
     def priority(url: str) -> tuple[int, int]:
         lower = url.lower()
+        path = urlparse(lower).path
         if lower.rstrip("/") == base_url.lower().rstrip("/"):
             return (0, len(url))
         if any(segment in lower for segment in LOW_VALUE_SEGMENTS):
             return (9, len(url))
-        if any(segment in lower for segment in CATEGORY_SEGMENTS):
+        if _looks_like_category_url(path):
             return (1, len(url))
-        if any(segment in lower for segment in PRODUCT_SEGMENTS):
+        if _looks_like_strong_product_url(path):
             return (2, len(url))
         if any(segment in lower for segment in BUSINESS_INFO_SEGMENTS):
             return (3, len(url))
+        # Bare "/p/<slug>" with no trailing numeric id — ambiguous (real
+        # product on some site builders, CMS/policy content on Salla, see
+        # STRONG_PRODUCT_SEGMENTS above). Ranked below confirmed
+        # category/product signals so crawl budget reaches those first,
+        # but still above generic/low-value pages since it might be a
+        # real product page.
+        if "/p/" in lower or "/item/" in lower:
+            return (4, len(url))
         if any(segment in lower for segment in CONTENT_SEGMENTS):
             return (7, len(url))
         return (5, len(url))
