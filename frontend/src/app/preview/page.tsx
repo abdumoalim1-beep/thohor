@@ -59,7 +59,18 @@ const solidBtn: CSSProperties = {
   borderRadius: 11,
   width: "100%",
 };
-const backLink: CSSProperties = { border: 0, background: "transparent", cursor: "pointer", color: "var(--mut)", fontSize: 13.5 };
+const stepFooter: CSSProperties = { marginTop: 22, display: "flex", alignItems: "center", gap: 10 };
+const backBtn: CSSProperties = {
+  flexShrink: 0,
+  height: 46,
+  padding: "0 18px",
+  borderRadius: 11,
+  border: "1px solid var(--line)",
+  background: "transparent",
+  cursor: "pointer",
+  color: "var(--mut)",
+  fontSize: 13.5,
+};
 const captionNote: CSSProperties = { marginTop: 10, fontSize: 12, color: "var(--dim)", lineHeight: 1.8 };
 const card: CSSProperties = {
   background: "var(--panel)",
@@ -72,6 +83,91 @@ function blurDomain(domain: string): string {
   const base = domain.split(".")[0] || domain;
   if (base.length <= 2) return `${base}••••`;
   return `${base.slice(0, 2)}${"•".repeat(Math.max(4, base.length - 2))}`;
+}
+
+// The merchant's own logo, preferring the crawler's extraction (og:image or
+// a real <link rel="icon">, usually higher quality) and falling back to a
+// public favicon service keyed off the domain if the crawl found nothing or
+// the image fails to load — only falling back to a plain letter monogram if
+// both real sources fail.
+function StoreLogo({ domain, crawledLogo, brandName }: { domain: string; crawledLogo: string | null; brandName: string }) {
+  const [stage, setStage] = useState<"crawled" | "favicon" | "letter">(crawledLogo ? "crawled" : "favicon");
+  const src = stage === "crawled" ? crawledLogo! : `https://www.google.com/s2/favicons?sz=128&domain=${encodeURIComponent(domain)}`;
+  if (stage === "letter") {
+    return (
+      <div style={{ width: 48, height: 48, borderRadius: 10, background: "var(--panel2)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "var(--mut)" }}>
+        {brandName.trim().charAt(0) || "؟"}
+      </div>
+    );
+  }
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- external store asset / favicon service, not our crawl pipeline
+    <img
+      src={src}
+      alt=""
+      width={48}
+      height={48}
+      style={{ borderRadius: 10, objectFit: "contain", background: "var(--panel2)" }}
+      onError={() => setStage((s) => (s === "crawled" ? "favicon" : "letter"))}
+    />
+  );
+}
+
+// A competitor's real site icon, fetched from a public favicon service keyed
+// off their domain (already known from search) and rendered blurred inside a
+// circle — still shows a real, recognizable mark instead of a bare lock, but
+// keeps the identity hidden until the merchant joins the beta.
+function BlurredCompetitorMark({ domain }: { domain: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div style={{ position: "relative", width: 38, height: 38, flexShrink: 0 }}>
+      <div
+        style={{
+          width: 38,
+          height: 38,
+          borderRadius: "50%",
+          overflow: "hidden",
+          background: "var(--panel2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {!failed ? (
+          // eslint-disable-next-line @next/next/no-img-element -- third-party favicon service, not our crawl pipeline
+          <img
+            src={`https://www.google.com/s2/favicons?sz=64&domain=${encodeURIComponent(domain)}`}
+            alt=""
+            onError={() => setFailed(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", filter: "blur(3.5px)", transform: "scale(1.35)" }}
+          />
+        ) : (
+          <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: "var(--dim)", filter: "blur(1.5px)" }}>
+            {(domain.trim().charAt(0) || "؟").toUpperCase()}
+          </span>
+        )}
+      </div>
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: -2,
+          left: -2,
+          width: 17,
+          height: 17,
+          borderRadius: "50%",
+          background: "var(--panel)",
+          border: "1px solid var(--line)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 9,
+        }}
+      >
+        🔒
+      </span>
+    </div>
+  );
 }
 
 // كل مصدر (Google/AI) له ثلاث حالات فقط، بلا تخمين أبدًا: نجاح مع ظهور،
@@ -291,12 +387,6 @@ export default function PreviewPage() {
           <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "inherit" }}>
             <span style={{ fontSize: 14, lineHeight: 1 }}>‹]</span>خروج
           </Link>
-          <div style={{ flex: 1 }} />
-          {showBack && (
-            <button onClick={back} style={backLink}>
-              رجوع ›
-            </button>
-          )}
         </div>
 
         <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
@@ -361,9 +451,16 @@ export default function PreviewPage() {
                 />
               </div>
               {submitError && <div style={{ marginTop: 10, fontSize: 12.5, color: "#dc4c4c" }}>{submitError}</div>}
-              <button type="submit" disabled={submitting || !url.trim()} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22, opacity: submitting ? 0.7 : 1 }}>
-                {submitting ? "جاري البدء..." : "حلّل متجري"}
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button type="submit" disabled={submitting || !url.trim()} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1, opacity: submitting ? 0.7 : 1 }}>
+                  {submitting ? "جاري البدء..." : "حلّل متجري"}
+                </button>
+              </div>
             </form>
           )}
 
@@ -420,23 +517,7 @@ export default function PreviewPage() {
             <div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>فهمنا متجرك</h1>
               <div style={{ ...card, marginTop: 22, display: "flex", alignItems: "center", gap: 14 }}>
-                {report.store.logo ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- external store asset, not our pipeline
-                  <img
-                    src={report.store.logo}
-                    alt=""
-                    width={48}
-                    height={48}
-                    style={{ borderRadius: 10, objectFit: "contain", background: "var(--panel2)" }}
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                ) : (
-                  <div style={{ width: 48, height: 48, borderRadius: 10, background: "var(--panel2)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "var(--mut)" }}>
-                    {report.store.brand_name.trim().charAt(0) || "؟"}
-                  </div>
-                )}
+                <StoreLogo domain={report.store.domain} crawledLogo={report.store.logo} brandName={report.store.brand_name} />
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 16 }}>{report.store.brand_name}</div>
                   <div className="mono" dir="ltr" style={{ fontSize: 12, color: "var(--dim)", marginTop: 2 }}>
@@ -465,9 +546,16 @@ export default function PreviewPage() {
                 ))}
               </div>
               <p style={captionNote}>استخدمنا محتوى متجرك لتحديد عمليات البحث المناسبة لك</p>
-              <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
-                التالي: شوف وضع ظهورك
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  التالي: شوف وضع ظهورك
+                </button>
+              </div>
             </div>
           )}
 
@@ -557,9 +645,16 @@ export default function PreviewPage() {
                 </>
               )}
 
-              <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
-                التالي: شوف المنافسين
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  التالي: شوف المنافسين
+                </button>
+              </div>
             </div>
           )}
 
@@ -573,8 +668,9 @@ export default function PreviewPage() {
                   </p>
                   <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
                     {report.competitors.slice(0, 3).map((c) => (
-                      <div key={c.domain} style={{ ...card, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px" }}>
-                        <span style={{ fontSize: 14, fontWeight: 600 }}>🔒 {blurDomain(c.domain)}</span>
+                      <div key={c.domain} style={{ ...card, display: "flex", alignItems: "center", gap: 12, padding: "12px 16px" }}>
+                        <BlurredCompetitorMark domain={c.domain} />
+                        <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{blurDomain(c.domain)}</span>
                         <span style={{ fontSize: 13, color: "var(--mut)" }}>
                           {c.visibility_percentage !== null ? `${arDigits(c.visibility_percentage)}٪` : "—"}
                         </span>
@@ -593,9 +689,16 @@ export default function PreviewPage() {
                   ما ظهر متجر واحد بشكل متكرر كفاية في هذا الفحص
                 </p>
               )}
-              <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
-                التالي: شوف عمليات البحث
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  التالي: شوف عمليات البحث
+                </button>
+              </div>
             </div>
           )}
 
@@ -624,9 +727,16 @@ export default function PreviewPage() {
                     </div>
                   ))}
               </div>
-              <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
-                التالي: التوصية
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  التالي: التوصية
+                </button>
+              </div>
             </div>
           )}
 
@@ -656,9 +766,16 @@ export default function PreviewPage() {
                 </div>
               </div>
               <p style={captionNote}>🔒 التقرير الكامل يتضمن توصيات إضافية لمتجرك</p>
-              <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
-                باقي التقرير جاهز لك
-              </button>
+              <div style={stepFooter}>
+                {showBack && (
+                  <button type="button" onClick={back} style={backBtn}>
+                    رجوع
+                  </button>
+                )}
+                <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}>
+                  باقي التقرير جاهز لك
+                </button>
+              </div>
             </div>
           )}
 
@@ -697,13 +814,20 @@ export default function PreviewPage() {
                       ))}
                     </ul>
                   </div>
-                  <button
-                    onClick={() => setBetaModalOpen(true)}
-                    className="rl-fill-soft"
-                    style={{ ...solidBtn, marginTop: 22 }}
-                  >
-                    انضم للنسخة التجريبية
-                  </button>
+                  <div style={stepFooter}>
+                    {showBack && (
+                      <button type="button" onClick={back} style={backBtn}>
+                        رجوع
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setBetaModalOpen(true)}
+                      className="rl-fill-soft"
+                      style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1 }}
+                    >
+                      انضم للنسخة التجريبية
+                    </button>
+                  </div>
                   <p style={captionNote}>بدون بطاقة ائتمان · بدون دفع الآن</p>
                 </div>
               )}
