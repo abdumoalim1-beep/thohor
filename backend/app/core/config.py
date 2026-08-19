@@ -101,9 +101,12 @@ class Settings(BaseSettings):
     # same queries — a bigger AI sample is what actually fixes
     # visibility.ai_score being computed from too few checks (a 0%/100%
     # from 1-2 successful AI checks is noise, not signal), rather than
-    # hiding a small sample behind a "not enough data" label.
+    # hiding a small sample behind a "not enough data" label. 30 was
+    # chosen over a larger cap (e.g. 50) on diminishing-returns grounds:
+    # the margin-of-error improvement from 30->50 successful checks is
+    # ~2 points, not worth the ~67% extra AI cost that jump would add.
     preview_search_google_query_count: int = 20
-    preview_search_ai_query_count: int = 50
+    preview_search_ai_query_count: int = 30
 
     # SERP provider — absent key falls back to the mock provider
     serpapi_api_key: SecretStr | None = None
