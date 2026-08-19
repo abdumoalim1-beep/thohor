@@ -93,6 +93,14 @@ class Settings(BaseSettings):
     preview_search_max_concurrency: int = 10
     preview_search_google_timeout_seconds: float = 20.0
     preview_search_ai_timeout_seconds: float = 45.0
+    # Google (SerpAPI) costs real money per call and stays on the original
+    # 30-query budget; the AI leg (OpenAI web_search) is cheap enough to run
+    # against a larger query set on top of that same 30 — a bigger AI sample
+    # is what actually fixes visibility.ai_score being computed from too few
+    # checks (a 0%/100% from 1-2 successful AI checks is noise, not signal),
+    # rather than hiding a small sample behind a "not enough data" label.
+    preview_search_google_query_count: int = 30
+    preview_search_ai_query_count: int = 50
 
     # SERP provider — absent key falls back to the mock provider
     serpapi_api_key: SecretStr | None = None

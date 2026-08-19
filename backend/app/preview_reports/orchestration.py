@@ -67,12 +67,19 @@ async def generate_preview_report(
         understanding = await build_understanding(session=session, router=router, facts=facts)
 
         _checkpoint(session, report, "generating_queries")
-        queries = generate_search_queries(facts, fallback_category=understanding.get("category"))
+        queries = generate_search_queries(
+            facts, target_count=settings.preview_search_ai_query_count, fallback_category=understanding.get("category")
+        )
 
         _checkpoint(session, report, "searching")
         search_provider = _resolve_search_provider(session)
         raw_results = await run_preview_searches(
-            router=router, session=session, queries=queries, settings=settings, search_provider=search_provider
+            router=router,
+            session=session,
+            queries=queries,
+            settings=settings,
+            search_provider=search_provider,
+            google_query_limit=settings.preview_search_google_query_count,
         )
 
         _checkpoint(session, report, "analyzing_visibility")

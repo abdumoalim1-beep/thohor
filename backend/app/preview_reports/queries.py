@@ -12,9 +12,14 @@ location or use-case signal, and inventing one would violate the same
 "never invent, doesn't rely on unextracted info" validation rule the spec
 asks for. Add them only once a real signal for either exists.
 
-Goal is TARGET_QUERY_COUNT (30) queries; quality beats hitting the exact
-count — generate_search_queries() returns however many valid, deduped
-queries exist, capped at the target, and never pads with weak ones."""
+TARGET_QUERY_COUNT (30) is this function's own default target_count, used
+as-is by callers that want one shared query set for both search legs.
+app.preview_reports.orchestration calls with the larger
+settings.preview_search_ai_query_count instead, since the AI leg is now
+allowed more queries than Google (see app.preview_reports.search) — quality
+beats hitting the exact count either way: generate_search_queries() returns
+however many valid, deduped queries exist, capped at the target, and never
+pads with weak ones."""
 
 import re
 

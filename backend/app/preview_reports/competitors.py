@@ -1,5 +1,5 @@
 """Stage 8+10 (spec) — competitor extraction for a PreviewReport, straight
-from the same 30 query results already gathered in Stage 5/6 (see
+from the same query results already gathered in Stage 5/6 (see
 app.preview_reports.search / app.preview_reports.visibility). No separate
 discovery pipeline, no AI validation call — every other domain/brand seen
 in the store's own Google organic results and AI citation sources is a
@@ -12,9 +12,11 @@ relevance-scoring pipeline (catalog-token overlap, direct_competitor vs
 retailer vs unknown, DB-persisted CompetitorRelationship rows) — that
 system exists for the ongoing /signup product and needs real evidence
 before promoting a domain to "competitor". This is a one-shot preview:
-frequency across the same 30 queries plus the curated exclusion list is
-the whole signal, per the spec's explicit "no complex AI competitor
-validation needed for MVP"."""
+frequency across the same queries (Google leg capped at
+settings.preview_search_google_query_count, AI leg at the larger
+settings.preview_search_ai_query_count — see app.preview_reports.search)
+plus the curated exclusion list is the whole signal, per the spec's
+explicit "no complex AI competitor validation needed for MVP"."""
 
 from collections import defaultdict
 from urllib.parse import urlparse

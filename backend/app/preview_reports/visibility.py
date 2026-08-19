@@ -142,9 +142,13 @@ def _score_for_source(enriched_queries: list[dict], source: str) -> dict:
 def _query_level_score(enriched_queries: list[dict]) -> dict:
     """A query counts as 'successful' if at least one of its two legs
     (google/ai) actually completed, and 'appeared' if the store was found
-    on either leg — this is the per-query denominator the UI's headline
-    copy narrates ("ظهر متجرك في 8 من 30 عملية بحث فحصناها"), distinct from
-    the per-source breakdown in _score_for_source (out of 30 each)."""
+    on either leg — this is the per-query denominator the overall score is
+    based on, distinct from the per-source breakdown in _score_for_source.
+    Google and AI no longer share one denominator: Google stays capped at
+    settings.preview_search_google_query_count (real per-call cost), the
+    AI leg runs against the larger settings.preview_search_ai_query_count
+    query set (see app.preview_reports.search.run_preview_searches), so
+    _score_for_source's "ai" denominator can exceed its "google" one."""
     appeared = 0
     successful = 0
     for query in enriched_queries:
@@ -162,12 +166,12 @@ def _query_level_score(enriched_queries: list[dict]) -> dict:
 def compute_visibility_scores(enriched_queries: list[dict]) -> dict:
     """Stage 7 formula: visibility = brand_appeared / successful × 100.
     `overall`/`overall_details` are query-level (denominator = queries with
-    at least one successful leg, capped at 30) — the number the headline
-    score and "measured vs estimated" sample-size gate are both based on.
-    `google`/`ai` stay per-source (denominator = that source's own
-    successful searches) for the Google/AI breakdown cards. Failed
-    searches are excluded from every denominator, never counted as
-    non-appearances."""
+    at least one successful leg) — the number the headline score and
+    "measured vs estimated" sample-size gate are both based on. `google`/
+    `ai` stay per-source (denominator = that source's own successful
+    searches, independently sized — see _query_level_score) for the
+    Google/AI breakdown cards. Failed searches are excluded from every
+    denominator, never counted as non-appearances."""
     google_score = _score_for_source(enriched_queries, "google")
     ai_score = _score_for_source(enriched_queries, "ai")
     overall_details = _query_level_score(enriched_queries)

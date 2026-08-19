@@ -120,6 +120,7 @@ async def run_preview_searches(
     search_provider: SearchProvider | None = None,
     country: str = "sa",
     language: str = "ar",
+    google_query_limit: int | None = None,
 ) -> list[dict]:
     """Runs every query in `queries` (from app.preview_reports.queries.
     generate_search_queries) against Google + the one AI engine, under one
@@ -127,13 +128,24 @@ async def run_preview_searches(
     settings.preview_search_max_concurrency operations in flight at once.
     search_provider=None (e.g. no SerpAPI key configured) degrades every
     query's "google" leg to {"status": "failed"} rather than raising —
-    the AI leg still runs normally."""
+    the AI leg still runs normally.
+
+    google_query_limit: when `queries` is longer than Google's own budget
+    (the AI leg is allowed a larger query set — see
+    settings.preview_search_ai_query_count), queries at/after this index
+    reuse the exact same search_provider=None degradation path for their
+    google leg — same "absent result, never an exception" behavior as a
+    genuinely unconfigured provider, just scoped to the extra queries
+    instead of all of them. The AI leg is unaffected and runs for every
+    query regardless of this limit."""
     semaphore = asyncio.Semaphore(settings.preview_search_max_concurrency)
     tasks = [
         _run_one_query(
             router=router,
             session=session,
-            search_provider=search_provider,
+            search_provider=(
+                search_provider if google_query_limit is None or index < google_query_limit else None
+            ),
             semaphore=semaphore,
             query=query,
             country=country,
@@ -141,7 +153,7 @@ async def run_preview_searches(
             google_timeout=settings.preview_search_google_timeout_seconds,
             ai_timeout=settings.preview_search_ai_timeout_seconds,
         )
-        for query in queries
+        for index, query in enumerate(queries)
     ]
     if not tasks:
         return []
