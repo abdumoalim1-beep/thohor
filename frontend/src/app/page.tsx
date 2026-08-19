@@ -234,7 +234,7 @@ function Header({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => voi
             color: "var(--mut)",
           }}
         >
-          <a href="#features" style={{ color: "inherit" }}>الخصائص</a>
+          <a href="#features" style={{ color: "inherit" }}>المشكلة</a>
           <a href="#solution" style={{ color: "inherit" }}>الحل</a>
           <a href="#faq" style={{ color: "inherit" }}>الأسئلة الشائعة</a>
         </div>
@@ -725,7 +725,7 @@ function Features() {
   return (
     <section id="features" style={{ padding: "48px 28px 52px" }}>
       <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
-        <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>01 — الخصائص</div>
+        <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>01 — المشكلة</div>
         <h2
           style={{
             margin: "14px auto 0",
@@ -736,18 +736,18 @@ function Features() {
             fontWeight: 600,
           }}
         >
-          كل ما تحتاجه لقياس حضورك في إجابات الذكاء الاصطناعي
+          إدارة ظهورك في الذكاء الاصطناعي معقدة ومجزأة
         </h2>
         <p style={{ margin: "14px auto 0", maxWidth: 520, fontSize: 14.5, lineHeight: 1.85, color: "var(--mut)" }}>
-          من رصد الأسئلة التي يطرحها المشترون، إلى تتبّع المصادر التي تستشهد بها النماذج.
+          تضيع وقتك بين أدوات متفرقة، ومع ذلك لا تعرف أين تقف.
         </p>
 
         <div style={{ marginTop: 20, display: "flex", flexDirection: "column", textAlign: "right" }}>
           <div style={rowGrid}>
             <div style={{ padding: 8 }}>
               <EyebrowTag>رصد الأسئلة</EyebrowTag>
-              <h3 style={h3}>اكتشف أين تُذكر علامتك</h3>
-              <p style={body}>تتبّع أسئلة التوصية والمقارنة والبدائل التي يطرحها المشترون قبل اتخاذ القرار.</p>
+              <h3 style={h3}>لا تعرف ما يسأل عنه عملاؤك</h3>
+              <p style={body}>الأسئلة موزعة بين منصات ونماذج مختلفة، ولا توجد رؤية موحدة لما يبحث عنه عملاؤك.</p>
             </div>
             <div style={panel}>
               <div
@@ -782,6 +782,11 @@ function Features() {
           </div>
 
           <div style={{ ...rowGrid, alignItems: "start" }}>
+            <div style={{ padding: 8 }}>
+              <EyebrowTag>قياس الظهور</EyebrowTag>
+              <h3 style={h3}>لا تعرف أين تظهر علامتك</h3>
+              <p style={body}>قد تظهر علامتك في منصة ولا تظهر في أخرى، وقد يتفوّق عليك منافسوك بدلاً منك.</p>
+            </div>
             <div style={{ position: "relative", paddingBottom: 34 }}>
               <div style={{ ...panel, display: "flex", flexDirection: "column", alignItems: "center", padding: "32px 26px" }}>
                 <div style={{ alignSelf: "flex-start", fontSize: 14.5, color: "var(--mut)" }}>نسبة ظهورك الإجمالية</div>
@@ -826,18 +831,13 @@ function Features() {
                 </div>
               </div>
             </div>
-            <div style={{ padding: 8 }}>
-              <EyebrowTag>قياس الظهور</EyebrowTag>
-              <h3 style={h3}>اعرف من يظهر بدلاً منك</h3>
-              <p style={body}>اعرف متى تظهر علامتك، وفي أي ترتيب، ومن المنافس الذي يُوصى به بدلاً منك.</p>
-            </div>
           </div>
 
           <div style={{ ...rowGrid, alignItems: "start" }}>
             <div style={{ padding: 8 }}>
               <EyebrowTag>تتبّع الاستشهادات</EyebrowTag>
-              <h3 style={h3}>حوّل المحادثات إلى إيرادات</h3>
-              <p style={body}>اعرف الصفحات والمنتديات والناشرين التي تستخدمها الإجابات كدليل، وأين تغيب صفحاتك.</p>
+              <h3 style={h3}>لا تعرف لماذا يظهر المنافس بدلاً منك</h3>
+              <p style={body}>لا تعرف الصفحات والمنتديات والناشرين التي تعتمدها الإجابات كدليل، ولا كيف تتفوّق عليها.</p>
             </div>
             <div style={{ position: "relative", paddingTop: 20 }}>
               <div style={panel}>
@@ -886,32 +886,34 @@ function Features() {
 }
 
 function Solution() {
+  // 8 items on a circle, 45° apart starting from the top — positions
+  // pre-computed (θ=0° at top, clockwise) so no client-side layout math
+  // is needed to place them.
+  const items: { label: string; top: string; left: string }[] = [
+    { label: "رصد الأسئلة", top: "8%", left: "50%" },
+    { label: "قياس الظهور", top: "20.3%", left: "79.7%" },
+    { label: "تحليل الإجابات", top: "50%", left: "92%" },
+    { label: "تتبّع الاستشهادات", top: "79.7%", left: "79.7%" },
+    { label: "مراقبة المنافسين", top: "92%", left: "50%" },
+    { label: "توليد المحتوى", top: "79.7%", left: "20.3%" },
+    { label: "النشر إلى موقعك", top: "50%", left: "8%" },
+    { label: "تقارير أسبوعية", top: "20.3%", left: "20.3%" },
+  ];
+
   const cell: CSSProperties = {
-    justifySelf: "center",
-    padding: "20px 22px",
+    position: "absolute",
+    transform: "translate(-50%,-50%)",
     border: "1px solid var(--line)",
-    borderRadius: 18,
+    borderRadius: 16,
     background: "var(--panel)",
-    boxShadow: "0 4px 14px rgba(17,24,39,.04)",
+    boxShadow: "0 4px 14px rgba(17,24,39,.06)",
     display: "inline-flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: 10,
   };
-  const items = [
-    "رصد الأسئلة",
-    "قياس الظهور",
-    "تحليل الإجابات",
-    "تتبّع الاستشهادات",
-    null, // center — ظهور itself
-    "مراقبة المنافسين",
-    "توليد المحتوى",
-    "النشر إلى موقعك",
-    "تقارير أسبوعية",
-  ];
 
   return (
-    <section id="solution" style={{ padding: "0 28px 52px" }}>
+    <section id="solution" style={{ padding: "0 28px 60px" }}>
       <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
         <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>02 — الحل</div>
         <h2
@@ -924,7 +926,7 @@ function Solution() {
             fontWeight: 600,
           }}
         >
-          كل احتياجك في مكان واحد
+          كل ما تحتاجه للظهور، في مكان واحد
         </h2>
         <p style={{ margin: "14px auto 0", maxWidth: 540, fontSize: 14.5, lineHeight: 1.85, color: "var(--mut)" }}>
           من رصد الأسئلة إلى نشر المحتوى الذي يرفع ظهورك — دون أدوات متفرقة.
@@ -932,41 +934,79 @@ function Solution() {
 
         <div
           style={{
-            marginTop: 32,
-            display: "grid",
-            gridTemplateColumns: "repeat(3,auto)",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px 28px",
-            textAlign: "center",
+            position: "relative",
+            width: "min(560px,92vw)",
+            aspectRatio: "1 / 1",
+            margin: "56px auto 0",
           }}
         >
-          {items.map((label) =>
-            label ? (
-              <div key={label} style={cell}>
-                <span style={{ width: 32, height: 32, borderRadius: 11, background: "var(--panel2)", display: "block" }} />
-                <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>{label}</span>
-              </div>
-            ) : (
-              <div
-                key="center"
+          {/* dashed orbit path */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: "8%",
+              borderRadius: "50%",
+              border: "1.5px dashed var(--line)",
+            }}
+          />
+
+          {/* pulsing rings behind the center mark */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 120,
+              height: 120,
+              transform: "translate(-50%,-50%)",
+              pointerEvents: "none",
+            }}
+          >
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
                 style={{
-                  justifySelf: "center",
-                  padding: "26px 30px",
-                  border: "1px solid var(--line)",
-                  borderRadius: 22,
-                  background: "var(--panel)",
-                  boxShadow: "0 10px 30px rgba(14,157,134,.14)",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 11,
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(14,157,134,.32) 0%, rgba(14,157,134,0) 70%)",
+                  animation: `rping 3s ${i * 1}s ease-out infinite`,
                 }}
-              >
-                <span style={{ width: 30, height: 30, borderRadius: 9, background: "var(--acc)", display: "block" }} />
-                <span style={{ fontSize: 19, fontWeight: 600, whiteSpace: "nowrap" }}>ظهور</span>
-              </div>
-            ),
-          )}
+              />
+            ))}
+          </div>
+
+          {/* center — ظهور itself */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              zIndex: 2,
+              padding: "18px 26px",
+              border: "1px solid var(--line)",
+              borderRadius: 22,
+              background: "var(--panel)",
+              boxShadow: "0 10px 30px rgba(14,157,134,.18)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <BrandMark className="h-7 w-7" />
+            <span style={{ fontSize: 19, fontWeight: 600 }}>ظهور</span>
+          </div>
+
+          {items.map((item) => (
+            <div key={item.label} className="rl-orbit-item" style={{ ...cell, top: item.top, left: item.left, zIndex: 1 }}>
+              <span className="rl-orbit-item-icon" style={{ borderRadius: 10, background: "var(--panel2)", display: "block" }} />
+              <span className="rl-orbit-item-label" style={{ fontWeight: 600, textAlign: "center", lineHeight: 1.4 }}>{item.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
