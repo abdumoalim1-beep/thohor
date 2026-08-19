@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Geist_Mono, IBM_Plex_Sans_Arabic, JetBrains_Mono } from "next/font/google";
+import { Geist_Mono, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-// IBM Plex Sans Arabic — Geist has no Arabic glyphs at all, so Arabic text
-// was silently falling back to the OS default font. This family covers
-// Arabic + Latin with matching metrics (numbers line up cleanly with
-// Arabic text), at the weight range a premium SaaS product needs.
-const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+// Thmanyah Sans — the site's brand typeface (self-hosted, licensed font
+// family), covers Arabic + Latin. Replaces the earlier IBM Plex Sans
+// Arabic placeholder everywhere the --font-ibm-plex-arabic variable was
+// used (kept the same variable name to avoid touching every consumer).
+const thmanyahSans = localFont({
   variable: "--font-ibm-plex-arabic",
-  subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  src: [
+    { path: "../fonts/thmanyah-sans/thmanyahsans-Light.woff2", weight: "300", style: "normal" },
+    { path: "../fonts/thmanyah-sans/thmanyahsans-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/thmanyah-sans/thmanyahsans-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/thmanyah-sans/thmanyahsans-Bold.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/thmanyah-sans/thmanyahsans-Black.woff2", weight: "900", style: "normal" },
+  ],
 });
 
 const geistMono = Geist_Mono({
@@ -35,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="ar"
       dir="rtl"
-      className={`${ibmPlexArabic.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${thmanyahSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg text-text">{children}</body>
     </html>
