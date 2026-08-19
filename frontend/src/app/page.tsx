@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 
@@ -547,23 +547,24 @@ function Hero({
 
         <div style={{ margin: "18px auto 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <div style={{ fontSize: 13, color: "var(--mut)" }}>موثوق من أكثر من ٥٠٠ نشاط محلي</div>
-          {/* eslint-disable @next/next/no-img-element */}
           <div style={{ display: "flex", alignItems: "center" }} dir="ltr">
-            {[12, 32, 15, 45].map((id, i) => (
-              <img
-                key={id}
-                src={`https://i.pravatar.cc/80?img=${id}`}
-                alt=""
+            {BRAND_MARKS.map((m) => (
+              <div
+                key={m.icon}
                 style={{
                   width: 34,
                   height: 34,
                   borderRadius: "50%",
-                  objectFit: "cover",
                   border: "2px solid var(--panel)",
                   marginLeft: -8,
-                  background: i % 2 ? "#ded9e8" : "#e7e3ee",
+                  background: m.bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <BrandMarkIcon name={m.icon} />
+              </div>
             ))}
             <span
               style={{
@@ -583,10 +584,53 @@ function Hero({
               +500
             </span>
           </div>
-          {/* eslint-enable @next/next/no-img-element */}
         </div>
       </div>
     </section>
+  );
+}
+
+type BrandMarkIconName = "bag" | "tag" | "store" | "spark";
+
+// Stand-ins for the "trusted by" row — generic store/brand marks, not
+// photos of unrelated strangers (the previous pravatar.cc placeholders
+// implied fake customer testimonials) and not reproductions of any real
+// company's logo (trademark risk).
+const BRAND_MARKS: { icon: BrandMarkIconName; bg: string }[] = [
+  { icon: "bag", bg: "#c8785a" },
+  { icon: "tag", bg: "#5b7a9d" },
+  { icon: "store", bg: "#c99a4a" },
+  { icon: "spark", bg: "#0e9d86" },
+];
+
+function BrandMarkIcon({ name }: { name: BrandMarkIconName }) {
+  const s = { stroke: "#fff", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const paths: Record<BrandMarkIconName, ReactNode> = {
+    bag: (
+      <>
+        <path d="M4.5 6.5h7a1 1 0 011 1V13a1.5 1.5 0 01-1.5 1.5h-6A1.5 1.5 0 013.5 13V7.5a1 1 0 011-1z" fill="none" {...s} />
+        <path d="M6 6.5V5a2 2 0 014 0v1.5" fill="none" {...s} />
+      </>
+    ),
+    tag: (
+      <>
+        <path d="M2.5 7.4L7.4 2.5h4.1a2 2 0 012 2v4.1L8.6 13.5a1.6 1.6 0 01-2.3 0l-3.8-3.8a1.6 1.6 0 010-2.3z" fill="none" {...s} />
+        <circle cx="10" cy="6" r="0.9" fill="#fff" stroke="none" />
+      </>
+    ),
+    store: (
+      <>
+        <path d="M3 6.2L3.8 3h8.4l.8 3.2" fill="none" {...s} />
+        <path d="M3.4 6.5v6h9.2v-6" fill="none" {...s} />
+        <path d="M6.6 12.5V9.3h2.8v3.2" fill="none" {...s} />
+      </>
+    ),
+    spark: <path d="M8 2.3l1.15 4.55L13.7 8l-4.55 1.15L8 13.7l-1.15-4.55L2.3 8l4.55-1.15z" fill="none" {...s} />,
+  };
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16">
+      {paths[name]}
+    </svg>
   );
 }
 
