@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 
@@ -631,28 +631,6 @@ function Hero({
   );
 }
 
-function EyebrowTag({ children }: { children: ReactNode }) {
-  return (
-    <span
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 8,
-        fontSize: 12,
-        color: "var(--mut)",
-        border: "1px solid var(--line)",
-        borderRadius: 9999,
-        padding: "6px 14px",
-        background: "var(--panel)",
-        whiteSpace: "nowrap",
-      }}
-    >
-      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--acc)" }} />
-      {children}
-    </span>
-  );
-}
-
 type PlatformIconName = "search" | "chat" | "assistant" | "social" | "article" | "news" | "video" | "forum";
 
 // Generic representative marks for "search engines / AI chat / AI
@@ -735,53 +713,80 @@ function DownConnector() {
   );
 }
 
+// A single result row inside the card-1 "search" scene — solid for a
+// real result, dashed+faded for the merchant's own missing listing.
+function SearchResultRow({ label, muted }: { label: string; muted?: boolean }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "9px 12px",
+        borderRadius: 10,
+        border: muted ? "1px dashed var(--line)" : "1px solid var(--line)",
+        background: muted ? "transparent" : "var(--panel)",
+        opacity: muted ? 0.6 : 1,
+      }}
+    >
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: muted ? "var(--line)" : "var(--acc)", flexShrink: 0 }} />
+      <span style={{ fontSize: 12.5, color: muted ? "var(--dim)" : "var(--tx)" }}>{label}</span>
+    </div>
+  );
+}
+
+// A single ranking row inside the card-2 "ranking" scene.
+function RankRow({ rank, name, pct, strong, muted }: { rank: string; name: string; pct: string; strong?: boolean; muted?: boolean }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, opacity: muted ? 0.65 : 1 }}>
+      <span
+        className="mono"
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 11.5,
+          fontWeight: 700,
+          flexShrink: 0,
+          background: strong ? "var(--acc)" : "var(--panel)",
+          border: strong ? "none" : "1px solid var(--line)",
+          color: strong ? "#fff" : "var(--mut)",
+        }}
+      >
+        {rank}
+      </span>
+      <span style={{ flex: 1, fontSize: 12.5, fontWeight: strong ? 600 : 400 }}>{name}</span>
+      <span className="mono" style={{ fontSize: 11.5, fontWeight: 700, color: strong ? "var(--acc)" : "var(--dim)" }}>{pct}</span>
+    </div>
+  );
+}
+
 function Features() {
-  const rowGrid: CSSProperties = {
-    padding: "72px 0",
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))",
-    gap: 44,
-    alignItems: "center",
-  };
-  const panel: CSSProperties = {
+  const card: CSSProperties = {
     border: "1px solid var(--line)",
-    borderRadius: 26,
+    borderRadius: 24,
     background: "var(--panel)",
-    boxShadow: "0 24px 60px rgba(17,24,39,.10)",
-    padding: 26,
+    boxShadow: "0 20px 50px rgba(17,24,39,.08)",
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
   };
-  const h3: CSSProperties = {
-    margin: "18px 0 0",
-    fontSize: "clamp(24px,2.6vw,32px)",
-    fontWeight: 600,
-    letterSpacing: "-.02em",
-    lineHeight: 1.35,
-  };
-  const body: CSSProperties = { margin: "14px 0 0", fontSize: 15, lineHeight: 1.95, color: "var(--mut)", maxWidth: 420 };
+  const h3: CSSProperties = { margin: "12px 0 0", fontSize: 19, fontWeight: 600, letterSpacing: "-.01em", lineHeight: 1.35 };
+  const body: CSSProperties = { margin: "8px 0 0", fontSize: 13.5, lineHeight: 1.8, color: "var(--mut)" };
+  const visualWrap: CSSProperties = { marginTop: "auto", background: "var(--panel2)", padding: "24px 22px 26px" };
 
-  const scatteredPlatforms: { icon: PlatformIconName; label: string; found: boolean }[] = [
-    { icon: "assistant", label: "المساعد الذكي", found: true },
-    { icon: "search", label: "محرك البحث", found: false },
-    { icon: "chat", label: "منصة المحادثة", found: false },
-    { icon: "social", label: "المنصة الاجتماعية", found: true },
-  ];
-
-  const platformBars: { name: string; icon: PlatformIconName; pct: number; display: string }[] = [
-    { name: "المساعد الذكي", icon: "assistant", pct: 32, display: "٪32" },
-    { name: "محرك البحث", icon: "search", pct: 24, display: "٪24" },
-    { name: "منصة المحادثة", icon: "chat", pct: 18, display: "٪18" },
-    { name: "المنصة الاجتماعية", icon: "social", pct: 10, display: "٪10" },
-  ];
-
-  const sourceRows: { label: string; icon: PlatformIconName }[] = [
-    { label: "مقالة مدونة", icon: "article" },
-    { label: "موقع إخباري", icon: "news" },
-    { label: "فيديو يوتيوب", icon: "video" },
-    { label: "منتدى نقاش", icon: "forum" },
+  const engines: { label: string; icon: PlatformIconName; mention: string }[] = [
+    { label: "Google", icon: "search", mention: "منافس أ" },
+    { label: "ChatGPT", icon: "assistant", mention: "منافس ب" },
+    { label: "Gemini", icon: "chat", mention: "منافس أ" },
+    { label: "Perplexity", icon: "social", mention: "منافس ج" },
   ];
 
   return (
-    <section id="features" style={{ padding: "48px 28px 52px" }}>
+    <section id="features" style={{ padding: "48px 28px 60px" }}>
       <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
         <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>01 — المشكلة</div>
         <h2
@@ -800,211 +805,102 @@ function Features() {
           تضيع وقتك بين أدوات متفرقة، ومع ذلك لا تعرف أين تقف.
         </p>
 
-        <div style={{ marginTop: 20, display: "flex", flexDirection: "column", textAlign: "right" }}>
-          <div style={rowGrid}>
-            <div style={{ padding: 8 }}>
-              <EyebrowTag>رصد الأسئلة</EyebrowTag>
-              <h3 style={h3}>لا تعرف ما يسأل عنه عملاؤك</h3>
-              <p style={body}>الأسئلة موزعة بين منصات ونماذج مختلفة، ولا توجد رؤية موحدة لما يبحث عنه عملاؤك.</p>
+        <div style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 26, textAlign: "right" }}>
+          {/* 1 — عملاؤك لا يجدونك: a real query, real results, your own listing absent */}
+          <div style={card}>
+            <div style={{ padding: "24px 24px 4px" }}>
+              <h3 style={h3}>عملاؤك لا يجدونك</h3>
+              <p style={body}>تظهر أقل في عمليات البحث التي تقود العملاء لمنتجاتك.</p>
             </div>
-            <div style={{ ...panel, display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={visualWrap}>
               <div
                 style={{
-                  width: "100%",
                   display: "flex",
                   alignItems: "center",
-                  gap: 10,
+                  gap: 8,
+                  background: "var(--panel)",
                   border: "1px solid var(--line)",
                   borderRadius: 9999,
-                  background: "var(--panel2)",
-                  padding: "13px 18px",
-                  fontSize: 15,
-                  color: "var(--mut)",
-                }}
-              >
-                أفضل شركة تنظيف منازل
-                <span style={{ flex: 1 }} />
-                <span className="mono" style={{ fontSize: 12, color: "var(--dim)" }}>بحث</span>
-              </div>
-
-              <div style={{ marginTop: 18 }}>
-                <DownConnector />
-              </div>
-
-              <div style={{ marginTop: 14, display: "flex", justifyContent: "center", gap: 16 }}>
-                {scatteredPlatforms.map((p) => (
-                  <div key={p.icon} style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                    <span
-                      style={{
-                        position: "relative",
-                        width: 52,
-                        height: 52,
-                        borderRadius: 16,
-                        background: "var(--panel)",
-                        border: "1px solid var(--line)",
-                        boxShadow: "0 10px 22px rgba(17,24,39,.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: 13,
-                      }}
-                    >
-                      <PlatformIcon name={p.icon} />
-                      <span
-                        aria-hidden
-                        style={{
-                          position: "absolute",
-                          top: -6,
-                          left: -6,
-                          width: 19,
-                          height: 19,
-                          borderRadius: "50%",
-                          background: p.found ? "var(--acc)" : "var(--panel)",
-                          border: p.found ? "none" : "1.5px solid var(--line)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: 11,
-                          fontWeight: 700,
-                          color: p.found ? "#fff" : "var(--dim)",
-                        }}
-                      >
-                        {p.found ? "✓" : "؟"}
-                      </span>
-                    </span>
-                    <span style={{ fontSize: 10.5, color: "var(--dim)" }}>{p.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
-            <div style={{ padding: 8 }}>
-              <EyebrowTag>قياس الظهور</EyebrowTag>
-              <h3 style={h3}>لا تعرف أين تظهر علامتك</h3>
-              <p style={body}>قد تظهر علامتك في منصة ولا تظهر في أخرى، وقد يتفوّق عليك منافسوك بدلاً منك.</p>
-            </div>
-            <div style={{ position: "relative", paddingTop: 26 }}>
-              <div style={panel}>
-                <div style={{ fontSize: 14.5, color: "var(--mut)" }}>ظهور علامتك</div>
-                <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 14 }}>
-                  {platformBars.map((row) => (
-                    <div key={row.name} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 14 }}>
-                      <span
-                        style={{
-                          width: 30,
-                          height: 30,
-                          borderRadius: 9,
-                          background: "rgba(14,157,134,.12)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: 6,
-                          flexShrink: 0,
-                        }}
-                      >
-                        <PlatformIcon name={row.icon} />
-                      </span>
-                      <span style={{ width: 110, flexShrink: 0 }}>{row.name}</span>
-                      <span style={{ flex: 1, height: 8, borderRadius: 4, background: "var(--panel2)", overflow: "hidden" }}>
-                        <span style={{ display: "block", height: "100%", width: `${row.pct}%`, background: "var(--acc)" }} />
-                      </span>
-                      <span className="mono" style={{ fontSize: 13, color: "var(--mut)", flexShrink: 0 }}>{row.display}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div
-                style={{
-                  ...panel,
-                  position: "absolute",
-                  top: 0,
-                  left: -18,
-                  maxWidth: 210,
-                  padding: "14px 16px",
-                  borderRadius: 18,
-                  boxShadow: "0 18px 40px rgba(17,24,39,.14)",
-                  fontSize: 13,
-                  lineHeight: 1.7,
+                  padding: "10px 14px",
+                  fontSize: 12.5,
                   color: "var(--tx)",
-                  fontWeight: 600,
                 }}
               >
-                منافسيك يظهرون أكثر منك في إجابات الذكاء الاصطناعي
+                <span style={{ width: 15, height: 15, flexShrink: 0 }}>
+                  <PlatformIcon name="search" />
+                </span>
+                أفضل متجر للعناية بالبشرة؟
+              </div>
+              <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 8 }}>
+                <SearchResultRow label="متجر العناية الفاخر" />
+                <SearchResultRow label="بيوتي كلينك" />
+                <SearchResultRow label="متجرك — غير موجود" muted />
               </div>
             </div>
           </div>
 
-          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
-            <div style={{ padding: 8 }}>
-              <EyebrowTag>تتبّع الاستشهادات</EyebrowTag>
-              <h3 style={h3}>لا تعرف لماذا يظهر المنافس بدلاً منك</h3>
-              <p style={body}>لا تعرف الصفحات والمنتديات والناشرين التي تعتمدها الإجابات كدليل، ولا كيف تتفوّق عليها.</p>
+          {/* 2 — منافسوك يسبقونك: a ranking list, your row low and faded */}
+          <div style={card}>
+            <div style={{ padding: "24px 24px 4px" }}>
+              <h3 style={h3}>منافسوك يسبقونك</h3>
+              <p style={body}>يظهرون في الأسئلة المهمة، وأنت لا تعرف لماذا.</p>
             </div>
-            <div style={{ ...panel, display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ fontSize: 12.5, color: "var(--dim)" }}>مصادر تُبنى منها الإجابة</div>
-
-              <div style={{ marginTop: 16, display: "flex", justifyContent: "center", gap: 14 }}>
-                {sourceRows.map((row) => (
-                  <div key={row.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 7 }}>
-                    <span
-                      style={{
-                        width: 42,
-                        height: 42,
-                        borderRadius: 12,
-                        background: "var(--panel2)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: 9,
-                      }}
-                    >
-                      <PlatformIcon name={row.icon} />
-                    </span>
-                    <span style={{ fontSize: 10, color: "var(--dim)", whiteSpace: "nowrap" }}>{row.label}</span>
-                  </div>
-                ))}
+            <div style={visualWrap}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <RankRow rank="١" name="منافس أ" pct="٪82" strong />
+                <RankRow rank="٢" name="منافس ب" pct="٪61" />
+                <RankRow rank="٧" name="متجرك" pct="٪28" muted />
               </div>
+            </div>
+          </div>
 
-              <div style={{ marginTop: 12 }}>
+          {/* 3 — البحث لم يعد Google فقط: one question branching to 4 engines, none mentioning you */}
+          <div style={card}>
+            <div style={{ padding: "24px 24px 4px" }}>
+              <h3 style={h3}>البحث لم يعد Google فقط</h3>
+              <p style={body}>عملاؤك يسألون ChatGPT ومحركات الذكاء الاصطناعي قبل الشراء.</p>
+            </div>
+            <div style={visualWrap}>
+              <div style={{ textAlign: "center" }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    fontSize: 12,
+                    color: "var(--tx)",
+                    background: "var(--panel)",
+                    border: "1px solid var(--line)",
+                    borderRadius: 9999,
+                    padding: "8px 14px",
+                  }}
+                >
+                  وين أشتري منتج عناية أصلي؟
+                </span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
                 <DownConnector />
               </div>
-
-              <div
-                style={{
-                  marginTop: 12,
-                  width: "100%",
-                  maxWidth: 260,
-                  border: "1px solid var(--line)",
-                  borderRadius: 16,
-                  background: "var(--panel2)",
-                  padding: 16,
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span
+              <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8 }}>
+                {engines.map((e) => (
+                  <div
+                    key={e.label}
                     style={{
-                      width: 26,
-                      height: 26,
-                      borderRadius: 8,
-                      background: "rgba(14,157,134,.14)",
+                      background: "var(--panel)",
+                      border: "1px solid var(--line)",
+                      borderRadius: 12,
+                      padding: "10px 6px",
                       display: "flex",
+                      flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
-                      padding: 5,
-                      flexShrink: 0,
+                      gap: 5,
                     }}
                   >
-                    <PlatformIcon name="assistant" />
-                  </span>
-                  <span style={{ fontSize: 12.5, fontWeight: 700 }}>إجابة الذكاء الاصطناعي</span>
-                </div>
-                <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 7 }}>
-                  {[100, 85, 60].map((w, i) => (
-                    <span key={i} style={{ display: "block", height: 6, borderRadius: 4, width: `${w}%`, background: "var(--panel)" }} />
-                  ))}
-                </div>
+                    <span style={{ width: 18, height: 18 }}>
+                      <PlatformIcon name={e.icon} />
+                    </span>
+                    <span style={{ fontSize: 9.5, fontWeight: 600 }}>{e.label}</span>
+                    <span style={{ fontSize: 8.5, color: "var(--dim)" }}>{e.mention}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
