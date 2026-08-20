@@ -267,6 +267,7 @@ function Header() {
   });
 
   return (
+    <>
     <header
       style={{
         position: "sticky",
@@ -328,6 +329,7 @@ function Header() {
           انضم للنسخة التجريبية
         </button>
       </nav>
+    </header>
 
       {modalOpen && (
         <div
@@ -449,7 +451,7 @@ function Header() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
