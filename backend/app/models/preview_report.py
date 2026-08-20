@@ -44,19 +44,28 @@ class PreviewReport(TimestampedModel, table=True):
 
 
 class PreviewReportLead(TimestampedModel, table=True):
-    """A real join-trial request submitted from a preview report's beta
-    modal (spec Stage 11/12) — kept as its own small table (mirroring
+    """A real join-trial request — kept as its own small table (mirroring
     OnboardingLead's shape) rather than extending OnboardingLead itself,
     since that model's store_id FK is required and tied to the existing
     Store/ResearchRun pipeline this system deliberately doesn't create
     rows in. report_feedback/interest_level are the two required survey
     answers captured alongside contact details — free-text slugs rather
     than an enum column since this is a one-shot MVP signal, not a
-    CRM-integrated field."""
+    CRM-integrated field.
+
+    preview_report_id is nullable: most rows come from a preview report's
+    own beta modal (Stage 11/12, has a real report_id), but the header's
+    "انضم للنسخة التجريبية" button opens the same modal directly with no
+    prior analysis — that submission has no report to attach to, and
+    forcing one would mean either fabricating a report row or blocking a
+    lead with no real reason to. The frontend asks a different first
+    question in that case (report_feedback assumes a report was seen),
+    but the column is reused as-is rather than adding a second table for
+    what's structurally the same lead shape."""
 
     __tablename__ = "preview_report_leads"
 
-    preview_report_id: uuid.UUID = Field(foreign_key="preview_reports.id", index=True)
+    preview_report_id: uuid.UUID | None = Field(default=None, foreign_key="preview_reports.id", index=True)
     name: str
     email: str
     report_feedback: str

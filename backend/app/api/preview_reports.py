@@ -80,6 +80,22 @@ class PreviewReportJoinResponse(BaseModel):
     id: uuid.UUID
 
 
+def _validate_lead_payload(payload: PreviewReportJoinRequest) -> tuple[str, str, str, str]:
+    name = payload.name.strip()
+    email = payload.email.strip()
+    report_feedback = payload.report_feedback.strip()
+    interest_level = payload.interest_level.strip()
+    if not name:
+        raise HTTPException(status_code=422, detail="name is required")
+    if not email:
+        raise HTTPException(status_code=422, detail="email is required")
+    if not report_feedback:
+        raise HTTPException(status_code=422, detail="report_feedback is required")
+    if not interest_level:
+        raise HTTPException(status_code=422, detail="interest_level is required")
+    return name, email, report_feedback, interest_level
+
+
 @router.post("", response_model=CreatePreviewReportResponse)
 def create_preview_report(
     payload: CreatePreviewReportRequest, request: Request, session: Session = Depends(get_session)
@@ -136,21 +152,31 @@ def join_preview_report_beta(
     if report is None:
         raise HTTPException(status_code=404, detail="preview report not found")
 
-    name = payload.name.strip()
-    email = payload.email.strip()
-    report_feedback = payload.report_feedback.strip()
-    interest_level = payload.interest_level.strip()
-    if not name:
-        raise HTTPException(status_code=422, detail="name is required")
-    if not email:
-        raise HTTPException(status_code=422, detail="email is required")
-    if not report_feedback:
-        raise HTTPException(status_code=422, detail="report_feedback is required")
-    if not interest_level:
-        raise HTTPException(status_code=422, detail="interest_level is required")
-
+    name, email, report_feedback, interest_level = _validate_lead_payload(payload)
     lead = PreviewReportLead(
         preview_report_id=report_id,
+        name=name,
+        email=email,
+        report_feedback=report_feedback,
+        interest_level=interest_level,
+    )
+    session.add(lead)
+    session.commit()
+    session.refresh(lead)
+    return PreviewReportJoinResponse(id=lead.id)
+
+
+@router.post("/leads", response_model=PreviewReportJoinResponse)
+def join_beta_directly(
+    payload: PreviewReportJoinRequest, session: Session = Depends(get_session)
+) -> PreviewReportJoinResponse:
+    """The header's "انضم للنسخة التجريبية" button opens the same beta
+    modal with no prior analysis — same lead shape, preview_report_id is
+    just None here since there's no report to attach to (see
+    PreviewReportLead's docstring)."""
+    name, email, report_feedback, interest_level = _validate_lead_payload(payload)
+    lead = PreviewReportLead(
+        preview_report_id=None,
         name=name,
         email=email,
         report_feedback=report_feedback,

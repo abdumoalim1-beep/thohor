@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
+import { joinBetaDirectly } from "@/lib/api";
 
 import "./landing.css";
 
@@ -99,29 +100,46 @@ const PINS: Pin[] = [
 
 const FAQS: [string, string][] = [
   [
-    "ما الذي يرصده ظهور فعلياً؟",
-    "أسئلة المشترين عبر خمس منصات ذكاء اصطناعي: أي الإجابات تذكر علامتك، وترتيبك داخلها، والمنافسون الذين يظهرون بدلاً منك، وانطباع كل ذكر، وكل نطاق استُشهد به كدليل",
+    "ما الذي يفعله ظهور؟",
+    "يساعد علامتك على الظهور أكثر في محادثات العملاء وتحويل هذا الحضور إلى فرص للنمو",
   ],
   [
-    "كيف يختار ظهور الأسئلة التي يتتبعها؟",
-    "نولّد أسئلة الفئة والمقارنة والبدائل والأسئلة المرتبطة باسم علامتك انطلاقاً من نطاقك وسوقك، ثم يمكنك تعديل أي سؤال أو إضافته أو حذفه",
+    "كيف يساعد ظهور علامتي؟",
+    "يكشف أين تظهر علامتك وأين تغيب، ويساعدك على زيادة حضورها في المحادثات المهمة",
   ],
   [
-    "ما المنصات المشمولة؟",
-    "ChatGPT وGemini وPerplexity ووضع الذكاء الاصطناعي في جوجل ونظرات جوجل العامة — تُحلّل على الجدول نفسه لتبقى النتائج قابلة للمقارنة",
+    "متى أبدأ برؤية النتائج؟",
+    "تحصل على صورة واضحة عن ظهور علامتك من البداية، وتتابع نمو حضورها مع الوقت",
   ],
   [
-    "هل يمكنني تتبّع المنافسين؟",
-    "نعم. أضف المنافسين يدوياً أو دع ظهور يكتشف العلامات المتكررة في إجاباتك، ثم قارن حصة الصوت والظهور جنباً إلى جنب",
+    "هل يساعدني ظهور في صناعة المحتوى؟",
+    "نعم. يحول فرص الظهور إلى محتوى يساعد علامتك على الوصول إلى عملائها",
   ],
   [
-    "هل يُنشر المحتوى تلقائياً؟",
-    "لا. كل مقال يمرّ بمسودة ثم مراجعة ثم اعتماد، والنشر التلقائي اختياري لكل تكامل على حدة",
+    "هل أحتاج خبرة متخصصة؟",
+    "لا. ظهور مصمم ليجعل تحسين حضور علامتك واضحًا وبسيطًا لفريقك",
   ],
-  [
-    "أين يمكن لظهور أن ينشر؟",
-    "ووردبريس، ويبفلو، غوست، شوبيفاي، ونوشن — أو تصدير المحتوى إلى أي مسار عمل يستخدمه فريقك",
-  ],
+];
+
+// The header's "انضم للنسخة التجريبية" button skips the /preview analysis
+// flow entirely, so it can't ask "كيف كان التقرير؟" (REPORT_FEEDBACK_OPTIONS
+// in /preview — assumes a report was seen). Same backend field
+// (report_feedback), different question that fits someone who hasn't
+// run an analysis yet.
+const JOIN_INTEREST_OPTIONS: { value: string; label: string }[] = [
+  { value: "search_visibility", label: "تتبع ظهوري في نتائج البحث" },
+  { value: "ai_visibility", label: "تتبع ظهوري في إجابات الذكاء الاصطناعي" },
+  { value: "competitors", label: "مراقبة المنافسين" },
+  { value: "content_recs", label: "التوصيات والتحسينات" },
+  { value: "exploring", label: "أستكشف بس" },
+];
+
+const JOIN_USAGE_OPTIONS: { value: string; label: string }[] = [
+  { value: "very_interested", label: "مهتم جدًا" },
+  { value: "interested", label: "مهتم" },
+  { value: "might_try", label: "ممكن أجربه" },
+  { value: "not_sure", label: "مو متأكد" },
+  { value: "not_interested", label: "غير مهتم حاليًا" },
 ];
 
 export default function Home() {
@@ -176,6 +194,78 @@ export default function Home() {
 }
 
 function Header() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [interest, setInterest] = useState("");
+  const [usage, setUsage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const closeModal = () => {
+    if (submitting) return;
+    setModalOpen(false);
+    // reset for next open, after the close animation-less unmount
+    setStep(0);
+    setName("");
+    setEmail("");
+    setInterest("");
+    setUsage("");
+    setSubmitted(false);
+    setError(null);
+  };
+
+  const submit = async () => {
+    setSubmitting(true);
+    setError(null);
+    try {
+      await joinBetaDirectly({ name, email, report_feedback: interest, interest_level: usage });
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "تعذّر إرسال الطلب");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const fieldLabel: CSSProperties = { marginTop: 16, fontSize: 13, fontWeight: 600 };
+  const textInput: CSSProperties = {
+    marginTop: 8,
+    width: "100%",
+    background: "var(--panel)",
+    border: "1px solid var(--line)",
+    borderRadius: 11,
+    outline: "none",
+    color: "var(--tx)",
+    fontSize: 14,
+    padding: "12px 14px",
+  };
+  const nextBtn: CSSProperties = {
+    marginTop: 22,
+    width: "100%",
+    border: 0,
+    cursor: "pointer",
+    background: "var(--tx)",
+    color: "var(--btn-fg)",
+    fontWeight: 600,
+    fontSize: 14,
+    padding: 13,
+    borderRadius: 11,
+  };
+  const optionRow = (checked: boolean): CSSProperties => ({
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    fontSize: 12.5,
+    cursor: "pointer",
+    padding: "9px 10px",
+    borderRadius: 9,
+    border: "1px solid var(--line)",
+    background: checked ? "var(--panel2)" : "transparent",
+  });
+
   return (
     <header
       style={{
@@ -213,17 +303,19 @@ function Header() {
             color: "var(--mut)",
           }}
         >
-          <a href="#features" style={{ color: "inherit" }}>المشكلة</a>
-          <a href="#solution" style={{ color: "inherit" }}>الحل</a>
+          <a href="#features" style={{ color: "inherit" }}>لماذا ظهور</a>
+          <a href="#solution" style={{ color: "inherit" }}>كيف يعمل</a>
           <a href="#faq" style={{ color: "inherit" }}>الأسئلة الشائعة</a>
         </div>
         <div style={{ flex: 1 }} className="md:hidden" />
-        <Link
-          href="/preview"
+        <button
+          onClick={() => setModalOpen(true)}
           className="rl-fill"
           style={{
             display: "inline-flex",
             alignItems: "center",
+            border: 0,
+            cursor: "pointer",
             fontSize: 13,
             fontWeight: 500,
             color: "var(--btn-fg)",
@@ -233,9 +325,130 @@ function Header() {
             whiteSpace: "nowrap",
           }}
         >
-          تسجيل الدخول
-        </Link>
+          انضم للنسخة التجريبية
+        </button>
       </nav>
+
+      {modalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", display: "flex",
+            alignItems: "center", justifyContent: "center", padding: 20, zIndex: 60,
+          }}
+          onClick={closeModal}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 20,
+              width: "100%", maxWidth: 420, maxHeight: "85vh", padding: "22px 24px 24px",
+              display: "flex", flexDirection: "column", overflowY: "auto", textAlign: "right",
+            }}
+          >
+            {submitted ? (
+              <>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>تم! وصلنا طلبك</h2>
+                <p style={{ margin: "12px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
+                  راح نتواصل معك قريبًا لتفعيل نسختك التجريبية
+                </p>
+                <button onClick={closeModal} className="rl-fill-soft" style={{ ...nextBtn }}>
+                  تمام
+                </button>
+              </>
+            ) : (
+              <>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>انضم للنسخة التجريبية</h2>
+                  <span className="mono" style={{ fontSize: 11, color: "var(--dim)" }}>{step + 1}/3</span>
+                </div>
+
+                {step === 0 && (
+                  <>
+                    <div style={fieldLabel}>الاسم</div>
+                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="اسمك" style={textInput} />
+                    <div style={fieldLabel}>البريد الإلكتروني</div>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      dir="ltr"
+                      style={{ ...textInput, textAlign: "left" }}
+                    />
+                    <button
+                      onClick={() => setStep(1)}
+                      disabled={!name.trim() || !email.trim()}
+                      className="rl-fill-soft"
+                      style={{ ...nextBtn, opacity: !name.trim() || !email.trim() ? 0.6 : 1 }}
+                    >
+                      التالي
+                    </button>
+                  </>
+                )}
+
+                {step === 1 && (
+                  <>
+                    <div style={fieldLabel}>وش يشدك أكثر بظهور؟</div>
+                    <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                      {JOIN_INTEREST_OPTIONS.map((opt) => (
+                        <label key={opt.value} style={optionRow(interest === opt.value)}>
+                          <input
+                            type="radio"
+                            name="join_interest"
+                            value={opt.value}
+                            checked={interest === opt.value}
+                            onChange={() => setInterest(opt.value)}
+                          />
+                          {opt.label}
+                        </label>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => setStep(2)}
+                      disabled={!interest}
+                      className="rl-fill-soft"
+                      style={{ ...nextBtn, opacity: !interest ? 0.6 : 1 }}
+                    >
+                      التالي
+                    </button>
+                  </>
+                )}
+
+                {step === 2 && (
+                  <>
+                    <div style={fieldLabel}>قد إيش مهتم تستخدم ظهور لمتابعة علامتك؟</div>
+                    <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                      {JOIN_USAGE_OPTIONS.map((opt) => (
+                        <label key={opt.value} style={optionRow(usage === opt.value)}>
+                          <input
+                            type="radio"
+                            name="join_usage"
+                            value={opt.value}
+                            checked={usage === opt.value}
+                            onChange={() => setUsage(opt.value)}
+                          />
+                          {opt.label}
+                        </label>
+                      ))}
+                    </div>
+                    {error && <div style={{ marginTop: 10, fontSize: 12.5, color: "#dc4c4c" }}>{error}</div>}
+                    <button
+                      onClick={submit}
+                      disabled={!usage || submitting}
+                      className="rl-fill-soft"
+                      style={{ ...nextBtn, opacity: !usage || submitting ? 0.6 : 1 }}
+                    >
+                      {submitting ? "جاري الإرسال..." : "تم"}
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -476,7 +689,7 @@ function Hero({
             color: "var(--mut)",
           }}
         >
-          اجعل علامتك التجارية أسهل يجدها عملاؤك في محركات البحث وإجابات الذكاء الاصطناعي، ويثقون بها قبل الشراء
+          اجعل علامتك التجارية حاضرة في المحادثات التي تصنع قرارات الشراء
         </p>
 
         <form
@@ -889,10 +1102,10 @@ function Features() {
             fontWeight: 600,
           }}
         >
-          إدارة ظهورك في البحث والذكاء الاصطناعي معقدة ومجزأة
+          قواعد الظهور تغيّرت
         </h2>
-        <p style={{ margin: "14px auto 0", maxWidth: 520, fontSize: 14.5, lineHeight: 1.85, color: "var(--mut)" }}>
-          تضيع وقتك بين أدوات متفرقة، ومع ذلك لا تعرف أين تقف
+        <p style={{ margin: "14px auto 0", maxWidth: 520, fontSize: 15.5, lineHeight: 1.85, fontWeight: 700, color: "var(--tx)" }}>
+          والغياب عن المحادثة قد يعني الغياب عن قرار الشراء
         </p>
 
         <div style={{ marginTop: 20, display: "flex", flexDirection: "column", textAlign: "right" }}>
@@ -1145,10 +1358,10 @@ function Solution() {
             fontWeight: 600,
           }}
         >
-          كل ما تحتاجه للظهور، في مكان واحد
+          من الظهور إلى النمو
         </h2>
         <p style={{ margin: "14px auto 0", maxWidth: 540, fontSize: 14.5, lineHeight: 1.85, color: "var(--mut)" }}>
-          من رصد الأسئلة إلى نشر المحتوى الذي يرفع ظهورك — دون أدوات متفرقة
+          كل ما تحتاجه لتكسب حضورًا أكبر وتحوله إلى نتائج لأعمالك
         </p>
 
         <div
@@ -1266,7 +1479,7 @@ function Faq({
       <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
         <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>03 — الأسئلة الشائعة</div>
         <h2 style={{ margin: "14px 0 0", fontSize: "clamp(24px,2.8vw,34px)", letterSpacing: "-.02em", fontWeight: 600 }}>
-          أسئلة يطرحها الفريق قبل البدء
+          كل ما تحتاج معرفته قبل أن تبدأ
         </h2>
         <div
           style={{
@@ -1321,10 +1534,10 @@ function Faq({
           }}
         >
           <h3 style={{ margin: 0, fontSize: "clamp(21px,2.4vw,28px)", fontWeight: 600, letterSpacing: "-.02em" }}>
-            قِس ظهورك اليوم
+            حان وقت ظهور علامتك
           </h3>
           <p style={{ margin: "12px auto 0", maxWidth: 440, fontSize: 14, lineHeight: 1.85, color: "var(--mut)" }}>
-            ابدأ من الأسئلة التي يطرحها عملاؤك فعلاً، وتابع كيف يتغيّر حضورك أسبوعاً بعد أسبوع
+            ابدأ اليوم، وكن حاضرًا في المحادثات التي تصنع قرار الشراء
           </p>
           <Link
             href="/preview"
@@ -1341,7 +1554,7 @@ function Faq({
               whiteSpace: "nowrap",
             }}
           >
-            ابدأ التجربة المجانية
+            ابدأ مجانًا
           </Link>
         </div>
       </div>
@@ -1362,7 +1575,6 @@ function Footer() {
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 8,
             fontSize: 12,
             color: "var(--mut)",
             border: "1px solid var(--line)",
@@ -1371,16 +1583,7 @@ function Footer() {
             whiteSpace: "nowrap",
           }}
         >
-          <span
-            style={{
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: "#16a34a",
-              animation: "rpulse 2.4s ease-in-out infinite",
-            }}
-          />
-          جميع الأنظمة تعمل
+          ظهور — أحد منتجات TAU
         </div>
         <div style={{ fontSize: 12, color: "var(--dim)" }}>© 2026 ظهور. جميع الحقوق محفوظة</div>
       </div>

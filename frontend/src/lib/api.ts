@@ -1178,3 +1178,9 @@ export async function joinPreviewReportBeta(
 ): Promise<{ id: string }> {
   return postJson(`/preview-reports/${reportId}/join`, payload);
 }
+
+// The homepage header's "انضم للنسخة التجريبية" button — same lead shape,
+// no report_id since there's no prior analysis to attach it to.
+export async function joinBetaDirectly(payload: PreviewJoinBetaRequest): Promise<{ id: string }> {
+  return postJson("/preview-reports/leads", payload);
+}

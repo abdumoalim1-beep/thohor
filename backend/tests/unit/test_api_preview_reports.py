@@ -14,7 +14,7 @@ from sqlmodel import Session, SQLModel, create_engine
 import app.main as main_module
 import app.models  # noqa: F401 — registers all tables
 from app.core.db import get_session
-from app.models.preview_report import PreviewReport
+from app.models.preview_report import PreviewReport, PreviewReportLead
 
 
 @pytest.fixture()
@@ -252,4 +252,24 @@ def test_join_beta_rejects_missing_survey_answers(client):
         report_id = report.id
 
     response = test_client.post(f"/preview-reports/{report_id}/join", json=_join_payload(interest_level=""))
+    assert response.status_code == 422
+
+
+def test_join_beta_directly_persists_a_lead_with_no_report(client):
+    """The header's "انضم للنسخة التجريبية" button — no prior analysis, so
+    no report_id exists to attach the lead to."""
+    test_client, engine = client
+    response = test_client.post("/preview-reports/leads", json=_join_payload())
+    assert response.status_code == 200
+    lead_id = response.json()["id"]
+
+    with Session(engine) as session:
+        lead = session.get(PreviewReportLead, uuid.UUID(lead_id))
+        assert lead.preview_report_id is None
+        assert lead.name == "محمد"
+
+
+def test_join_beta_directly_rejects_missing_survey_answers(client):
+    test_client, _engine = client
+    response = test_client.post("/preview-reports/leads", json=_join_payload(report_feedback=""))
     assert response.status_code == 422
