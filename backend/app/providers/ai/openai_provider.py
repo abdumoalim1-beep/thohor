@@ -27,6 +27,15 @@ def _is_rate_limit(exc: Exception) -> bool:
     return isinstance(exc, openai.RateLimitError)
 
 
+def _web_search_was_invoked(output: list) -> bool:
+    """tool_choice="required" forces the model to call *a* tool, and
+    web_search is the only one offered — but this checks the actual
+    response for a web_search_call item rather than assuming the forcing
+    worked, so web_search_used never claims a search happened that
+    didn't."""
+    return any(getattr(item, "type", None) == "web_search_call" for item in output)
+
+
 def _extract_sources_from_output(output: list) -> list[dict]:
     """Pulls url_citation annotations out of a Responses API output array.
     Verified against the actually-installed openai SDK's real types
@@ -97,7 +106,17 @@ class OpenAIProvider(AIProvider):
     async def _generate_with_web_search(self, request: AIRequest) -> AIResponse:
         """Uses the Responses API (not Chat Completions) — the only OpenAI
         API surface that offers the hosted web_search tool. Response shape
-        verified against the installed SDK, not assumed."""
+        verified against the installed SDK, not assumed.
+
+        tool_choice="required" is load-bearing, not decoration: with the
+        default "auto", the model is free to skip the tool entirely and
+        answer from its own training data instead — verified live against
+        this exact prompt shape, where it did exactly that (zero
+        web_search_call items, zero citations) for a short buyer-intent
+        question. That silently turns "does AI search find this store"
+        into "is this store famous enough to be in training data", which
+        is a different and much weaker signal than every caller of
+        enable_web_search actually wants."""
         start = time.monotonic()
 
         async def _do_request():
@@ -105,6 +124,7 @@ class OpenAIProvider(AIProvider):
                 model=request.model,
                 input=[{"role": m.role.value, "content": m.content} for m in request.messages],
                 tools=[{"type": "web_search"}],
+                tool_choice="required",
                 temperature=request.temperature,
                 max_output_tokens=request.max_tokens,
             )
@@ -133,6 +153,6 @@ class OpenAIProvider(AIProvider):
             ),
             latency_ms=latency_ms,
             raw=response.model_dump(),
-            web_search_used=True,
+            web_search_used=_web_search_was_invoked(response.output),
             sources=sources,
         )

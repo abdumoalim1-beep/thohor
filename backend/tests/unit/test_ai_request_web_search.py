@@ -8,8 +8,12 @@ AnnotationURLCitation with .type == "url_citation") rather than a guess.
 
 import pytest
 
-from app.providers.ai.base import AIMessage, AIRequest, AIRole, AIProviderError
-from app.providers.ai.openai_provider import OpenAIProvider, _extract_sources_from_output
+from app.providers.ai.base import AIMessage, AIProviderError, AIRequest, AIRole
+from app.providers.ai.openai_provider import (
+    OpenAIProvider,
+    _extract_sources_from_output,
+    _web_search_was_invoked,
+)
 
 
 class _FakeAnnotation:
@@ -83,6 +87,20 @@ def test_extract_sources_ignores_non_url_citation_annotations():
     assert _extract_sources_from_output(output) == []
 
 
+def test_web_search_was_invoked_true_when_a_search_call_item_is_present():
+    output = [_FakeWebSearchCallItem(), _FakeOutputMessage(content=[])]
+    assert _web_search_was_invoked(output) is True
+
+
+def test_web_search_was_invoked_false_when_the_model_answered_without_searching():
+    """tool_choice="required" is meant to force this, but web_search_used
+    must reflect what the response actually contains, not assume the
+    forcing worked — this is the exact shape observed live when the tool
+    was available but not invoked (message only, no search-call trace)."""
+    output = [_FakeOutputMessage(content=[])]
+    assert _web_search_was_invoked(output) is False
+
+
 class _FakeUsage:
     def __init__(self, input_tokens, output_tokens):
         self.input_tokens = input_tokens
@@ -109,6 +127,7 @@ async def test_generate_with_web_search_maps_response_onto_ai_response(monkeypat
         return _FakeResponse(
             output_text='{"brand_name": "Example"}',
             output=[
+                _FakeWebSearchCallItem(),
                 _FakeOutputMessage(
                     content=[_FakeContentItem(annotations=[_FakeAnnotation("url_citation", url="https://x.test", title="X")])]
                 )
@@ -127,6 +146,7 @@ async def test_generate_with_web_search_maps_response_onto_ai_response(monkeypat
     response = await provider.generate(request)
 
     assert captured_kwargs["tools"] == [{"type": "web_search"}]
+    assert captured_kwargs["tool_choice"] == "required"
     assert response.web_search_used is True
     assert response.text == '{"brand_name": "Example"}'
     assert response.sources == [{"url": "https://x.test", "title": "X"}]
