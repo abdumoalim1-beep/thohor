@@ -11,7 +11,10 @@ from sqlmodel import Session, SQLModel, create_engine
 
 from app.crawler.crawl import CrawledPage
 from app.crawler.extract import PageFacts
-from app.preview_reports.understanding import build_understanding, extract_deterministic_facts
+from app.preview_reports.understanding import (
+    build_understanding,
+    extract_deterministic_facts,
+)
 from app.providers.ai.router import ModelRouter
 
 
@@ -72,6 +75,23 @@ def test_extract_deterministic_facts_rejects_numeric_only_names():
     facts = extract_deterministic_facts(pages, "https://zuhoor.sa")
     assert facts["product_names"] == ["عطر ورد حقيقي"]
     assert facts["category_names"] == []
+
+
+def test_extract_deterministic_facts_rejects_price_and_sort_filter_pages_as_categories():
+    """Real case observed live on kayanabaya.com: a "بـ98 ريال" price-band
+    page and an "الأكثر مبيعاً" sort page both got crawled with
+    page_type='category' just like the store's real categories. Neither
+    is a product category — left in, they become junk search-query
+    subjects that can even outrank the store's real categories for the
+    single recommendation purely by crawl order."""
+    pages = [
+        _home_page(),
+        _category_page("بـــــــــــ 98 ريال"),
+        _category_page("الأكثر مبيعاً"),
+        _category_page("أحدث العبايات"),
+    ]
+    facts = extract_deterministic_facts(pages, "https://zuhoor.sa")
+    assert facts["category_names"] == ["أحدث العبايات"]
 
 
 def test_build_understanding_falls_back_when_no_provider_configured():

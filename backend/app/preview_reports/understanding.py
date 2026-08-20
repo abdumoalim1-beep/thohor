@@ -15,6 +15,7 @@ so a broken LLM call never sinks the whole report (spec: degrade
 gracefully, don't fail the report)."""
 
 import asyncio
+import re
 
 from sqlmodel import Session
 
@@ -40,6 +41,28 @@ def _has_readable_text(value: str) -> bool:
     every consumer of product_names/category_names (report.store.products,
     the LLM prompt, generate_search_queries) benefits from one filter."""
     return any(ch.isalpha() for ch in value)
+
+
+_PRICE_FILTER_PATTERN = re.compile(r"\d+\s*(ريال|ر\.س|sar|\$)", re.IGNORECASE)
+_SORT_OR_PROMO_LABELS = frozenset({
+    "الأكثر مبيعاً", "الأكثر مبيعا", "الأكثر طلبًا", "الأكثر طلبا",
+    "الأكثر تقييمًا", "الأكثر تقييما", "الأرخص", "الأغلى",
+    "عروض", "العروض", "التخفيضات", "تخفيضات", "خصومات", "خصم",
+})
+
+
+def _is_valid_category_label(label: str) -> bool:
+    """Rejects crawled "category" page titles that are actually sort/price
+    filters, not real product categories — a storefront's own nav often
+    mixes a "بـ98 ريال" price-band page or "الأكثر مبيعاً" sort page into
+    the same page_type='category' bucket as its real categories. Left in,
+    junk like this becomes a search-query subject and can outrank the
+    store's real product categories for the single recommendation (spec
+    Stage 11) purely by being crawled first — never a legitimate business
+    signal, just crawl order."""
+    if _PRICE_FILTER_PATTERN.search(label):
+        return False
+    return label.strip() not in _SORT_OR_PROMO_LABELS
 
 
 def extract_deterministic_facts(pages: list[CrawledPage], store_url: str) -> dict:
@@ -70,6 +93,7 @@ def extract_deterministic_facts(pages: list[CrawledPage], store_url: str) -> dic
             if (
                 label
                 and _has_readable_text(label)
+                and _is_valid_category_label(label)
                 and key not in seen_categories
                 and len(category_names) < MAX_CATEGORY_NAMES
             ):
