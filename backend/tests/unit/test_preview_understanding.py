@@ -87,3 +87,19 @@ def test_build_understanding_falls_back_when_no_provider_configured():
     assert result["brand_name"] == "زهور"
     assert result["category"] == "عطور نسائية"
     assert result["products"] == ["عطر ورد", "عطر ياسمين"]
+    assert result["is_online_store"] is True
+
+
+def test_build_understanding_fallback_says_not_a_store_when_no_products_were_crawled():
+    """No LLM judgment available in the fallback path — must under-claim
+    (false) rather than assume every analyzed site sells products."""
+    engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
+    SQLModel.metadata.create_all(engine)
+    facts = {
+        "brand_name": "شركة الحلول", "title": "شركة الحلول للاستشارات", "meta_description": "",
+        "h1": None, "category_names": [], "product_names": [],
+    }
+    with Session(engine) as session:
+        router = ModelRouter(providers={})
+        result = asyncio.run(build_understanding(session=session, router=router, facts=facts))
+    assert result["is_online_store"] is False

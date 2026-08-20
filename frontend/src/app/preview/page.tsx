@@ -25,7 +25,7 @@ type Step = (typeof STEPS)[number];
 // رسائل تجميلية بحتة أثناء الانتظار — لا تتحكم أبدًا بالتنقل بين الشاشات،
 // فقط تدور مع الوقت لإعطاء إحساس بالتقدّم.
 const WAIT_MESSAGES = [
-  "تعرّفنا على متجرك",
+  "تعرّفنا على علامتك",
   "عرفنا وش تبيع",
   "جهزنا عمليات البحث",
   "بحثنا عنك",
@@ -471,6 +471,17 @@ export default function PreviewPage() {
       : null;
   const marketStatus = report ? computeMarketStatus(report) : null;
 
+  // report.store.is_online_store is a real judgment (crawled product pages
+  // + the understanding-step model call — see app.preview_reports.
+  // understanding), not a guess made here. Before the report loads (or if
+  // it turns out not to be a store) this defaults to the brand-neutral
+  // "علامتك", which is always true regardless of business type — never
+  // "متجرك" for a site we haven't confirmed sells products.
+  const isStore = report?.store.is_online_store ?? false;
+  const storeTermYou = isStore ? "متجرك" : "علامتك";
+  const storeTermMy = isStore ? "متجري" : "علامتي";
+  const storeTermThe = isStore ? "المتجر" : "العلامة";
+
   const showBack = stepIndex > 0 && step !== "waiting";
   const showDots = stepIndex >= 3;
   const dotSteps = STEPS.slice(3);
@@ -509,10 +520,10 @@ export default function PreviewPage() {
                 هل يجدك عملاؤك عندما يبحثون عن منتجاتك؟
               </h1>
               <p style={{ margin: "16px 0 0", fontSize: 14.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                حلّل متجرك واعرف أين يظهر، ومن يظهر بدلًا منه، وما الذي يمكنك تحسينه — بتحليل واحد سريع
+                حلّل {storeTermYou} واعرف أين يظهر، ومن يظهر بدلًا منه، وما الذي يمكنك تحسينه — بتحليل واحد سريع
               </p>
               <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 26, width: "auto", padding: "12px 24px" }}>
-                حلّل متجري
+                حلّل {storeTermMy}
               </button>
             </div>
           )}
@@ -520,12 +531,12 @@ export default function PreviewPage() {
           {step === "url" && (
             <form onSubmit={startAnalysis}>
               <h1 style={{ margin: 0, fontSize: 27, fontWeight: 600, letterSpacing: "-.02em" }}>
-                خلنا نشوف كيف يظهر متجرك
+                خلنا نشوف كيف يظهر {storeTermYou}
               </h1>
               <p style={{ margin: "10px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                حط رابط متجرك والباقي علينا
+                حط رابط {storeTermYou} والباقي علينا
               </p>
-              <div style={fieldLabel}>رابط المتجر</div>
+              <div style={fieldLabel}>الرابط</div>
               <div
                 dir="ltr"
                 style={{
@@ -558,7 +569,7 @@ export default function PreviewPage() {
                   </button>
                 )}
                 <button type="submit" disabled={submitting || !url.trim()} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 0, width: "auto", flex: 1, opacity: submitting ? 0.7 : 1 }}>
-                  {submitting ? "جاري البدء..." : "حلّل متجري"}
+                  {submitting ? "جاري البدء..." : `حلّل ${storeTermMy}`}
                 </button>
               </div>
             </form>
@@ -568,7 +579,7 @@ export default function PreviewPage() {
             <div>
               {reportStatus === "failed" ? (
                 <div>
-                  <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تعذّر تحليل متجرك</h1>
+                  <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تعذّر تحليل {storeTermYou}</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
                     {reportError ?? "حدث خطأ غير متوقع أثناء التحليل"}
                   </p>
@@ -580,7 +591,7 @@ export default function PreviewPage() {
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>تقريرك جاهز</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.8 }}>
-                    فهمنا متجرك وبحثنا عنك — خلنا نوريك النتيجة
+                    فهمنا {storeTermYou} وبحثنا عنك — خلنا نوريك النتيجة
                   </p>
                   <button onClick={next} className="rl-fill-soft" style={{ ...solidBtn, marginTop: 22 }}>
                     شوف النتيجة
@@ -588,7 +599,7 @@ export default function PreviewPage() {
                 </div>
               ) : (
                 <div>
-                  <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>نحلل متجرك الآن...</h1>
+                  <h1 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>نحلل {storeTermYou} الآن...</h1>
                   <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 12 }}>
                     {WAIT_MESSAGES.map((message, index) => (
                       <div
@@ -615,7 +626,7 @@ export default function PreviewPage() {
 
           {step === "understanding" && report && (
             <div>
-              <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>فهمنا متجرك</h1>
+              <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>فهمنا {storeTermYou}</h1>
               <div style={{ ...card, marginTop: 22, display: "flex", alignItems: "center", gap: 14 }}>
                 <StoreLogo domain={report.store.domain} crawledLogo={report.store.logo} brandName={report.store.brand_name} />
                 <div>
@@ -627,7 +638,7 @@ export default function PreviewPage() {
               </div>
               <div style={{ ...card, marginTop: 14, padding: 0, overflow: "hidden" }}>
                 {[
-                  ["اسم المتجر", report.store.brand_name],
+                  [`اسم ${storeTermThe}`, report.store.brand_name],
                   ["الرابط", report.store.domain],
                   ["الفئة", report.store.category || "—"],
                   ["وش تبيع", report.store.products.slice(0, 4).join("، ") || "—"],
@@ -645,7 +656,7 @@ export default function PreviewPage() {
                   </div>
                 ))}
               </div>
-              <p style={captionNote}>استخدمنا محتوى متجرك لتحديد عمليات البحث المناسبة لك</p>
+              <p style={captionNote}>استخدمنا محتوى {storeTermYou} لتحديد عمليات البحث المناسبة لك</p>
               <div style={stepFooter}>
                 {showBack && (
                   <button type="button" onClick={back} style={backBtn}>
@@ -666,7 +677,7 @@ export default function PreviewPage() {
               {visibility.mode === "measured" ? (
                 <>
                   <p style={{ margin: "14px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                    هذا ظهور متجرك في عمليات البحث المرتبطة بمنتجاتك
+                    هذا ظهور {storeTermYou} في عمليات البحث المرتبطة بمنتجاتك
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 52, fontWeight: 700, color: "var(--acc)", letterSpacing: "-.02em" }}>
@@ -677,11 +688,11 @@ export default function PreviewPage() {
                   {topCompetitorPct !== null && topCompetitorPct > (visibility.score ?? 0) && (
                     <div style={{ ...card, marginTop: 14 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5 }}>
-                        <span>متجرك — {visibility.score ?? 0}%</span>
+                        <span>{storeTermYou} — {visibility.score ?? 0}%</span>
                         <span style={{ fontWeight: 700 }}>أعلى متجر ظهر — {topCompetitorPct}%</span>
                       </div>
                       <p style={{ margin: "10px 0 0", fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
-                        بعض المتاجر تظهر أمام نفس العميل أكثر من متجرك بوضوح
+                        بعض المتاجر تظهر أمام نفس العميل أكثر من {storeTermYou} بوضوح
                       </p>
                     </div>
                   )}
@@ -700,46 +711,46 @@ export default function PreviewPage() {
                     </div>
                   </div>
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                    لما يبحث العميل عن منتجات مثل اللي تبيعها، متجرك يظهر تقريبًا في{" "}
+                    لما يبحث العميل عن منتجات مثل اللي تبيعها، {storeTermYou} يظهر تقريبًا في{" "}
                     {Math.round((visibility.brand_mentions / Math.max(visibility.successful_checks, 1)) * 10)}{" "}
                     من كل 10 عمليات بحث فحصناها
                   </p>
                 </>
               ) : visibility.level === "low" ? (
                 <>
-                  <h2 style={{ margin: "16px 0 0", fontSize: 17, fontWeight: 700 }}>ظهور متجرك ضعيف حاليًا</h2>
+                  <h2 style={{ margin: "16px 0 0", fontSize: 17, fontWeight: 700 }}>ظهور {storeTermYou} ضعيف حاليًا</h2>
                   <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                    ظهر متجرك بشكل محدود في عمليات البحث المرتبطة بالمنتجات والفئات اللي تبيعها
+                    ظهر {storeTermYou} بشكل محدود في عمليات البحث المرتبطة بالمنتجات والفئات اللي تبيعها
                   </p>
                   <div style={{ ...card, marginTop: 16, textAlign: "center", padding: "30px 20px" }}>
                     <div style={{ fontSize: 34, fontWeight: 700, color: "var(--acc)" }}>أقل من 50%</div>
                     <div style={{ fontSize: 13, color: "var(--mut)", marginTop: 6 }}>نسبة ظهورك</div>
                   </div>
                   <p style={{ marginTop: 16, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                    هذا يعني أن العميل لما يبحث عن منتجات مثل منتجاتك، متجرك ما يكون من الخيارات الظاهرة له في كثير
+                    هذا يعني أن العميل لما يبحث عن منتجات مثل منتجاتك، {storeTermYou} ما يكون من الخيارات الظاهرة له في كثير
                     من الحالات
                   </p>
                   <p style={{ marginTop: 10, fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
                     وفي نفس عمليات البحث تظهر متاجر أخرى تنافس على نفس العميل، وهذا يعني أن عندك فرصة واضحة لزيادة
-                    ظهور متجرك
+                    ظهور {storeTermYou}
                   </p>
                 </>
               ) : (
                 <>
                   <h2 style={{ margin: "16px 0 0", fontSize: 17, fontWeight: 700 }}>ظهورك محدود</h2>
                   <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                    ما قدرنا نجمع عينة كافية من نتائج بحث فعلية لمتجرك في هذا الفحص، فما نقدر نطلع لك نسبة دقيقة
+                    ما قدرنا نجمع عينة كافية من نتائج بحث فعلية لـ{storeTermYou} في هذا الفحص، فما نقدر نطلع لك نسبة دقيقة
                     الحين
                   </p>
                   <div style={{ ...card, marginTop: 16 }}>
                     <div style={{ fontSize: 12, color: "var(--dim)", fontWeight: 600 }}>وش يعني هذا؟</div>
                     <p style={{ margin: "6px 0 0", fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
-                      هذا شائع لما يكون وصف منتجات المتجر مختصر جدًا، أو لما تواجه عمليات البحث ضغطًا مؤقتًا وقت
-                      الفحص — مو انعكاس لسوء ظهور متجرك فعليًا
+                      هذا شائع لما يكون وصف منتجات {storeTermThe} مختصر جدًا، أو لما تواجه عمليات البحث ضغطًا مؤقتًا وقت
+                      الفحص — مو انعكاس لسوء ظهور {storeTermYou} فعليًا
                     </p>
                   </div>
                   <p style={{ marginTop: 14, fontSize: 13, color: "var(--mut)", lineHeight: 1.8 }}>
-                    النسخة التجريبية تعيد فحص متجرك باستمرار وتقيس ظهورك بدقة أكبر مع الوقت
+                    النسخة التجريبية تعيد فحص {storeTermYou} باستمرار وتقيس ظهورك بدقة أكبر مع الوقت
                   </p>
                 </>
               )}
@@ -763,13 +774,13 @@ export default function PreviewPage() {
 
               {marketStatus.competitorCount === 0 ? (
                 <p style={{ margin: "18px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                  ما لقينا سوق منافس واضح لمتجرك في عمليات البحث اللي فحصناها
+                  ما لقينا سوق منافس واضح لـ{storeTermYou} في عمليات البحث اللي فحصناها
                 </p>
               ) : (
                 <>
                   <h2 style={sectionTitle}>موقعك في السوق</h2>
                   <div style={{ ...card, padding: 0, overflow: "hidden" }}>
-                    <MarketStatRow label="ظهور متجرك" value={marketStatus.yourDisplay} strong />
+                    <MarketStatRow label={`ظهور ${storeTermYou}`} value={marketStatus.yourDisplay} strong />
                     <MarketStatRow label="متوسط المتاجر المشابهة" value={marketStatus.avgDisplay} />
                     <MarketStatRow label="أعلى متجر" value={marketStatus.topDisplay} last />
                   </div>
@@ -862,7 +873,7 @@ export default function PreviewPage() {
             <div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>هذه الأشياء اللي يبحث عنها عميلك</h1>
               <p style={{ margin: "10px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.8 }}>
-                فحصنا ظهور متجرك في عمليات البحث المرتبطة بما تبيع
+                فحصنا ظهور {storeTermYou} في عمليات البحث المرتبطة بما تبيع
               </p>
               <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 8, maxHeight: 420, overflowY: "auto" }}>
                 {[...report.queries]
@@ -921,7 +932,7 @@ export default function PreviewPage() {
                   <p style={{ margin: "6px 0 0", fontSize: 13.5, lineHeight: 1.9 }}>{report.recommendation.action}</p>
                 </div>
               </div>
-              <p style={captionNote}>🔒 التقرير الكامل يتضمن توصيات إضافية لمتجرك</p>
+              <p style={captionNote}>🔒 التقرير الكامل يتضمن توصيات إضافية لـ{storeTermYou}</p>
               <div style={stepFooter}>
                 {showBack && (
                   <button type="button" onClick={back} style={backBtn}>
@@ -948,16 +959,16 @@ export default function PreviewPage() {
                 <div>
                   <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>باقي التقرير جاهز لك</h1>
                   <p style={{ margin: "12px 0 0", fontSize: 14, color: "var(--mut)", lineHeight: 1.9 }}>
-                    اللي شفته مجرد جزء من الصورة. في النسخة التجريبية نفتح لك التفاصيل ونستمر نتابع ظهور متجرك
+                    اللي شفته مجرد جزء من الصورة. في النسخة التجريبية نفتح لك التفاصيل ونستمر نتابع ظهور {storeTermYou}
                   </p>
                   <div style={{ ...card, marginTop: 18 }}>
                     <div style={{ fontSize: 12.5, color: "var(--dim)", fontWeight: 600 }}>وش تحصل عليه؟</div>
                     <ul style={{ margin: "12px 0 0", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
                       {[
                         ["أسماء المنافسين كاملة", "تعرف مين يظهر بدالك وكم مرة"],
-                        ["كل عمليات البحث وتفاصيل ظهورك", "تشوف وين يظهر متجرك ووين تضيع الفرصة"],
-                        ["توصيات إضافية خاصة بمتجرك", "خطوات مبنية على المشاكل اللي وجدناها فعلًا"],
-                        ["متابعة ظهورك في Google والذكاء الاصطناعي", "بدل فحص واحد، نتابع ظهور متجرك باستمرار"],
+                        ["كل عمليات البحث وتفاصيل ظهورك", `تشوف وين يظهر ${storeTermYou} ووين تضيع الفرصة`],
+                        [`توصيات إضافية خاصة بـ${storeTermYou}`, "خطوات مبنية على المشاكل اللي وجدناها فعلًا"],
+                        ["متابعة ظهورك في Google والذكاء الاصطناعي", `بدل فحص واحد، نتابع ظهور ${storeTermYou} باستمرار`],
                         ["تعرف هل ظهورك يتحسن", "تشوف كيف تتغير النتيجة مع الوقت وبعد التعديلات اللي تسويها"],
                       ].map(([title, desc]) => (
                         <li key={title} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
@@ -1025,7 +1036,7 @@ export default function PreviewPage() {
         <div aria-hidden style={{ position: "absolute", inset: 0, background: "var(--veil)" }} />
         <div style={{ position: "absolute", inset: "auto 24px 24px 24px", color: "var(--tx)" }}>
           <div style={{ fontSize: 13, color: "var(--mut)", lineHeight: 1.9 }}>
-            ظهور يحلّل ظهور متجرك في نتائج البحث ونتائج الذكاء الاصطناعي — ويخبرك من يظهر بدلًا منك
+            ظهور يحلّل ظهور {storeTermYou} في نتائج البحث ونتائج الذكاء الاصطناعي — ويخبرك من يظهر بدلًا منك
           </div>
         </div>
       </div>
@@ -1094,7 +1105,7 @@ export default function PreviewPage() {
                 ))}
               </div>
 
-              <div style={fieldLabel}>قد إيش مهتم تستخدم ظهور لمتابعة متجرك؟</div>
+              <div style={fieldLabel}>قد إيش مهتم تستخدم ظهور لمتابعة {storeTermYou}؟</div>
               <div style={{ marginTop: 8, marginBottom: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
                 {INTEREST_LEVEL_OPTIONS.map((opt) => (
                   <label

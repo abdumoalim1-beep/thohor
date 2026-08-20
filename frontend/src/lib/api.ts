@@ -1134,6 +1134,7 @@ export type PreviewReportData = {
     category: string;
     categories: string[];
     products: string[];
+    is_online_store: boolean;
   };
   visibility: PreviewVisibility;
   competitors: PreviewCompetitor[];

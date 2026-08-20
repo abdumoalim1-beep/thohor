@@ -97,6 +97,11 @@ def _fallback_understanding(facts: dict) -> dict:
         "brand_name": facts["brand_name"],
         "category": facts["category_names"][0] if facts["category_names"] else "",
         "products": facts["product_names"][:10],
+        # No LLM judgment available here — falls back to the one honest
+        # signal extract_deterministic_facts() already has: real product
+        # pages were actually crawled. Under-confident by design (a store
+        # the crawl missed reads as false, never guessed true).
+        "is_online_store": bool(facts["product_names"]),
     }
 
 
@@ -133,4 +138,5 @@ async def build_understanding(*, session: Session, router: ModelRouter, facts: d
         "brand_name": understanding.brand_name.strip() or facts["brand_name"],
         "category": understanding.category.strip(),
         "products": understanding.products or facts["product_names"][:10],
+        "is_online_store": understanding.is_online_store,
     }

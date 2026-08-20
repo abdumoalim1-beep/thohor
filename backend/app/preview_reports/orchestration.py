@@ -112,6 +112,7 @@ async def generate_preview_report(
                 "category": understanding["category"],
                 "categories": facts["category_names"][:5],
                 "products": understanding["products"],
+                "is_online_store": understanding["is_online_store"],
             },
             "visibility": visibility,
             "competitors": competitors,
