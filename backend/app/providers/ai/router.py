@@ -295,13 +295,28 @@ class ModelRouter:
         max_tokens: int | None = None,
         temperature: float = 0.7,
         enable_web_search: bool = False,
+        use_cache: bool = False,
     ) -> AIResponse:
         """Calls exactly the specified provider/model once — no routing, no
-        fallback, no caching. For the AI Visibility Test Matrix, where the
-        point is comparing specific engines against each other, not picking
-        whichever one succeeds first. Every call still logs to
+        fallback. For the AI Visibility Test Matrix, where the point is
+        comparing specific engines against each other, not picking
+        whichever one succeeds first. Every fresh call still logs to
         ai_executions like execute() does.
-        """
+
+        use_cache (opt-in, default False — every existing caller keeps
+        today's always-fresh behavior unchanged): for a byte-identical
+        input_hash, reuses the prior real response instead of a new paid
+        call. Only correct when the answer doesn't depend on who's asking
+        — e.g. app.preview_reports.search's web_search visibility check,
+        where two different stores asking the literal same generic
+        category query ("أفضل مسبح") get the same real search result
+        either way; each store's own brand match still happens fresh
+        against that real content. Confirmed live: of 218 real calls for
+        that task, 28 (13%) were exact repeats that would have been free
+        under this flag. Unlike execute()'s cache path (which only
+        preserves .parsed, fine for its schema-only callers), this stores
+        the full {raw_text, sources, web_search_used} shape so a no-schema
+        caller's .text/.sources survive a cache hit too."""
         provider = self._provider_for(provider_name)
         request = AIRequest(
             task_type=task_type,
@@ -315,6 +330,22 @@ class ModelRouter:
         )
 
         input_hash = _input_hash(task_type, model, prompt_version, messages)
+
+        if use_cache:
+            cached = self._find_cached(session, task_type, model, prompt_version, input_hash)
+            if cached is not None:
+                payload = cached.parsed_output or {}
+                return AIResponse(
+                    provider=cached.provider,
+                    model=cached.model,
+                    text=payload.get("raw_text", ""),
+                    parsed=payload.get("schema_output"),
+                    sources=payload.get("sources"),
+                    web_search_used=payload.get("web_search_used", False),
+                    usage=AIUsage(input_tokens=cached.input_tokens or 0, output_tokens=cached.output_tokens or 0),
+                    latency_ms=0,
+                    execution_id=cached.id,
+                )
 
         try:
             response = await provider.generate(request)
@@ -342,6 +373,19 @@ class ModelRouter:
 
         parsed = self._parse(response.text, response_schema)
         cost = estimate_cost_usd(provider_name, model, response.usage.input_tokens, response.usage.output_tokens)
+        # Only wrap in the {raw_text, sources, ...} shape when caching is
+        # actually on for this call — every existing (use_cache=False)
+        # caller keeps storing parsed_output exactly as before.
+        stored_output = (
+            {
+                "raw_text": response.text,
+                "sources": response.sources,
+                "web_search_used": response.web_search_used,
+                "schema_output": parsed,
+            }
+            if use_cache
+            else parsed
+        )
         execution = self._log(
             session=session,
             research_run_id=research_run_id,
@@ -353,7 +397,7 @@ class ModelRouter:
             prompt_version=prompt_version,
             schema_version=schema_version,
             input_hash=input_hash,
-            parsed_output=parsed,
+            parsed_output=stored_output,
             input_tokens=response.usage.input_tokens,
             output_tokens=response.usage.output_tokens,
             cost_usd=cost,

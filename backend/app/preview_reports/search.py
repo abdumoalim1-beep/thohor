@@ -81,6 +81,14 @@ async def _run_ai_query(
                     prompt_name=VISIBILITY_QUESTION_ANSWERING_PROMPT.name,
                     prompt_version=VISIBILITY_QUESTION_ANSWERING_PROMPT.version,
                     enable_web_search=True,
+                    # Safe here specifically: the real web_search answer for a
+                    # given question text doesn't depend on which store is
+                    # asking, so reusing it across two reports that happen to
+                    # generate the identical generic query (same category,
+                    # e.g. "أفضل مسبح") is a real cost saving, not a shortcut
+                    # on accuracy — see ModelRouter.execute_single's
+                    # use_cache docstring.
+                    use_cache=True,
                 ),
                 timeout=timeout_seconds,
             )
