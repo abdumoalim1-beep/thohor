@@ -273,3 +273,58 @@ def test_join_beta_directly_rejects_missing_survey_answers(client):
     test_client, _engine = client
     response = test_client.post("/preview-reports/leads", json=_join_payload(report_feedback=""))
     assert response.status_code == 422
+
+
+def _with_admin_token(monkeypatch, token: str = "admin-secret"):
+    from app.core.config import Settings
+
+    monkeypatch.setattr(
+        "app.api.preview_reports.get_settings",
+        lambda: Settings(preview_report_admin_token=token),
+    )
+    return token
+
+
+def test_list_leads_requires_admin_token_404s_when_missing(client):
+    test_client, _engine = client
+    response = test_client.get("/preview-reports/leads")
+    assert response.status_code == 404
+
+
+def test_list_leads_404s_when_no_token_configured(client):
+    test_client, _engine = client
+    response = test_client.get("/preview-reports/leads", headers={"X-Admin-Token": "anything"})
+    assert response.status_code == 404
+
+
+def test_list_leads_404s_on_wrong_token(client, monkeypatch):
+    test_client, _engine = client
+    _with_admin_token(monkeypatch)
+    response = test_client.get("/preview-reports/leads", headers={"X-Admin-Token": "wrong"})
+    assert response.status_code == 404
+
+
+def test_list_leads_returns_both_report_linked_and_direct_leads(client, monkeypatch):
+    test_client, engine = client
+    token = _with_admin_token(monkeypatch)
+
+    with Session(engine) as session:
+        report = PreviewReport(store_url="https://zuhoor.sa", status="ready", report={})
+        session.add(report)
+        session.commit()
+        session.refresh(report)
+        report_id = report.id
+
+    linked = test_client.post(f"/preview-reports/{report_id}/join", json=_join_payload(name="محمد"))
+    assert linked.status_code == 200
+    direct = test_client.post("/preview-reports/leads", json=_join_payload(name="سارة", email="sara@example.com"))
+    assert direct.status_code == 200
+
+    response = test_client.get("/preview-reports/leads", headers={"X-Admin-Token": token})
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) == 2
+
+    by_name = {item["name"]: item for item in body}
+    assert by_name["محمد"]["store_url"] == "https://zuhoor.sa"
+    assert by_name["سارة"]["store_url"] is None

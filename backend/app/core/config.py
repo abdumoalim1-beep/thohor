@@ -1,13 +1,24 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.core.evaluation_mode import EvaluationMode
 
+# Anchored to this file's own location rather than a bare ".env" (which
+# pydantic-settings resolves relative to the process's CWD, not this
+# package) — some local launch configs run uvicorn with --app-dir backend
+# from the repo root, where CWD is the root and a plain ".env" silently
+# resolves to a nonexistent repo-root file instead of backend/.env,
+# leaving any .env-only setting unset with no error. Production is
+# unaffected either way: Render injects real env vars directly, which
+# pydantic-settings always checks first regardless of env_file.
+_ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(env_file=str(_ENV_FILE), env_file_encoding="utf-8", extra="ignore")
 
     app_env: str = "local"
     cors_allowed_origins: list[str] = ["http://localhost:3000"]
@@ -112,6 +123,13 @@ class Settings(BaseSettings):
     # header. None (the default) disables the bypass entirely, so this is
     # inert unless explicitly set.
     preview_report_bypass_token: SecretStr | None = None
+    # Gates GET /preview-reports/leads (the survey-submissions list) — sent
+    # as the X-Admin-Token header. Deliberately separate from the bypass
+    # token above: one skips a rate limit, this one reads real contact
+    # data, so a leaked bypass token can't also expose leads. None (the
+    # default) disables the endpoint entirely (404s), so it's inert unless
+    # explicitly set.
+    preview_report_admin_token: SecretStr | None = None
 
     # SERP provider — absent key falls back to the mock provider
     serpapi_api_key: SecretStr | None = None

@@ -708,8 +708,8 @@ async function parseErrorMessage(response: Response): Promise<string> {
   }
 }
 
-async function getJson<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`);
+async function getJson<T>(path: string, extraHeaders?: Record<string, string>): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, extraHeaders ? { headers: extraHeaders } : undefined);
   if (!response.ok) {
     throw new Error(await parseErrorMessage(response));
   }
@@ -1183,4 +1183,18 @@ export async function joinPreviewReportBeta(
 // no report_id since there's no prior analysis to attach it to.
 export async function joinBetaDirectly(payload: PreviewJoinBetaRequest): Promise<{ id: string }> {
   return postJson("/preview-reports/leads", payload);
+}
+
+export type PreviewReportLeadItem = {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  report_feedback: string;
+  interest_level: string;
+  store_url: string | null;
+};
+
+export async function listPreviewReportLeads(adminToken: string): Promise<PreviewReportLeadItem[]> {
+  return getJson("/preview-reports/leads", { "X-Admin-Token": adminToken });
 }

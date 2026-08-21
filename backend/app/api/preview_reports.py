@@ -53,6 +53,17 @@ def _is_bypass(request: Request) -> bool:
     return provided is not None and provided == token.get_secret_value()
 
 
+def _is_admin(request: Request) -> bool:
+    """Gates GET /leads — sends X-Admin-Token matching
+    settings.preview_report_admin_token. Disabled by default, same
+    "unset token means nothing can match" rule as _is_bypass."""
+    token = get_settings().preview_report_admin_token
+    if token is None:
+        return False
+    provided = request.headers.get("x-admin-token")
+    return provided is not None and provided == token.get_secret_value()
+
+
 class CreatePreviewReportRequest(BaseModel):
     store_url: str
 
@@ -78,6 +89,16 @@ class PreviewReportJoinRequest(BaseModel):
 
 class PreviewReportJoinResponse(BaseModel):
     id: uuid.UUID
+
+
+class PreviewReportLeadItem(BaseModel):
+    id: uuid.UUID
+    created_at: datetime
+    name: str
+    email: str
+    report_feedback: str
+    interest_level: str
+    store_url: str | None = None
 
 
 def _validate_lead_payload(payload: PreviewReportJoinRequest) -> tuple[str, str, str, str]:
@@ -129,6 +150,44 @@ def create_preview_report(
 
     execute_preview_report_task.delay(str(report.id))
     return CreatePreviewReportResponse(report_id=report.id, status=report.status)
+
+
+@router.get("/leads", response_model=list[PreviewReportLeadItem])
+def list_preview_report_leads(
+    request: Request, session: Session = Depends(get_session)
+) -> list[PreviewReportLeadItem]:
+    """Every real survey submission — both from a report's own beta modal
+    (preview_report_id set) and the header's direct-join modal
+    (preview_report_id None). 404s rather than 401/403 when the token is
+    missing/wrong, so the endpoint's existence isn't revealed to a caller
+    that doesn't already know the token.
+
+    Registered before GET /{report_id} on purpose: Starlette matches
+    routes in registration order, and /{report_id}'s bare path param
+    would otherwise swallow "leads" as a (invalid-UUID) report_id first,
+    never reaching this route at all."""
+    if not _is_admin(request):
+        raise HTTPException(status_code=404)
+
+    leads = session.exec(select(PreviewReportLead).order_by(PreviewReportLead.created_at.desc())).all()
+    report_ids = {lead.preview_report_id for lead in leads if lead.preview_report_id is not None}
+    store_urls: dict[uuid.UUID, str] = {}
+    if report_ids:
+        reports = session.exec(select(PreviewReport).where(PreviewReport.id.in_(report_ids))).all()
+        store_urls = {report.id: report.store_url for report in reports}
+
+    return [
+        PreviewReportLeadItem(
+            id=lead.id,
+            created_at=lead.created_at,
+            name=lead.name,
+            email=lead.email,
+            report_feedback=lead.report_feedback,
+            interest_level=lead.interest_level,
+            store_url=store_urls.get(lead.preview_report_id) if lead.preview_report_id else None,
+        )
+        for lead in leads
+    ]
 
 
 @router.get("/{report_id}", response_model=PreviewReportResponse)
