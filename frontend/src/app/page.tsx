@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, useEffect, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 import { joinBetaDirectly } from "@/lib/api";
@@ -31,12 +31,10 @@ const GOOD_FG = "#19a06a";
 const WORDS = ["إيرادات", "أرباح", "عملاء"];
 
 const NAV_LINKS: { label: string; href: string }[] = [
-  { label: "الرئيسية", href: "#top" },
-  { label: "المنصة", href: "#how" },
-  { label: "الحلول", href: "#features" },
-  { label: "الأسعار", href: "#pricing" },
-  { label: "من نحن", href: "#testimonials" },
-  { label: "تواصل", href: "#footer" },
+  { label: "المميزات", href: "#features" },
+  { label: "كيف تعمل", href: "#steps" },
+  { label: "التسعير", href: "#pricing" },
+  { label: "الأسئلة الشائعة", href: "#faq" },
 ];
 
 const DASHBOARD_NAV_ITEMS: { icon: DashIconName; label: string; active?: boolean }[] = [
@@ -102,14 +100,29 @@ const REPORT_ROWS: { icon: string; title: string; value: string; delta: string }
   { icon: "📺", title: "الفيديو", value: "١٢٤٠ إشارة", delta: "+٩٪" },
 ];
 
-const FEATURES: { icon: string; title: string; text: string }[] = [
-  { icon: "📡", title: "متابعة التغطية الإعلامية", text: "تابع علامتك في الأخبار والتواصل الاجتماعي والفيديو والبودكاست في مكان واحد." },
-  { icon: "📈", title: "ظهور لحظي", text: "راقب الإشارات والوصول وحصة الصوت لحظة بلحظة." },
-  { icon: "🛡", title: "تنبيهات ذكية", text: "إشعار فوري عند تغيّر الانطباع أو ظهور ارتفاع مفاجئ." },
-  { icon: "📋", title: "تقارير تلقائية", text: "أنشئ تقارير علامة جاهزة للعرض وفق جدول زمني." },
-  { icon: "👁", title: "رؤى الظهور", text: "اعرف القنوات التي تجلب أكبر قدر من الانتباه لعلامتك." },
-  { icon: "👥", title: "عمل جماعي", text: "أضف فريقك، ووزّع الإشارات، وحافظ على تنسيق التقارير." },
+const STEP_1_ROWS: { value: string; label: string; icon: DashIconName; pending?: boolean }[] = [
+  { value: "٢٤٨ صفحة", label: "صفحات الموقع", icon: "doc" },
+  { value: "محدّد", label: "نشاطك وسوقك", icon: "target" },
+  { value: "جاري", label: "ربط Google", icon: "signal", pending: true },
 ];
+
+const STEP_2_STATS: { label: string; pct: number }[] = [
+  { label: "الظهور في Google", pct: 62 },
+  { label: "محركات الذكاء", pct: 41 },
+];
+
+const STEP_2_ISSUES: { label: string; impact: string; color: string }[] = [
+  { label: "صفحات مهمة غير مفهرسة", impact: "عالي", color: "#d9534f" },
+  { label: "وصف وعناوين ناقصة", impact: "متوسط", color: "#e0a23c" },
+];
+
+const STEP_3_FIXES: { label: string; status: string; done?: boolean }[] = [
+  { label: "إضافة وصف للصفحات الرئيسية", status: "تطبيق" },
+  { label: "إصلاح فهرسة صفحة الخدمات", status: "تم", done: true },
+];
+
+const STEP_3_TREND = [20, 32, 46, 72];
+const STEP_3_MONTHS = ["أكت", "يول", "أبر", "ينا"];
 
 const TESTIMONIALS: { quote: string; name: string; company: string }[] = [
   { quote: "وفّرنا أسابيع من المتابعة اليدوية، ولوحة التحكم تجعل الأمر بسيطاً.", name: "سارة النديّة", company: "إيرث أوبس" },
@@ -237,8 +250,8 @@ export default function Home() {
         rotWord={WORDS[rotIndex]}
         rotOn={rotOn}
       />
-      <HowItWorks />
-      <FeaturesSection />
+      <PlatformFeatures />
+      <HowStepsSection />
       <TestimonialsSection />
       <PricingSection />
       <FaqSection />
@@ -408,12 +421,12 @@ function HeroBlock({
           flexWrap: "wrap",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#fff", fontWeight: 700, fontSize: 19 }}>
+        <a href="#top" style={{ display: "flex", alignItems: "center", gap: 10, color: "#fff", fontWeight: 700, fontSize: 19 }}>
           <span style={{ filter: "brightness(0) invert(1)", display: "flex" }}>
             <BrandMark className="h-[26px] w-[26px]" />
           </span>
           ظهور
-        </div>
+        </a>
         <div className="hidden md:flex" style={{ alignItems: "center", gap: 28, fontSize: 14, fontWeight: 600, color: "#fff" }}>
           {NAV_LINKS.map((l) => (
             <a key={l.href} href={l.href} style={{ color: "#fff" }}>
@@ -944,11 +957,11 @@ function HeroBlock({
   );
 }
 
-function HowItWorks() {
+function PlatformFeatures() {
   return (
-    <div id="how">
+    <div id="features">
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "96px 32px 0", textAlign: "center" }}>
-        <SectionBadge label="كيف تعمل المنصة" />
+        <SectionBadge label="مميزات المنصة" />
         <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto", maxWidth: 640 }}>
           كيف يصنع تحليل الظهور فرقاً في نموّك
         </h2>
@@ -1134,26 +1147,206 @@ function HowItWorks() {
   );
 }
 
-function FeaturesSection() {
+function HowStepsSection() {
   return (
-    <div id="features" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
-      <SectionBadge label="الميزات" />
-      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 16px", maxWidth: 660 }}>
-        كل ما تحتاجه لمتابعة علامتك التجارية
-      </h2>
-      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 480, margin: "0 auto 52px", lineHeight: 1.8 }}>
-        تابع الإشارات، وقِس الظهور، وشارك النتائج مع فريقك وأصحاب المصلحة.
-      </p>
-      <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, textAlign: "right" }}>
-        {FEATURES.map((f) => (
-          <div key={f.title} style={{ border: `1px solid ${BORDER}`, borderRadius: 22, padding: 28, boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)" }}>
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, marginBottom: 18 }}>
-              {f.icon}
-            </div>
-            <div style={{ fontSize: 18.5, fontWeight: 700, color: DARK, marginBottom: 8 }}>{f.title}</div>
-            <div style={{ fontSize: 14, color: MUTED, lineHeight: 1.75 }}>{f.text}</div>
+    <section
+      id="steps"
+      style={{
+        padding: "104px 0",
+        backgroundColor: "#fbfefd",
+        backgroundImage:
+          "linear-gradient(to right, rgba(4,43,41,0.035) 1px, transparent 1px),linear-gradient(to bottom, rgba(4,43,41,0.035) 1px, transparent 1px)",
+        backgroundSize: "48px 48px",
+      }}
+    >
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 28, marginBottom: 56 }}>
+          <h2 style={{ fontSize: 38, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: 0 }}>
+            كيف تعمل منصة ظهور
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16, maxWidth: 340, textAlign: "right" }}>
+            <p style={{ margin: 0, fontSize: 14.5, color: MUTED, lineHeight: 1.85 }}>
+              أضف رابط موقعك ودع ظهور يحلله ويحسّن ظهورك بنقرة واحدة
+            </p>
+            <Link
+              href="/preview"
+              className="rl-fill"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: TEAL,
+                color: "#fff",
+                fontSize: 13.5,
+                fontWeight: 700,
+                padding: "12px 24px",
+                borderRadius: 9999,
+                whiteSpace: "nowrap",
+              }}
+            >
+              ابدأ مجاناً <span aria-hidden>←</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
+          <StepCard title="اربط موقعك" text="أضف رابط موقعك ودع ظهور يبدأ يفهم نشاطك وسوقك ومنافسيك">
+            <Step1Mock />
+          </StepCard>
+          <StepCard title="اكتشف ما يمنع ظهورك" text="ظهور يحلل موقعك ووجودك في Google ومحركات الذكاء الاصطناعي ويحدد أهم فرص التحسين">
+            <Step2Mock />
+          </StepCard>
+          <StepCard title="أصلحه بنقرة واحدة" text="راجع التحسينات المقترحة وطبّقها مباشرة ثم تابع تحسّن ظهورك">
+            <Step3Mock />
+          </StepCard>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StepCard({ title, text, children }: { title: string; text: string; children: ReactNode }) {
+  return (
+    <div style={{ textAlign: "right" }}>
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 24,
+          padding: 22,
+          boxShadow: "0 2px 4px rgba(4,43,41,0.03),0 20px 44px rgba(4,43,41,0.07)",
+          marginBottom: 24,
+        }}
+      >
+        {children}
+      </div>
+      <div style={{ fontSize: 21, fontWeight: 700, color: DARK, marginBottom: 8 }}>{title}</div>
+      <p style={{ margin: 0, fontSize: 14, color: MUTED, lineHeight: 1.85 }}>{text}</p>
+    </div>
+  );
+}
+
+function Step1Mock() {
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
+        <span style={{ background: TEAL, color: "#fff", fontSize: 11.5, fontWeight: 700, padding: "8px 16px", borderRadius: 9999, whiteSpace: "nowrap" }}>
+          اربط
+        </span>
+        <div
+          dir="ltr"
+          style={{ flex: 1, minWidth: 0, background: "#f6faf9", borderRadius: 9999, padding: "9px 14px", fontSize: 11.5, color: "#9aabaa", textAlign: "left" }}
+        >
+          https://yourbrand.sa
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {STEP_1_ROWS.map((r) => (
+          <div key={r.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: r.pending ? "#e0a23c" : DARK }}>{r.value}</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, color: MUTED }}>
+              {r.label}
+              <span
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: "50%",
+                  background: "#eefaf8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 5,
+                  flexShrink: 0,
+                }}
+              >
+                <DashIcon name={r.icon} color={TEAL} />
+              </span>
+            </span>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function Step2Mock() {
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: DARK }}>تحليل الظهور</span>
+        <span style={{ background: TEAL, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "5px 11px", borderRadius: 9999, whiteSpace: "nowrap" }}>
+          ٤٨ فرصة
+        </span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
+        {STEP_2_STATS.map((s) => (
+          <div key={s.label}>
+            <div style={{ fontSize: 10, color: "#9aabaa", marginBottom: 4 }}>{s.label}</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: DARK, marginBottom: 6 }}>{s.pct}%</div>
+            <div style={{ height: 5, borderRadius: 5, background: "#eef3f2" }}>
+              <div style={{ height: "100%", width: `${s.pct}%`, borderRadius: 5, background: TEAL }} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {STEP_2_ISSUES.map((i) => (
+          <div key={i.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 11.5, color: DARK }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: i.color, flexShrink: 0 }} />
+              {i.label}
+            </span>
+            <span style={{ background: `${i.color}17`, color: i.color, fontSize: 9.5, fontWeight: 700, padding: "3px 9px", borderRadius: 8, whiteSpace: "nowrap" }}>
+              {i.impact}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Step3Mock() {
+  const max = Math.max(...STEP_3_TREND);
+  return (
+    <div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
+        {STEP_3_FIXES.map((f) => (
+          <div key={f.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <span style={{ fontSize: 11.5, color: DARK, fontWeight: 600 }}>{f.label}</span>
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                padding: "5px 11px",
+                borderRadius: 9999,
+                whiteSpace: "nowrap",
+                background: f.done ? TEAL : "#fff",
+                color: f.done ? "#fff" : TEAL,
+                border: f.done ? "none" : "1px solid #cdeeea",
+              }}
+            >
+              {f.status}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+          <span style={{ fontSize: 11, color: "#9aabaa" }}>مؤشر الظهور بعد التحسين</span>
+          <span style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 10, fontWeight: 700, padding: "3px 9px", borderRadius: 8 }}>+18%</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 40 }}>
+          {STEP_3_TREND.map((v, i) => (
+            <div key={i} style={{ flex: 1, height: `${(v / max) * 100}%`, background: "linear-gradient(180deg,#0bbfb1,#cdefeb)", borderRadius: 3 }} />
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
+          {STEP_3_MONTHS.map((m) => (
+            <span key={m} style={{ flex: 1, textAlign: "center", fontSize: 9, color: "#a9b8b7" }}>
+              {m}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
