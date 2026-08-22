@@ -27,6 +27,8 @@ const BORDER = "#eff4f3";
 const CARD_BG = "#f6faf9";
 const GOOD_BG = "#eefaf5";
 const GOOD_FG = "#19a06a";
+// Tint behind the white rows inside each "كيف تبدأ" step card.
+const STEP_PANEL = "#f4faf9";
 
 const WORDS = ["إيرادات", "أرباح", "عملاء"];
 
@@ -100,29 +102,31 @@ const REPORT_ROWS: { icon: string; title: string; value: string; delta: string }
   { icon: "📺", title: "الفيديو", value: "١٢٤٠ إشارة", delta: "+٩٪" },
 ];
 
-const STEP_1_ROWS: { value: string; label: string; icon: DashIconName; pending?: boolean }[] = [
-  { value: "٢٤٨ صفحة", label: "صفحات الموقع", icon: "doc" },
-  { value: "محدّد", label: "نشاطك وسوقك", icon: "target" },
-  { value: "جاري", label: "ربط Google", icon: "signal", pending: true },
+const STEP_1_ROWS: { label: string; value: string; icon: DashIconName; pending?: boolean }[] = [
+  { label: "صفحات الموقع", value: "٢٤٨ صفحة", icon: "doc" },
+  { label: "نشاطك وسوقك", value: "مُحدّد", icon: "target" },
+  { label: "ربط Google", value: "جاري", icon: "signal", pending: true },
 ];
 
-const STEP_2_STATS: { label: string; pct: number }[] = [
-  { label: "الظهور في Google", pct: 62 },
-  { label: "محركات الذكاء", pct: 41 },
+const STEP_2_STATS: { label: string; display: string; pct: number }[] = [
+  { label: "الظهور في Google", display: "٦٢٪", pct: 62 },
+  { label: "محركات الذكاء", display: "٤١٪", pct: 41 },
 ];
 
-const STEP_2_ISSUES: { label: string; impact: string; color: string }[] = [
-  { label: "صفحات مهمة غير مفهرسة", impact: "عالي", color: "#d9534f" },
-  { label: "وصف وعناوين ناقصة", impact: "متوسط", color: "#e0a23c" },
+const STEP_2_ISSUES: { label: string; impact: string; color: string; bg: string }[] = [
+  { label: "صفحات مهمة غير مفهرسة", impact: "عالي", color: "#d9605a", bg: "#fdeceb" },
+  { label: "وصف وعناوين ناقصة", impact: "متوسط", color: "#cf9235", bg: "#fdf3e5" },
 ];
 
 const STEP_3_FIXES: { label: string; status: string; done?: boolean }[] = [
   { label: "إضافة وصف للصفحات الرئيسية", status: "تطبيق" },
-  { label: "إصلاح فهرسة صفحة الخدمات", status: "تم", done: true },
+  { label: "إصلاح فهرسة صفحة الخدمات", status: "تم ✓", done: true },
 ];
 
-const STEP_3_TREND = [20, 32, 46, 72];
-const STEP_3_MONTHS = ["أكت", "يول", "أبر", "ينا"];
+// Chronological, so index 0 (ينا) renders rightmost under RTL and the
+// curve climbs leftward toward أكت — i.e. upward as time advances.
+const STEP_3_TREND = [24, 30, 38, 44, 52, 57, 66, 74, 79];
+const STEP_3_MONTHS = ["ينا", "أبر", "يول", "أكت"];
 
 const TESTIMONIALS: { quote: string; name: string; company: string }[] = [
   { quote: "وفّرنا أسابيع من المتابعة اليدوية، ولوحة التحكم تجعل الأمر بسيطاً.", name: "سارة النديّة", company: "إيرث أوبس" },
@@ -1152,19 +1156,19 @@ function HowStepsSection() {
     <section
       id="steps"
       style={{
-        padding: "104px 0",
-        backgroundColor: "#fbfefd",
+        padding: "96px 0 104px",
+        backgroundColor: "#f4fbf9",
         backgroundImage:
           "linear-gradient(to right, rgba(4,43,41,0.035) 1px, transparent 1px),linear-gradient(to bottom, rgba(4,43,41,0.035) 1px, transparent 1px)",
-        backgroundSize: "48px 48px",
+        backgroundSize: "52px 52px",
       }}
     >
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 28, marginBottom: 56 }}>
-          <h2 style={{ fontSize: 38, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: 0 }}>
-            كيف تعمل منصة ظهور
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 32, marginBottom: 60 }}>
+          <h2 style={{ fontSize: 44, lineHeight: 1.25, letterSpacing: "-0.8px", fontWeight: 700, color: TEAL, margin: 0 }}>
+            كيف تبدأ في ٣ خطوات
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16, maxWidth: 340, textAlign: "right" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 18, maxWidth: 360, textAlign: "right" }}>
             <p style={{ margin: 0, fontSize: 14.5, color: MUTED, lineHeight: 1.85 }}>
               أضف رابط موقعك ودع ظهور يحلله ويحسّن ظهورك بنقرة واحدة
             </p>
@@ -1179,9 +1183,10 @@ function HowStepsSection() {
                 color: "#fff",
                 fontSize: 13.5,
                 fontWeight: 700,
-                padding: "12px 24px",
+                padding: "13px 26px",
                 borderRadius: 9999,
                 whiteSpace: "nowrap",
+                boxShadow: "0 12px 26px rgba(11,158,148,0.3)",
               }}
             >
               ابدأ مجاناً <span aria-hidden>←</span>
@@ -1189,14 +1194,14 @@ function HowStepsSection() {
           </div>
         </div>
 
-        <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
-          <StepCard title="اربط موقعك" text="أضف رابط موقعك ودع ظهور يبدأ يفهم نشاطك وسوقك ومنافسيك">
+        <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 26 }}>
+          <StepCard title="اربط موقعك" text="أضف رابط موقعك ودع ظهور يبدأ بفهم نشاطك وسوقك ومنافسيك">
             <Step1Mock />
           </StepCard>
           <StepCard title="اكتشف ما يمنع ظهورك" text="ظهور يحلل موقعك ووجودك في Google ومحركات الذكاء الاصطناعي ويحدد أهم فرص التحسين">
             <Step2Mock />
           </StepCard>
-          <StepCard title="أصلحه بنقرة واحدة" text="راجع التحسينات المقترحة وطبّقها مباشرة ثم تابع تحسّن ظهورك">
+          <StepCard title="أصلحه بنقرة واحدة" text="راجع التحسينات المقترحة وطبّقها مباشرة ثم تابع تحسن ظهورك">
             <Step3Mock />
           </StepCard>
         </div>
@@ -1207,19 +1212,18 @@ function HowStepsSection() {
 
 function StepCard({ title, text, children }: { title: string; text: string; children: ReactNode }) {
   return (
-    <div style={{ textAlign: "right" }}>
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 24,
-          padding: 22,
-          boxShadow: "0 2px 4px rgba(4,43,41,0.03),0 20px 44px rgba(4,43,41,0.07)",
-          marginBottom: 24,
-        }}
-      >
-        {children}
-      </div>
-      <div style={{ fontSize: 21, fontWeight: 700, color: DARK, marginBottom: 8 }}>{title}</div>
+    <div
+      style={{
+        background: "#fff",
+        borderRadius: 28,
+        padding: 22,
+        textAlign: "right",
+        boxShadow: "0 2px 4px rgba(4,43,41,0.03),0 22px 48px rgba(4,43,41,0.07)",
+      }}
+    >
+      {/* tinted inner panel — the white rows sit on top of it */}
+      <div style={{ background: STEP_PANEL, borderRadius: 20, padding: 16, marginBottom: 26 }}>{children}</div>
+      <div style={{ fontSize: 21, fontWeight: 700, color: DARK, marginBottom: 10 }}>{title}</div>
       <p style={{ margin: 0, fontSize: 14, color: MUTED, lineHeight: 1.85 }}>{text}</p>
     </div>
   );
@@ -1228,38 +1232,47 @@ function StepCard({ title, text, children }: { title: string; text: string; chil
 function Step1Mock() {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-        <span style={{ background: TEAL, color: "#fff", fontSize: 11.5, fontWeight: 700, padding: "8px 16px", borderRadius: 9999, whiteSpace: "nowrap" }}>
-          اربط
-        </span>
-        <div
-          dir="ltr"
-          style={{ flex: 1, minWidth: 0, background: "#f6faf9", borderRadius: 9999, padding: "9px 14px", fontSize: 11.5, color: "#9aabaa", textAlign: "left" }}
-        >
-          https://yourbrand.sa
+      <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK, marginBottom: 14 }}>اربط موقعك</div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", borderRadius: 14, padding: "6px 14px 6px 6px" }}>
+          <span dir="ltr" style={{ flex: 1, minWidth: 0, fontSize: 11, color: "#b3c2c0", textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            https://yourbrand.sa
+          </span>
+          <span style={{ background: TEAL, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "7px 15px", borderRadius: 9999, whiteSpace: "nowrap", flexShrink: 0 }}>
+            اربط
+          </span>
         </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+
         {STEP_1_ROWS.map((r) => (
-          <div key={r.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 12.5, fontWeight: 700, color: r.pending ? "#e0a23c" : DARK }}>{r.value}</span>
-            <span style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, color: MUTED }}>
-              {r.label}
-              <span
-                style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: "50%",
-                  background: "#eefaf8",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 5,
-                  flexShrink: 0,
-                }}
-              >
-                <DashIcon name={r.icon} color={TEAL} />
-              </span>
+          <div key={r.label} style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", borderRadius: 14, padding: "11px 12px" }}>
+            <span
+              style={{
+                width: 20,
+                height: 20,
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 3,
+              }}
+            >
+              <DashIcon name={r.icon} color="#8fa9a5" />
+            </span>
+            <span style={{ flex: 1, fontSize: 11.5, fontWeight: 600, color: DARK }}>{r.label}</span>
+            <span
+              style={{
+                background: r.pending ? "#fdf3e5" : "#e8f6f3",
+                color: r.pending ? "#cf9235" : "#0b8f7d",
+                fontSize: 9.5,
+                fontWeight: 700,
+                padding: "4px 10px",
+                borderRadius: 9999,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              {r.value}
             </span>
           </div>
         ))}
@@ -1271,31 +1284,42 @@ function Step1Mock() {
 function Step2Mock() {
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-        <span style={{ fontSize: 13, fontWeight: 700, color: DARK }}>تحليل الظهور</span>
-        <span style={{ background: TEAL, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "5px 11px", borderRadius: 9999, whiteSpace: "nowrap" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 14 }}>
+        <span style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>تحليل الظهور</span>
+        <span style={{ background: TEAL, color: "#fff", fontSize: 9.5, fontWeight: 700, padding: "5px 11px", borderRadius: 9999, whiteSpace: "nowrap" }}>
           ٤٨ فرصة
         </span>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
         {STEP_2_STATS.map((s) => (
-          <div key={s.label}>
-            <div style={{ fontSize: 10, color: "#9aabaa", marginBottom: 4 }}>{s.label}</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: DARK, marginBottom: 6 }}>{s.pct}%</div>
-            <div style={{ height: 5, borderRadius: 5, background: "#eef3f2" }}>
+          <div key={s.label} style={{ background: "#fff", borderRadius: 14, padding: "12px 12px 14px" }}>
+            <div style={{ fontSize: 9, color: "#a9b8b7", marginBottom: 8 }}>{s.label}</div>
+            <div style={{ fontSize: 19, fontWeight: 700, color: DARK, marginBottom: 10, letterSpacing: "-0.3px" }}>{s.display}</div>
+            <div style={{ height: 5, borderRadius: 5, background: "#eaf2f0" }}>
               <div style={{ height: "100%", width: `${s.pct}%`, borderRadius: 5, background: TEAL }} />
             </div>
           </div>
         ))}
       </div>
+
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {STEP_2_ISSUES.map((i) => (
-          <div key={i.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 11.5, color: DARK }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: i.color, flexShrink: 0 }} />
-              {i.label}
-            </span>
-            <span style={{ background: `${i.color}17`, color: i.color, fontSize: 9.5, fontWeight: 700, padding: "3px 9px", borderRadius: 8, whiteSpace: "nowrap" }}>
+          <div key={i.label} style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", borderRadius: 14, padding: "11px 12px" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: i.color, flexShrink: 0 }} />
+            <span style={{ flex: 1, fontSize: 11, fontWeight: 600, color: DARK }}>{i.label}</span>
+            <span
+              style={{
+                background: i.bg,
+                color: i.color,
+                fontSize: 9.5,
+                fontWeight: 700,
+                padding: "4px 11px",
+                borderRadius: 9999,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
               {i.impact}
             </span>
           </div>
@@ -1306,23 +1330,23 @@ function Step2Mock() {
 }
 
 function Step3Mock() {
-  const max = Math.max(...STEP_3_TREND);
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 10 }}>
         {STEP_3_FIXES.map((f) => (
-          <div key={f.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            <span style={{ fontSize: 11.5, color: DARK, fontWeight: 600 }}>{f.label}</span>
+          <div key={f.label} style={{ display: "flex", alignItems: "center", gap: 8, background: "#fff", borderRadius: 14, padding: "11px 12px" }}>
+            <span style={{ flex: 1, fontSize: 11, fontWeight: 600, color: DARK }}>{f.label}</span>
             <span
               style={{
-                fontSize: 10,
+                fontSize: 9.5,
                 fontWeight: 700,
-                padding: "5px 11px",
+                padding: "5px 12px",
                 borderRadius: 9999,
                 whiteSpace: "nowrap",
-                background: f.done ? TEAL : "#fff",
-                color: f.done ? "#fff" : TEAL,
-                border: f.done ? "none" : "1px solid #cdeeea",
+                flexShrink: 0,
+                background: f.done ? "#fff" : TEAL,
+                color: f.done ? "#0b8f7d" : "#fff",
+                border: f.done ? "1px solid #e0eeeb" : "none",
               }}
             >
               {f.status}
@@ -1330,23 +1354,61 @@ function Step3Mock() {
           </div>
         ))}
       </div>
-      <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-          <span style={{ fontSize: 11, color: "#9aabaa" }}>مؤشر الظهور بعد التحسين</span>
-          <span style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 10, fontWeight: 700, padding: "3px 9px", borderRadius: 8 }}>+18%</span>
+
+      <div style={{ background: "#fff", borderRadius: 14, padding: "12px 12px 10px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 12 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: DARK }}>مؤشر الظهور بعد التحسين</span>
+          <span style={{ background: "#e8f6f3", color: "#0b8f7d", fontSize: 9.5, fontWeight: 700, padding: "4px 10px", borderRadius: 9999, whiteSpace: "nowrap" }}>
+            +١٨٪
+          </span>
         </div>
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 40 }}>
-          {STEP_3_TREND.map((v, i) => (
-            <div key={i} style={{ flex: 1, height: `${(v / max) * 100}%`, background: "linear-gradient(180deg,#0bbfb1,#cdefeb)", borderRadius: 3 }} />
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
+        <StepTrendChart />
+      </div>
+    </div>
+  );
+}
+
+// Area chart for "مؤشر الظهور بعد التحسين". SVG has no writing direction
+// of its own, so index 0 is mapped to the right edge by hand to keep the
+// curve reading right-to-left like the rest of the page.
+function StepTrendChart() {
+  const n = STEP_3_TREND.length;
+  const pts = STEP_3_TREND.map((v, i) => ({
+    x: 100 - (i / (n - 1)) * 100,
+    y: 40 - (v / 100) * 34,
+  }));
+  let line = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 1; i < n; i++) {
+    const midX = (pts[i - 1].x + pts[i].x) / 2;
+    line += ` C ${midX} ${pts[i - 1].y} ${midX} ${pts[i].y} ${pts[i].x} ${pts[i].y}`;
+  }
+  const area = `${line} L ${pts[n - 1].x} 40 L ${pts[0].x} 40 Z`;
+
+  return (
+    <div style={{ display: "flex", gap: 6 }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 54 }}>
+          <defs>
+            <linearGradient id="zhStepTrend" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={TEAL} stopOpacity="0.26" />
+              <stop offset="100%" stopColor={TEAL} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d={area} fill="url(#zhStepTrend)" />
+          <path d={line} fill="none" stroke={TEAL} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <div style={{ display: "flex", marginTop: 6 }}>
           {STEP_3_MONTHS.map((m) => (
-            <span key={m} style={{ flex: 1, textAlign: "center", fontSize: 9, color: "#a9b8b7" }}>
+            <span key={m} style={{ flex: 1, textAlign: "center", fontSize: 8, color: "#bcc9c8" }}>
               {m}
             </span>
           ))}
         </div>
+      </div>
+      <div style={{ height: 54, display: "flex", flexDirection: "column", justifyContent: "space-between", fontSize: 7, color: "#cfdcda", flexShrink: 0 }}>
+        <span>١٠٠</span>
+        <span>٥٠</span>
+        <span>٠</span>
       </div>
     </div>
   );
