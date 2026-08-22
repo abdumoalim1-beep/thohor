@@ -1090,7 +1090,7 @@ function PlatformFeatures() {
     <div id="features" style={{ paddingBottom: 104 }}>
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "96px 32px 0", textAlign: "center" }}>
         <SectionBadge label="مميزات المنصة" />
-        <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto", maxWidth: 640 }}>
+        <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: TEAL, margin: "0 auto", maxWidth: 640 }}>
           كيف يصنع تحليل الظهور فرقاً في نموّك
         </h2>
       </div>
@@ -1658,7 +1658,7 @@ function TestimonialsSection() {
   return (
     <div id="testimonials" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="آراء العملاء" />
-      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 52px", maxWidth: 560 }}>
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: TEAL, margin: "0 auto 52px", maxWidth: 560 }}>
         قالوا عن ظهور
       </h2>
       <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1.25fr 1fr 1fr", gap: 24, textAlign: "right" }}>
@@ -1719,7 +1719,7 @@ function PricingSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <div id="pricing" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="الأسعار" />
-      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 16px", maxWidth: 520 }}>
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: TEAL, margin: "0 auto 16px", maxWidth: 520 }}>
         اختر الخطة المناسبة لظهورك
       </h2>
       <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 460, margin: "0 auto 30px", lineHeight: 1.8 }}>
@@ -1835,7 +1835,7 @@ function FaqSection() {
   return (
     <div id="faq" style={{ maxWidth: 820, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="الأسئلة الشائعة" />
-      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 44px" }}>
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: TEAL, margin: "0 auto 44px" }}>
         لديك سؤال؟ لدينا الإجابة
       </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, textAlign: "right" }}>
