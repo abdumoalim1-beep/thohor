@@ -670,7 +670,7 @@ function Hero({
             whiteSpace: "nowrap",
           }}
         >
-          حوّل ظهورك إلى{" "}
+          حوّل محادثاتك إلى{" "}
           <span
             style={{
               display: "inline-block",
