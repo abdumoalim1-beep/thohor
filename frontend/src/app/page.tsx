@@ -40,24 +40,23 @@ const NAV_LINKS: { label: string; href: string }[] = [
 ];
 
 const DASHBOARD_NAV_ITEMS: { icon: DashIconName; label: string; active?: boolean }[] = [
-  { icon: "grid", label: "نظرة عامة", active: true },
-  { icon: "eye", label: "الظهور" },
-  { icon: "bolt", label: "فرص التحسين" },
-  { icon: "pen", label: "المحتوى" },
-  { icon: "users", label: "المنافسون" },
+  { icon: "home", label: "لوحة التحكم", active: true },
+  { icon: "trend", label: "النمو" },
+  { icon: "audience", label: "الجمهور" },
+  { icon: "signal", label: "الإشارات" },
+  { icon: "columns", label: "المنافسون" },
   { icon: "doc", label: "التقارير" },
+  { icon: "alert", label: "التنبيهات" },
   { icon: "gear", label: "الإعدادات" },
 ];
 
-// The 5 quick stats deliberately roll every AI engine up into one "AI"
-// number — the per-engine split lives in its own card below, so this row
-// stays a summary instead of turning into a wall of numbers.
-const QUICK_STATS: { icon: DashIconName; value: string; label: string; delta?: string; highlight?: boolean }[] = [
-  { icon: "gauge", value: "64%", label: "مؤشر الظهور", delta: "↑12%" },
-  { icon: "search", value: "72%", label: "Google" },
-  { icon: "spark", value: "53%", label: "AI" },
-  { icon: "users", value: "5", label: "المنافسون" },
-  { icon: "bolt", value: "12", label: "فرص التحسين", highlight: true },
+const QUICK_STATS: { icon: DashIconName; value: string; label: string }[] = [
+  { icon: "target", value: "٨٧٣ ألف", label: "الوصول الشهري" },
+  { icon: "signal", value: "١٢٤٩٧٠", label: "إجمالي الإشارات" },
+  { icon: "triangle", value: "٨٠٪", label: "نسبة الإيجابية" },
+  { icon: "doc", value: "٣٢٠ ألف", label: "وصول الأخبار" },
+  { icon: "spark", value: "٤٨", label: "حملات نشطة" },
+  { icon: "alert", value: "١٢", label: "تنبيهات سلبية" },
 ];
 
 const BAR_A = [38, 54, 42, 66, 58, 80, 62, 88, 70, 96, 76, 92];
@@ -65,30 +64,24 @@ const BAR_B = [22, 40, 30, 48, 36, 58, 44, 66, 50, 72, 54, 68];
 const BARS = BAR_A.map((a, i) => ({ a, b: BAR_B[i] }));
 const MONTHS = ["ينا", "فبر", "مار", "أبر", "ماي", "يون", "يول", "أغس", "سبت", "أكت", "نوف", "ديس"];
 
-// Visibility trend: your own line climbs toward the 64% headline number
-// while the competitor bars stay flat — the whole point of the chart is
-// "you're closing the gap", so the series are shaped to show exactly that.
-const TREND_MAX = 80;
-const TREND_SERIES: { label: string; swatch: string; bar: string; values: number[] }[] = [
-  {
-    label: "موقعك",
-    swatch: TEAL,
-    bar: "linear-gradient(180deg,#0bbfb1,#7fdcd4)",
-    values: [28, 32, 30, 38, 42, 40, 48, 52, 50, 58, 62, 64],
-  },
-  { label: "المتوسط", swatch: "#dbe6e5", bar: "#dbe6e5", values: [42, 44, 41, 45, 43, 46, 44, 47, 45, 46, 44, 45] },
-  { label: "الأفضل", swatch: "#9db5b3", bar: "#9db5b3", values: [62, 64, 63, 66, 65, 68, 66, 69, 67, 70, 68, 71] },
+// Two-series year chart. Values are "in hundreds" so the axis reads
+// ٢/٤/٦/٨ ألف, and أغس lands on ٦٤ -> the ٦٤٠٠ tooltip.
+const CHART_MAX = 80;
+const CHART_SERIES: { label: string; color: string; values: number[] }[] = [
+  { label: "الإشارات", color: "#0d9e88", values: [40, 78, 46, 56, 52, 70, 48, 64, 44, 72, 54, 66] },
+  { label: "الوصول", color: "#a9e2d7", values: [26, 62, 34, 44, 38, 58, 36, 50, 32, 60, 42, 52] },
 ];
 
-const AI_ENGINES: { name: string; pct: number; up: boolean; icon: DashIconName; color: string }[] = [
-  { name: "ChatGPT", pct: 61, up: true, icon: "chat", color: "#0b9e94" },
-  { name: "Gemini", pct: 54, up: true, icon: "spark", color: "#8B5CF6" },
-  { name: "Perplexity", pct: 46, up: false, icon: "orbit", color: "#F0A34D" },
+const APPROVALS: { icon: DashIconName; name: string; date: string }[] = [
+  { icon: "doc", name: "الأخبار والصحافة", date: "١٠ يونيو ٠٣:٢٠" },
+  { icon: "audience", name: "التواصل الاجتماعي", date: "١٢ يونيو ٠٤:٣٠" },
+  { icon: "signal", name: "البودكاست", date: "١٤ يونيو ٠٥:٤٠" },
 ];
 
-const OPPORTUNITIES: { title: string; reason: string; impact: string; engine: string; action: string }[] = [
-  { title: "تحسين صفحة الخدمات", reason: "غائب عن 12 سؤالًا", impact: "مرتفع", engine: "ChatGPT + Google", action: "تحسين" },
-  { title: "إنشاء مقال", reason: "منافسوك يظهرون وأنت لا", impact: "مرتفع", engine: "AI", action: "إنشاء" },
+const MENTIONS: { title: string; icon: DashIconName; channel: string; source: string; status: string; ended?: boolean; date: string }[] = [
+  { title: "تقرير أداء الحملة", icon: "doc", channel: "الأخبار", source: "الرياض", status: "قيد المراجعة", date: "١٠ يونيو ٠٣:٢٠" },
+  { title: "ذكر العلامة في مقابلة", icon: "signal", channel: "بودكاست", source: "جدة", status: "نشط", date: "٠٨ يونيو ٠٤:٣٠" },
+  { title: "حملة الوعي الرقمي", icon: "audience", channel: "اجتماعي", source: "الدمام", status: "منتهي", ended: true, date: "٠٢ فبراير ٠٥:٤٠" },
 ];
 
 const MARQUEE_BASE = ["شعار", "منصة", "مجموعة", "شركة", "مؤسسة", "استوديو", "مختبر", "وكالة"];
@@ -280,71 +273,72 @@ function SectionBadge({ label }: { label: string }) {
 }
 
 type DashIconName =
-  | "grid"
-  | "eye"
-  | "bolt"
-  | "pen"
-  | "users"
+  | "home"
+  | "trend"
+  | "audience"
+  | "signal"
+  | "columns"
   | "doc"
+  | "alert"
   | "gear"
-  | "gauge"
-  | "search"
-  | "spark"
-  | "chat"
-  | "orbit"
-  | "bell";
+  | "target"
+  | "triangle"
+  | "spark";
 
-// Line icons for the hero's product mock. The AI-engine ones (chat /
-// spark / orbit) are deliberately generic marks in our own style, not
-// reproductions of the ChatGPT / Gemini / Perplexity logos — same
-// trademark reasoning as the platform icons the old homepage used.
+// Line icons for the hero's product mock, drawn to match the glyph
+// shapes in the approved dashboard design (home / arrow / concentric
+// circle / diamond / split panes / document / bang / gear / rings /
+// triangle / four-point star).
 function DashIcon({ name, color = "currentColor" }: { name: DashIconName; color?: string }) {
   const c = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
-  const s = { stroke: color, strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const s = { stroke: color, strokeWidth: 1.9, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (name) {
-    case "grid":
+    case "home":
       return (
         <svg {...c}>
-          <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2.2" {...s} />
-          <rect x="13" y="3.5" width="7.5" height="7.5" rx="2.2" {...s} />
-          <rect x="3.5" y="13" width="7.5" height="7.5" rx="2.2" {...s} />
-          <rect x="13" y="13" width="7.5" height="7.5" rx="2.2" {...s} />
+          <path d="M3.8 10.4L12 3.6l8.2 6.8v9.1a1 1 0 01-1 1H4.8a1 1 0 01-1-1z" {...s} />
         </svg>
       );
-    case "eye":
+    case "trend":
       return (
         <svg {...c}>
-          <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z" {...s} />
-          <circle cx="12" cy="12" r="2.9" {...s} />
+          <path d="M4.5 18.5L10 12.4l3.6 3.3 6-7.4" {...s} />
+          <path d="M15.6 8.3h4v4" {...s} />
         </svg>
       );
-    case "bolt":
+    case "audience":
       return (
         <svg {...c}>
-          <path d="M13.2 2.5L4.5 13.4h6.1l-.8 8.1 8.7-10.9h-6.1l.8-8.1z" {...s} />
+          <circle cx="12" cy="12" r="8.2" {...s} />
+          <circle cx="12" cy="12" r="3.1" fill={color} stroke="none" />
         </svg>
       );
-    case "pen":
+    case "signal":
       return (
         <svg {...c}>
-          <path d="M4.5 19.5l1-4.6L14.7 5.7l3.6 3.6-9.2 9.2-4.6 1z" {...s} />
-          <path d="M13.2 7.2l3.6 3.6" {...s} />
+          <path d="M12 3.4l8.6 8.6-8.6 8.6L3.4 12z" {...s} />
+          <circle cx="12" cy="12" r="2.2" fill={color} stroke="none" />
         </svg>
       );
-    case "users":
+    case "columns":
       return (
         <svg {...c}>
-          <circle cx="9.2" cy="8.4" r="3.2" {...s} />
-          <path d="M3.2 19.3c0-3.2 2.7-5.3 6-5.3s6 2.1 6 5.3" {...s} />
-          <path d="M16.4 6.2a3 3 0 010 5.8M18.6 19.3c0-2.5-.9-4-2.5-4.9" {...s} />
+          <rect x="3.6" y="4.2" width="16.8" height="15.6" rx="2.6" {...s} />
+          <path d="M12 4.2v15.6" {...s} />
         </svg>
       );
     case "doc":
       return (
         <svg {...c}>
-          <path d="M6 3.5h7.4L19 9.1V20.5H6z" {...s} />
-          <path d="M13.2 3.7V9.2h5.5" {...s} />
-          <path d="M9.2 13.2h6M9.2 16.6h4" {...s} />
+          <rect x="4.4" y="3.6" width="15.2" height="16.8" rx="2.6" {...s} />
+          <path d="M8.2 8.4h7.6M8.2 12h7.6M8.2 15.6h4.6" {...s} />
+        </svg>
+      );
+    case "alert":
+      return (
+        <svg {...c}>
+          <path d="M12 7.4v5.4" {...s} />
+          <circle cx="12" cy="16.6" r="1.15" fill={color} stroke="none" />
         </svg>
       );
     case "gear":
@@ -354,47 +348,23 @@ function DashIcon({ name, color = "currentColor" }: { name: DashIconName; color?
           <path d="M12 2.9v2.4M12 18.7v2.4M21.1 12h-2.4M5.3 12H2.9M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7M18.4 18.4l-1.7-1.7M7.3 7.3L5.6 5.6" {...s} />
         </svg>
       );
-    case "gauge":
+    case "target":
       return (
         <svg {...c}>
-          <path d="M3.8 17.6a9 9 0 1116.4 0" {...s} />
-          <path d="M12 13.4l4.1-3.5" {...s} />
-          <circle cx="12" cy="14.2" r="1.4" fill={color} stroke="none" />
+          <circle cx="12" cy="12" r="8.2" {...s} />
+          <circle cx="12" cy="12" r="3.6" {...s} />
         </svg>
       );
-    case "search":
+    case "triangle":
       return (
         <svg {...c}>
-          <circle cx="10.6" cy="10.6" r="6.4" {...s} />
-          <path d="M19.4 19.4l-4.2-4.2" {...s} />
+          <path d="M12 4.6l8 13.4H4z" {...s} />
         </svg>
       );
     case "spark":
       return (
         <svg {...c}>
-          <path d="M11 2.8l1.7 5 5 1.7-5 1.7-1.7 5-1.7-5-5-1.7 5-1.7 1.7-5z" {...s} />
-          <path d="M18.2 15.4l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7.7-2.1z" {...s} />
-        </svg>
-      );
-    case "chat":
-      return (
-        <svg {...c}>
-          <path d="M4 5.6h16v10.2h-9.8L6 19.5v-3.7H4z" {...s} />
-          <path d="M8.6 10.7h6.8" {...s} />
-        </svg>
-      );
-    case "orbit":
-      return (
-        <svg {...c}>
-          <circle cx="12" cy="12" r="3.4" {...s} />
-          <ellipse cx="12" cy="12" rx="9" ry="4.4" {...s} />
-        </svg>
-      );
-    case "bell":
-      return (
-        <svg {...c}>
-          <path d="M6.3 10.1a5.7 5.7 0 1111.4 0c0 3.9 1.6 5.5 1.6 5.5H4.7s1.6-1.6 1.6-5.5z" {...s} />
-          <path d="M10.2 18.6a2 2 0 003.6 0" {...s} />
+          <path d="M12 3.2l2.1 6.7 6.7 2.1-6.7 2.1L12 20.8l-2.1-6.7L3.2 12l6.7-2.1z" {...s} />
         </svg>
       );
   }
@@ -586,274 +556,197 @@ function HeroBlock({
           maxWidth: 1000,
           margin: "52px auto 0",
           background: "#fff",
-          borderRadius: 20,
-          border: "1px solid #eef3f2",
+          borderRadius: 24,
           boxShadow: "0 3px 8px rgba(4,43,41,0.05),0 48px 100px rgba(4,43,41,0.14)",
           overflow: "hidden",
         }}
       >
-        {/* topbar */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "11px 16px",
-            borderBottom: "1px solid #f2f6f5",
-            flexWrap: "wrap",
-            gap: 8,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, fontWeight: 700, fontSize: 12.5, color: DARK }}>
-              <BrandMark className="h-[18px] w-[18px]" /> ظهور
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                background: "#f5f8f8",
-                borderRadius: 16,
-                padding: "5px 11px",
-                fontSize: 10,
-                color: "#9aabaa",
-              }}
-            >
-              <span style={{ width: 10, height: 10, display: "block", flexShrink: 0 }}>
-                <DashIcon name="search" color="#9aabaa" />
-              </span>
-              بحث
-            </div>
-            <span style={{ width: 13, height: 13, display: "block", flexShrink: 0 }}>
-              <DashIcon name="bell" color="#7f9291" />
-            </span>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #eef3f2", borderRadius: 16, padding: "4px 5px 4px 10px" }}>
-              <div style={{ width: 17, height: 17, borderRadius: "50%", background: "#dfeceb" }} />
-              <span style={{ fontSize: 10.5, fontWeight: 600, color: DARK }}>نورة العامر</span>
-            </div>
-          </div>
-        </div>
-
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {/* SIDEBAR */}
+          {/* SIDEBAR — first child, so RTL puts it on the right like the design */}
           <div
             className="hidden md:flex"
-            style={{ width: 152, borderLeft: "1px solid #f2f6f5", padding: "12px 10px", flexDirection: "column", gap: 2 }}
+            style={{
+              width: 194,
+              flexDirection: "column",
+              background: "#fff",
+              borderLeft: "1px solid #eef4f3",
+              padding: "20px 14px 18px",
+            }}
           >
-            {DASHBOARD_NAV_ITEMS.map((item) => (
-              <div
-                key={item.label}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  fontSize: 11.5,
-                  fontWeight: 600,
-                  padding: "5px 7px",
-                  borderRadius: 9999,
-                  background: item.active ? TEAL : "transparent",
-                  color: item.active ? "#fff" : MUTED,
-                }}
-              >
-                <span
+            <div style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 17, color: DARK, padding: "0 6px 20px" }}>
+              <BrandMark className="h-[22px] w-[22px]" /> ظهور
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              {DASHBOARD_NAV_ITEMS.map((item) => (
+                <div
+                  key={item.label}
                   style={{
-                    width: 21,
-                    height: 21,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    padding: "7px 9px",
+                    borderRadius: 9999,
+                    background: item.active ? TEAL : "transparent",
+                    color: item.active ? "#fff" : "#556663",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 25,
+                      height: 25,
+                      borderRadius: "50%",
+                      flexShrink: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5.5,
+                      background: item.active ? "#fff" : "#eaf6f3",
+                    }}
+                  >
+                    <DashIcon name={item.icon} color={item.active ? TEAL : "#4d8f85"} />
+                  </span>
+                  {item.label}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "auto", paddingTop: 24, textAlign: "center" }}>
+              <div style={{ position: "relative", width: 40, height: 40, margin: "0 auto 8px" }}>
+                <div
+                  style={{
+                    width: 40,
+                    height: 40,
                     borderRadius: "50%",
-                    flexShrink: 0,
+                    background: "#eaf6f3",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    padding: 4.5,
-                    background: item.active ? "#fff" : "#f4f8f7",
+                    fontSize: 15,
+                    fontWeight: 700,
+                    color: "#4d8f85",
                   }}
                 >
-                  <DashIcon name={item.icon} color={item.active ? TEAL : "#7f9291"} />
+                  ن
+                </div>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: -3,
+                    left: -3,
+                    minWidth: 17,
+                    height: 17,
+                    borderRadius: 9999,
+                    background: TEAL,
+                    color: "#fff",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "2px solid #fff",
+                  }}
+                >
+                  ٩
                 </span>
-                {item.label}
               </div>
-            ))}
-            <div style={{ marginTop: "auto", paddingTop: 16, textAlign: "center" }}>
-              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#dfeceb", margin: "0 auto 6px" }} />
-              <div style={{ fontSize: 10.5, fontWeight: 700, color: DARK }}>نورة العامر</div>
+              <div style={{ fontSize: 11.5, fontWeight: 700, color: DARK }}>نورة العامر</div>
+              <div style={{ fontSize: 9, color: "#a9b8b7", marginTop: 3 }}>noura@zuhoor.sa</div>
             </div>
           </div>
 
           {/* MAIN */}
-          <div style={{ flex: 1, minWidth: 280, padding: 13, display: "flex", flexDirection: "column", gap: 11 }}>
+          <div style={{ flex: 1, minWidth: 280, background: "#f7fbfa", padding: 16, display: "flex", flexDirection: "column", gap: 13 }}>
             {/* QUICK STATS */}
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: 7 }}>
-              <div style={{ flex: "0 0 92px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>نظرة سريعة</div>
-                <div style={{ fontSize: 9, color: "#9aabaa", marginTop: 4, lineHeight: 1.6 }}>آخر ٧ أيام</div>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: 8 }}>
+              <div style={{ flex: "0 0 108px", display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 2px" }}>
+                <div style={{ fontSize: 14.5, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>مؤشرات سريعة</div>
+                <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 6, lineHeight: 1.65 }}>قياس الظهور خلال آخر ٧ أيام</div>
               </div>
               {QUICK_STATS.map((s) => (
                 <div
                   key={s.label}
                   style={{
-                    position: "relative",
-                    flex: "1 1 92px",
-                    minWidth: 86,
+                    flex: "1 1 86px",
+                    minWidth: 80,
                     background: "#fff",
-                    border: `1px solid ${s.highlight ? "#cdeeea" : "#f1f5f4"}`,
-                    borderRadius: 13,
-                    padding: "11px 6px 10px",
+                    borderRadius: 16,
+                    padding: "13px 6px 12px",
                     textAlign: "center",
-                    boxShadow: s.highlight ? "0 8px 20px rgba(11,158,148,0.16)" : "0 2px 5px rgba(4,43,41,0.035)",
+                    boxShadow: "0 1px 3px rgba(4,43,41,0.04),0 8px 20px rgba(4,43,41,0.045)",
                   }}
                 >
                   <span
                     style={{
-                      width: 26,
-                      height: 26,
+                      width: 28,
+                      height: 28,
                       borderRadius: "50%",
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      padding: 6.5,
-                      marginBottom: 6,
-                      background: s.highlight ? TEAL : "#f4f8f7",
+                      padding: 7,
+                      marginBottom: 9,
+                      background: "#eaf6f3",
                     }}
                   >
-                    <DashIcon name={s.icon} color={s.highlight ? "#fff" : "#7f9291"} />
+                    <DashIcon name={s.icon} color="#4d8f85" />
                   </span>
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
-                    <span style={{ fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>{s.value}</span>
-                    {s.delta && <span style={{ fontSize: 8.5, fontWeight: 700, color: GOOD_FG }}>{s.delta}</span>}
-                  </div>
-                  <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 3, lineHeight: 1.45 }}>{s.label}</div>
-                  {s.highlight && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        bottom: -11,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: 22,
-                        height: 22,
-                        borderRadius: "50%",
-                        background: "#fff",
-                        border: "1px solid #eef3f2",
-                        boxShadow: "0 4px 10px rgba(4,43,41,0.12)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 10,
-                        color: TEAL,
-                      }}
-                    >
-                      ↗
-                    </span>
-                  )}
+                  <div style={{ fontSize: 14, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>{s.value}</div>
+                  <div style={{ fontSize: 9, color: "#9aabaa", marginTop: 4, lineHeight: 1.45 }}>{s.label}</div>
                 </div>
               ))}
             </div>
 
-            {/* TREND + AI ENGINES */}
-            <div className="rl-zh-dash-2" style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 11 }}>
-              <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: DARK }}>تطوّر ظهورك</span>
-                    {TREND_SERIES.map((s) => (
-                      <span key={s.label} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 8.5, color: "#7f9291" }}>
-                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.swatch, flexShrink: 0 }} />
+            {/* CHART + APPROVALS */}
+            <div className="rl-zh-dash-2" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 13 }}>
+              <div style={{ background: "#fff", borderRadius: 18, padding: 16, boxShadow: "0 1px 3px rgba(4,43,41,0.04),0 8px 20px rgba(4,43,41,0.045)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>الظهور خلال السنة</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+                    {CHART_SERIES.map((s) => (
+                      <span key={s.label} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 9.5, color: "#7f9291" }}>
+                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: s.color, flexShrink: 0 }} />
                         {s.label}
-                      </span>
-                    ))}
-                  </div>
-                  <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 9999, padding: 2.5, gap: 2 }}>
-                    {["الكل", "Google", "AI"].map((t, i) => (
-                      <span
-                        key={t}
-                        style={{
-                          fontSize: 8.5,
-                          fontWeight: 700,
-                          padding: "3px 9px",
-                          borderRadius: 9999,
-                          background: i === 0 ? "#fff" : "transparent",
-                          color: i === 0 ? DARK : "#9aabaa",
-                          boxShadow: i === 0 ? "0 1px 3px rgba(4,43,41,0.12)" : "none",
-                        }}
-                      >
-                        {t}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div style={{ display: "flex", gap: 6 }}>
-                  <div
-                    style={{
-                      height: 108,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      fontSize: 8.5,
-                      color: "#c3cfce",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {["80%", "60%", "40%", "20%", "0"].map((v) => (
-                      <span key={v}>{v}</span>
-                    ))}
-                  </div>
+                <div style={{ display: "flex", gap: 8 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ position: "relative", height: 108 }}>
-                      {[0, 25, 50, 75, 100].map((t) => (
-                        <span key={t} aria-hidden style={{ position: "absolute", left: 0, right: 0, top: `${t}%`, borderTop: "1px dashed #eef3f2" }} />
-                      ))}
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", gap: 3 }}>
+                    <div style={{ position: "relative", height: 122 }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", gap: 4 }}>
                         {MONTHS.map((m, i) => (
-                          <div key={m} style={{ flex: 1, height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 1.5 }}>
-                            {TREND_SERIES.map((s) => (
-                              <span
-                                key={s.label}
-                                style={{ width: 4, height: `${(s.values[i] / TREND_MAX) * 100}%`, background: s.bar, borderRadius: 2 }}
-                              />
+                          <div key={m} style={{ flex: 1, height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 2 }}>
+                            {CHART_SERIES.map((s) => (
+                              <span key={s.label} style={{ width: 6, height: `${(s.values[i] / CHART_MAX) * 100}%`, background: s.color, borderRadius: 3 }} />
                             ))}
                           </div>
                         ))}
                       </div>
-                      {/* pointer on أغس — the same "hovered bar" flourish the reference has */}
+                      {/* أغس sits at ٦٤ — the tooltip the design shows */}
                       <span
                         aria-hidden
                         style={{
                           position: "absolute",
                           left: "37.5%",
-                          top: "35%",
-                          transform: "translate(-50%,-50%)",
-                          width: 6,
-                          height: 6,
-                          borderRadius: "50%",
-                          background: TEAL,
-                          border: "1.5px solid #fff",
-                          boxShadow: "0 0 0 2px rgba(11,158,148,0.25)",
-                        }}
-                      />
-                      <span
-                        aria-hidden
-                        style={{
-                          position: "absolute",
-                          left: "37.5%",
-                          top: "35%",
-                          transform: "translate(-50%,-165%)",
+                          top: "20%",
+                          transform: "translate(-50%,-100%)",
                           background: DARK,
                           color: "#fff",
-                          fontSize: 8.5,
+                          fontSize: 9.5,
                           fontWeight: 700,
-                          padding: "3px 7px",
-                          borderRadius: 7,
+                          padding: "4px 9px",
+                          borderRadius: 8,
                           whiteSpace: "nowrap",
                         }}
                       >
-                        52%
+                        ٦٤٠٠
                       </span>
                     </div>
-                    <div style={{ display: "flex", gap: 3, marginTop: 6 }}>
+                    <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
                       {MONTHS.map((m) => (
                         <span key={m} style={{ flex: 1, textAlign: "center", fontSize: 8.5, color: "#a9b8b7" }}>
                           {m}
@@ -861,87 +754,160 @@ function HeroBlock({
                       ))}
                     </div>
                   </div>
+                  <div
+                    style={{
+                      height: 122,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      fontSize: 8.5,
+                      color: "#b9c7c5",
+                      flexShrink: 0,
+                      borderRight: "1px dashed #e9f2f0",
+                      paddingRight: 7,
+                    }}
+                  >
+                    {["٨ ألف", "٦ ألف", "٤ ألف", "٢ ألف", "٠"].map((v) => (
+                      <span key={v}>{v}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13, display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: DARK }}>محركات AI</div>
-                  <span style={{ fontSize: 12, color: "#c3cfce", lineHeight: 1 }}>⋯</span>
+              <div style={{ background: "#fff", borderRadius: 18, padding: 16, boxShadow: "0 1px 3px rgba(4,43,41,0.04),0 8px 20px rgba(4,43,41,0.045)", display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>بانتظار المراجعة</div>
+                  <span
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: "50%",
+                      background: "#f2f8f7",
+                      color: "#9aabaa",
+                      fontSize: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      lineHeight: 1,
+                    }}
+                  >
+                    ⋯
+                  </span>
                 </div>
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
-                  {AI_ENGINES.map((e) => (
-                    <div key={e.name} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-around", gap: 4 }}>
+                  {APPROVALS.map((a) => (
+                    <div key={a.name} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span
                         style={{
-                          width: 24,
-                          height: 24,
-                          borderRadius: 8,
+                          width: 30,
+                          height: 30,
+                          borderRadius: "50%",
                           flexShrink: 0,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          padding: 5.5,
-                          background: `${e.color}18`,
+                          padding: 7,
+                          background: "#eaf6f3",
                         }}
                       >
-                        <DashIcon name={e.icon} color={e.color} />
+                        <DashIcon name={a.icon} color="#4d8f85" />
                       </span>
-                      <span style={{ flex: 1, fontSize: 11.5, fontWeight: 600, color: DARK }}>{e.name}</span>
-                      <span style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>{e.pct}%</span>
-                      <span style={{ fontSize: 9.5, fontWeight: 700, color: e.up ? GOOD_FG : "#d9534f" }}>{e.up ? "↑" : "↓"}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 11.5, fontWeight: 700, color: DARK }}>{a.name}</div>
+                        <div style={{ fontSize: 9, color: "#a9b8b7", marginTop: 3 }}>{a.date}</div>
+                      </div>
+                      <span
+                        style={{
+                          border: "1px solid #e3efec",
+                          borderRadius: 9999,
+                          padding: "5px 11px",
+                          fontSize: 9,
+                          color: "#7f9291",
+                          whiteSpace: "nowrap",
+                          flexShrink: 0,
+                        }}
+                      >
+                        قيد المراجعة
+                      </span>
                     </div>
                   ))}
-                </div>
-                <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #f4f8f7", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 9.5, color: "#9aabaa" }}>المتوسط</span>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>53%</span>
                 </div>
               </div>
             </div>
 
-            {/* OPPORTUNITIES TABLE */}
-            <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: DARK }}>فرص التحسين</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ border: "1px solid #eef3f2", borderRadius: 9999, padding: "5px 11px", fontSize: 9.5, color: "#7f9291" }}>التأثير ⌄</span>
-                  <span style={{ background: TEAL, color: "#fff", borderRadius: 9999, padding: "5px 13px", fontSize: 9.5, fontWeight: 700 }}>تصدير</span>
+            {/* MENTIONS TABLE */}
+            <div style={{ background: "#fff", borderRadius: 18, padding: 16, boxShadow: "0 1px 3px rgba(4,43,41,0.04),0 8px 20px rgba(4,43,41,0.045)" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+                <div style={{ fontSize: 13.5, fontWeight: 700, color: DARK }}>إدارة الإشارات</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ border: "1px solid #e3efec", borderRadius: 9999, padding: "6px 13px", fontSize: 9.5, color: "#7f9291" }}>الحالة ⌄</span>
+                  <span style={{ background: TEAL, color: "#fff", borderRadius: 9999, padding: "6px 15px", fontSize: 9.5, fontWeight: 700 }}>تصدير ⬇</span>
                 </div>
               </div>
               <div style={{ overflowX: "auto" }}>
-                <div style={{ minWidth: 520 }}>
-                  <div style={{ display: "flex", gap: 8, fontSize: 8.5, color: "#a9b8b7", paddingBottom: 8, borderBottom: "1px solid #f4f8f7" }}>
-                    <span style={{ flex: 1.5 }}>الفرصة</span>
-                    <span style={{ flex: 1.5 }}>السبب</span>
-                    <span style={{ flex: 0.7 }}>التأثير</span>
-                    <span style={{ flex: 1.2 }}>المحرك</span>
-                    <span style={{ flex: 1, textAlign: "left" }}>الإجراء</span>
+                <div style={{ minWidth: 560 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 9, color: "#a9b8b7", padding: "0 12px 10px" }}>
+                    <span style={{ flex: "0 0 15px" }} />
+                    <span style={{ flex: 1.7 }}>الإشارة</span>
+                    <span style={{ flex: 1.1 }}>القناة</span>
+                    <span style={{ flex: 0.9 }}>المصدر</span>
+                    <span style={{ flex: 1 }}>الحالة</span>
+                    <span style={{ flex: 1.2 }}>التاريخ</span>
+                    <span style={{ flex: "0 0 14px" }} />
                   </div>
-                  {OPPORTUNITIES.map((o) => (
-                    <div key={o.title} style={{ display: "flex", gap: 8, alignItems: "center", padding: "11px 0", borderBottom: "1px solid #f8fbfa" }}>
-                      <span style={{ flex: 1.5, fontSize: 11, fontWeight: 600, color: DARK }}>{o.title}</span>
-                      <span style={{ flex: 1.5, fontSize: 10.5, color: MUTED }}>{o.reason}</span>
-                      <span style={{ flex: 0.7 }}>
-                        <span style={{ background: "#fdf1e7", color: "#c07038", fontSize: 8.5, fontWeight: 700, padding: "2px 8px", borderRadius: 7 }}>{o.impact}</span>
+                  {MENTIONS.map((m) => (
+                    <div
+                      key={m.title}
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        alignItems: "center",
+                        background: "#f6faf9",
+                        borderRadius: 13,
+                        padding: "11px 12px",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <span style={{ flex: "0 0 15px", width: 15, height: 15, borderRadius: 5, border: "1.5px solid #d7e6e3", background: "#fff" }} />
+                      <span style={{ flex: 1.7, fontSize: 11, fontWeight: 700, color: DARK }}>{m.title}</span>
+                      <span style={{ flex: 1.1, display: "flex", alignItems: "center", gap: 7, fontSize: 10.5, color: MUTED }}>
+                        <span
+                          style={{
+                            width: 22,
+                            height: 22,
+                            borderRadius: "50%",
+                            flexShrink: 0,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: 5,
+                            background: "#fff",
+                          }}
+                        >
+                          <DashIcon name={m.icon} color="#4d8f85" />
+                        </span>
+                        {m.channel}
                       </span>
-                      <span style={{ flex: 1.2, fontSize: 10, color: MUTED }}>{o.engine}</span>
-                      <span style={{ flex: 1, textAlign: "left" }}>
+                      <span style={{ flex: 0.9, fontSize: 10.5, color: MUTED }}>{m.source}</span>
+                      <span style={{ flex: 1 }}>
                         <span
                           style={{
                             display: "inline-block",
-                            background: TEAL,
-                            color: "#fff",
+                            background: m.ended ? "#eef2f1" : "#ddf3ee",
+                            color: m.ended ? "#8a9997" : "#0b8f7d",
                             fontSize: 9,
                             fontWeight: 700,
-                            padding: "5px 11px",
+                            padding: "4px 10px",
                             borderRadius: 9999,
                             whiteSpace: "nowrap",
                           }}
                         >
-                          {o.action}
+                          {m.status}
                         </span>
                       </span>
+                      <span style={{ flex: 1.2, fontSize: 10, color: MUTED, whiteSpace: "nowrap" }}>{m.date}</span>
+                      <span style={{ flex: "0 0 14px", fontSize: 11, color: "#c3cfce", textAlign: "left", lineHeight: 1 }}>⋯</span>
                     </div>
                   ))}
                 </div>
