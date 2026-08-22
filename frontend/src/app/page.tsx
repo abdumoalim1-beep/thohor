@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 import { joinBetaDirectly } from "@/lib/api";
@@ -27,6 +27,8 @@ const BORDER = "#eff4f3";
 const CARD_BG = "#f6faf9";
 const GOOD_BG = "#eefaf5";
 const GOOD_FG = "#19a06a";
+
+const WORDS = ["إيرادات", "أرباح", "عملاء"];
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "الرئيسية", href: "#top" },
@@ -193,10 +195,30 @@ const JOIN_USAGE_OPTIONS: { value: string; label: string }[] = [
 export default function Home() {
   const [domain, setDomain] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [rotIndex, setRotIndex] = useState(0);
+  const [rotOn, setRotOn] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRotOn(false);
+      const swap = setTimeout(() => {
+        setRotIndex((i) => (i + 1) % WORDS.length);
+        setRotOn(true);
+      }, 350);
+      return () => clearTimeout(swap);
+    }, 2600);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div dir="rtl" className="rasid-landing" style={{ position: "relative", minHeight: "100vh", background: "#fff", overflowX: "clip" }}>
-      <HeroBlock domain={domain} onDomainChange={setDomain} onOpenModal={() => setModalOpen(true)} />
+      <HeroBlock
+        domain={domain}
+        onDomainChange={setDomain}
+        onOpenModal={() => setModalOpen(true)}
+        rotWord={WORDS[rotIndex]}
+        rotOn={rotOn}
+      />
       <HowItWorks />
       <FeaturesSection />
       <TestimonialsSection />
@@ -236,10 +258,14 @@ function HeroBlock({
   domain,
   onDomainChange,
   onOpenModal,
+  rotWord,
+  rotOn,
 }: {
   domain: string;
   onDomainChange: (v: string) => void;
   onOpenModal: () => void;
+  rotWord: string;
+  rotOn: boolean;
 }) {
   return (
     <div
@@ -329,10 +355,13 @@ function HeroBlock({
           العلامات التجارية
         </div>
         <h1 style={{ fontSize: 58, lineHeight: 1.15, letterSpacing: "-1px", fontWeight: 700, color: DARK, margin: 0 }}>
-          حوّل ذِكر علامتك إلى قرارات واضحة
+          حوّل محادثاتك إلى{" "}
+          <span style={{ display: "inline-block", color: TEAL, transition: "opacity .35s ease", opacity: rotOn ? 1 : 0 }}>
+            {rotWord}
+          </span>
         </h1>
         <p style={{ fontSize: 16, color: MUTED2, maxWidth: 480, margin: 0, lineHeight: 1.8 }}>
-          منصة ظهور تقيس كل ظهور لعلامتك عبر القنوات، مع لوحات مباشرة ومؤشر ظهور وتحليلات تنبؤية.
+          اعرف كيف تظهر علامتك، وحسّن حضورك لتتصدّر حيث يبحث عملاؤك بنقرة واحدة.
         </p>
 
         {/* Live domain -> /preview flow, unchanged from the previous homepage */}
