@@ -264,6 +264,22 @@
   }
 }
 
+/* Footer: brand block over the three link columns, then all stacked. */
+@media (max-width: 900px) {
+  .rl-zh-footer-cols {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .rl-zh-footer-cols > :first-child {
+    grid-column: 1 / -1;
+    margin-bottom: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .rl-zh-footer-cols {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
 @media (max-width: 860px) {
   .rl-zh-grid-3,
   .rl-zh-grid-2,

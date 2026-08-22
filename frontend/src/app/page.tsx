@@ -128,6 +128,42 @@ const STEP_3_FIXES: { label: string; status: string; done?: boolean }[] = [
 const STEP_3_TREND = [24, 30, 38, 44, 52, 57, 66, 74, 79];
 const STEP_3_MONTHS = ["ينا", "أبر", "يول", "أكت"];
 
+const FOOTER_COLUMNS: { title: string; links: { label: string; href?: string; modal?: boolean }[] }[] = [
+  {
+    title: "المنصة",
+    links: [
+      { label: "مراقبة الظهور", href: "#steps" },
+      { label: "الميزات", href: "#features" },
+      { label: "الأسعار", href: "#pricing" },
+    ],
+  },
+  {
+    title: "الموارد",
+    links: [
+      { label: "الأدوات", href: "#" },
+      { label: "التكاملات", href: "#integrations" },
+      { label: "توصيات الذكاء", href: "#" },
+      { label: "المدونة", href: "#" },
+    ],
+  },
+  {
+    title: "الشركة",
+    links: [
+      { label: "عن ظهور", href: "#" },
+      { label: "تواصل معنا", modal: true },
+      { label: "الوظائف", href: "#" },
+    ],
+  },
+];
+
+// Right-most first under RTL, matching the design's stc-pay-on-the-right row.
+const PAYMENT_METHODS: { name: string; slug: string }[] = [
+  { name: "stc pay", slug: "stcpay" },
+  { name: "Apple Pay", slug: "applepay" },
+  { name: "VISA", slug: "visa" },
+  { name: "mada", slug: "mada" },
+];
+
 // Order is DOM order, so under RTL the first entry renders right-most —
 // matching the design's WordPress-on-the-right layout.
 const INTEGRATIONS: { name: string; slug: string; desc: string }[] = [
@@ -333,8 +369,7 @@ export default function Home() {
       <TestimonialsSection />
       <PricingSection onOpenModal={() => setModalOpen(true)} />
       <FaqSection />
-      <CtaBanner onOpenModal={() => setModalOpen(true)} />
-      <SiteFooter />
+      <SiteFooter onOpenModal={() => setModalOpen(true)} />
       <JoinModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
@@ -1510,39 +1545,60 @@ function StepTrendChart() {
 // falling back to a lettered tile while a file is missing — so the
 // section is presentable before the logo assets land and upgrades on its
 // own once they do, with no code change.
-function IntegrationLogo({ name, slug }: { name: string; slug: string }) {
+// Loads a third-party brand mark from /public, degrading to text when the
+// file is absent — the logo assets are added separately, and a missing one
+// should not leave a broken image on a live page.
+function BrandAsset({
+  src,
+  label,
+  height,
+  fallback,
+  fallbackStyle,
+}: {
+  src: string;
+  label: string;
+  height: number;
+  fallback?: string;
+  fallbackStyle: CSSProperties;
+}) {
   const [failed, setFailed] = useState(false);
   const ref = useRef<HTMLImageElement>(null);
 
-  // The img is server-rendered, so a missing file usually errors before
-  // hydration attaches onError and the handler never runs. Re-check the
-  // element's own state once mounted: a finished load with zero intrinsic
-  // width is a failed one.
+  // The img is server-rendered, so a missing file errors before hydration
+  // attaches onError and the handler never runs. Re-check the element's own
+  // state once mounted: a finished load with zero intrinsic width failed.
   useEffect(() => {
     const img = ref.current;
     if (img && img.complete && img.naturalWidth === 0) setFailed(true);
   }, []);
 
   if (failed) {
-    return (
-      <span style={{ fontSize: 20, fontWeight: 700, color: TEAL_DEEP, lineHeight: 1 }} aria-hidden>
-        {name.charAt(0)}
-      </span>
-    );
+    return <span style={fallbackStyle}>{fallback ?? label}</span>;
   }
   return (
-    // A plain <img> rather than next/image: these are 30px static brand
+    // A plain <img> rather than next/image: these are small static brand
     // marks, so the LCP/bandwidth concern the rule guards against does not
     // apply, and onError is what drives the fallback above.
     // eslint-disable-next-line @next/next/no-img-element
     <img
       ref={ref}
-      src={`/integrations/${slug}.svg`}
-      alt={name}
-      width={30}
-      height={30}
+      src={src}
+      alt={label}
+      height={height}
       onError={() => setFailed(true)}
-      style={{ width: 30, height: 30, objectFit: "contain" }}
+      style={{ height, width: "auto", maxWidth: "100%", objectFit: "contain" }}
+    />
+  );
+}
+
+function IntegrationLogo({ name, slug }: { name: string; slug: string }) {
+  return (
+    <BrandAsset
+      src={`/integrations/${slug}.svg`}
+      label={name}
+      height={30}
+      fallback={name.charAt(0)}
+      fallbackStyle={{ fontSize: 20, fontWeight: 700, color: TEAL_DEEP, lineHeight: 1 }}
     />
   );
 }
@@ -1846,78 +1902,231 @@ function FaqSection() {
   );
 }
 
-function CtaBanner({ onOpenModal }: { onOpenModal: () => void }) {
-  return (
-    <div style={{ maxWidth: 1120, margin: "104px auto 0", padding: "0 32px" }}>
-      <div
-        style={{
-          background: `radial-gradient(120% 140% at 50% 0%, ${TEAL_BRIGHT} 0%, #0ab3a6 45%, ${TEAL_DEEP} 100%)`,
-          borderRadius: 32,
-          padding: "72px 40px",
-          textAlign: "center",
-          color: "#fff",
-          boxShadow: "0 30px 70px rgba(6,106,99,0.3)",
-        }}
-      >
-        <h2 style={{ fontSize: 38, lineHeight: 1.3, letterSpacing: "-0.6px", fontWeight: 700, margin: "0 auto 14px", maxWidth: 560 }}>
-          اعرف كل ظهور لعلامتك التجارية
-        </h2>
-        <p style={{ fontSize: 15.5, color: "#dcf6f3", maxWidth: 440, margin: "0 auto 30px", lineHeight: 1.8 }}>
-          جهّز المتابعة في دقائق، وشارك أول تقرير ظهور اليوم.
-        </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-          <Link
-            href="/preview"
-            style={{ background: "#fff", color: TEAL_DEEP, fontSize: 14, fontWeight: 700, padding: "13px 32px", borderRadius: 26, whiteSpace: "nowrap" }}
-          >
-            ابدأ الآن
-          </Link>
-          <button
-            onClick={onOpenModal}
-            style={{
-              border: "1px solid rgba(255,255,255,0.55)",
-              color: "#fff",
-              background: "transparent",
-              fontSize: 14,
-              fontWeight: 700,
-              padding: "13px 30px",
-              borderRadius: 26,
-              whiteSpace: "nowrap",
-              cursor: "pointer",
-            }}
-          >
-            احجز عرضاً توضيحياً
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+function SocialIcon({ name }: { name: "linkedin" | "x" | "instagram" }) {
+  const c = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
+  switch (name) {
+    case "linkedin":
+      return (
+        <svg {...c}>
+          <path
+            d="M4.6 9.4h3v10.2h-3zM6.1 4.4a1.8 1.8 0 110 3.6 1.8 1.8 0 010-3.6zM10.4 9.4h2.9v1.4a3.2 3.2 0 012.9-1.6c3 0 3.6 1.9 3.6 4.5v5.9h-3v-5.2c0-1.3 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8v5.3h-3z"
+            fill="#fff"
+          />
+        </svg>
+      );
+    case "x":
+      return (
+        <svg {...c}>
+          <path d="M4.2 4h4.3l3.9 5.2L16.6 4h2l-5.2 5.9 5.9 8.1h-4.3l-4.2-5.6L5.9 18H4l5.6-6.3z" fill="#fff" />
+        </svg>
+      );
+    case "instagram":
+      return (
+        <svg {...c}>
+          <rect x="4.3" y="4.3" width="15.4" height="15.4" rx="4.6" stroke="#fff" strokeWidth="1.7" />
+          <circle cx="12" cy="12" r="3.5" stroke="#fff" strokeWidth="1.7" />
+          <circle cx="16.5" cy="7.5" r="1.05" fill="#fff" />
+        </svg>
+      );
+  }
 }
 
-function SiteFooter() {
+function SiteFooter({ onOpenModal }: { onOpenModal: () => void }) {
+  const [domain, setDomain] = useState("");
+  const colTitle: CSSProperties = { fontSize: 14.5, fontWeight: 700, color: "#fff", marginBottom: 18 };
+  const colLink: CSSProperties = { display: "block", fontSize: 13.5, color: "rgba(255,255,255,0.78)", marginBottom: 14 };
+
   return (
-    <footer id="footer">
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "56px 32px 40px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 28 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 17, color: DARK }}>
-            <BrandMark className="h-[26px] w-[26px]" /> ظهور
+    <footer id="footer" style={{ marginTop: 104, padding: "0 14px 14px" }}>
+      <div
+        style={{
+          borderRadius: 40,
+          color: "#fff",
+          background: "linear-gradient(140deg,#1aae99 0%,#109080 50%,#0a7a68 100%)",
+          padding: "62px 48px 40px",
+        }}
+      >
+        {/* CTA — same domain -> /preview flow as the hero */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap", marginBottom: 76 }}>
+          <div style={{ maxWidth: 430 }}>
+            <h2 style={{ margin: 0, fontSize: 30, fontWeight: 700, letterSpacing: "-0.5px", lineHeight: 1.4 }}>ابدأ بتحسين ظهورك اليوم</h2>
+            <p style={{ margin: "12px 0 0", fontSize: 14.5, color: "rgba(255,255,255,0.82)", lineHeight: 1.8 }}>
+              أضف رابط موقعك واحصل على تحليل مجاني خلال دقائق.
+            </p>
           </div>
-          <div style={{ display: "flex", gap: 20, fontSize: 13.5, color: MUTED, fontWeight: 600, flexWrap: "wrap" }}>
-            <a href="#" style={{ color: MUTED }}>المنصة</a>
-            <a href="#pricing" style={{ color: MUTED }}>الأسعار</a>
-            <a href="#" style={{ color: MUTED }}>المدونة</a>
-            <a href="#" style={{ color: MUTED }}>تواصل</a>
-            <a href="#" style={{ color: MUTED }}>الخصوصية</a>
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              width: "min(420px,100%)",
+              background: "rgba(255,255,255,0.14)",
+              border: "1px solid rgba(255,255,255,0.22)",
+              borderRadius: 9999,
+              padding: 6,
+            }}
+          >
+            <div dir="ltr" style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", paddingInlineStart: 18 }}>
+              <input
+                placeholder="https://yourbrand.sa"
+                dir="ltr"
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  background: "transparent",
+                  border: 0,
+                  outline: "none",
+                  color: "#fff",
+                  fontSize: 13.5,
+                  padding: "9px 0",
+                  textAlign: "right",
+                }}
+              />
+            </div>
+            <Link
+              href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
+              className="rl-fill-soft"
+              style={{
+                background: "#fff",
+                color: TEAL_DEEP,
+                fontSize: 13.5,
+                fontWeight: 700,
+                padding: "11px 22px",
+                borderRadius: 9999,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              تحليل مجاني
+            </Link>
+          </form>
+        </div>
+
+        {/* link columns — brand block is first, so RTL puts it right-most */}
+        <div className="rl-zh-footer-cols" style={{ display: "grid", gridTemplateColumns: "1.7fr 1fr 1fr 1fr", gap: 32, marginBottom: 52 }}>
+          <div style={{ maxWidth: 330 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 20, marginBottom: 18 }}>
+              <span style={{ filter: "brightness(0) invert(1)", display: "flex" }}>
+                <BrandMark className="h-[24px] w-[24px]" />
+              </span>
+              ظهور
+            </div>
+            <p style={{ margin: 0, fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.95 }}>
+              منصة سعودية لمراقبة ظهور علامتك في Google ومحركات الذكاء الاصطناعي، وتحسين موقعك ومحتواك من مكان واحد.
+            </p>
+            <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
+              {(["linkedin", "x", "instagram"] as const).map((s) => (
+                <a
+                  key={s}
+                  href="#"
+                  aria-label={s}
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 12,
+                    background: "rgba(255,255,255,0.14)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 9,
+                  }}
+                >
+                  <SocialIcon name={s} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {FOOTER_COLUMNS.map((col) => (
+            <div key={col.title}>
+              <div style={colTitle}>{col.title}</div>
+              {col.links.map((l) =>
+                l.modal ? (
+                  <button
+                    key={l.label}
+                    onClick={onOpenModal}
+                    style={{ ...colLink, background: "transparent", border: 0, padding: 0, cursor: "pointer", textAlign: "right", fontFamily: "inherit" }}
+                  >
+                    {l.label}
+                  </button>
+                ) : (
+                  <a key={l.label} href={l.href} style={colLink}>
+                    {l.label}
+                  </a>
+                )
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* payment methods */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.14)",
+            borderRadius: 20,
+            padding: "16px 22px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.82)" }}>وسائل الدفع المتاحة</span>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            {PAYMENT_METHODS.map((pm) => (
+              <span
+                key={pm.slug}
+                style={{
+                  height: 40,
+                  minWidth: 70,
+                  padding: "0 14px",
+                  borderRadius: 11,
+                  background: "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <BrandAsset
+                  src={`/payments/${pm.slug}.svg`}
+                  label={pm.name}
+                  height={20}
+                  fallbackStyle={{ fontSize: 12.5, fontWeight: 700, color: "#0a2523", whiteSpace: "nowrap" }}
+                />
+              </span>
+            ))}
           </div>
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>📷</div>
-          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>𝕏</div>
-          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>in</div>
+
+        {/* bottom bar */}
+        <div style={{ marginTop: 36, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 9,
+              background: "rgba(4,43,41,0.38)",
+              borderRadius: 9999,
+              padding: "10px 20px",
+              fontSize: 13,
+              fontWeight: 600,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: "#fff" }} />
+            أحد منتجات TAU
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 26, flexWrap: "wrap", fontSize: 13, color: "rgba(255,255,255,0.75)" }}>
+            <a href="#" style={{ color: "inherit" }}>شروط الاستخدام</a>
+            <a href="#" style={{ color: "inherit" }}>سياسة الخصوصية</a>
+            <span>جميع الحقوق محفوظة لـ ظهور © 2026</span>
+          </div>
         </div>
-      </div>
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px 44px", fontSize: 13, color: "#8fa4a2", borderTop: `1px solid #f2f6f5` }}>
-        <div style={{ paddingTop: 22 }}>© 2026 ظهور. جميع الحقوق محفوظة.</div>
       </div>
     </footer>
   );
