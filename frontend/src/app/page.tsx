@@ -356,7 +356,7 @@ function HeroBlock({
         </div>
         <h1 style={{ fontSize: 58, lineHeight: 1.15, letterSpacing: "-1px", fontWeight: 700, color: DARK, margin: 0 }}>
           حوّل محادثاتك إلى{" "}
-          <span style={{ display: "inline-block", color: TEAL, transition: "opacity .35s ease", opacity: rotOn ? 1 : 0 }}>
+          <span style={{ display: "inline-block", color: "#fff", transition: "opacity .35s ease", opacity: rotOn ? 1 : 0 }}>
             {rotWord}
           </span>
         </h1>
