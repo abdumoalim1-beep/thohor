@@ -53,9 +53,9 @@ const DASHBOARD_NAV_ITEMS: { icon: DashIconName; label: string; active?: boolean
 // number — the per-engine split lives in its own card below, so this row
 // stays a summary instead of turning into a wall of numbers.
 const QUICK_STATS: { icon: DashIconName; value: string; label: string; delta?: string; highlight?: boolean }[] = [
-  { icon: "gauge", value: "64%", label: "مؤشر الظهور", delta: "↑ 12%" },
-  { icon: "search", value: "72%", label: "ظهورك في Google" },
-  { icon: "spark", value: "53%", label: "ظهورك في AI" },
+  { icon: "gauge", value: "64%", label: "مؤشر الظهور", delta: "↑12%" },
+  { icon: "search", value: "72%", label: "Google" },
+  { icon: "spark", value: "53%", label: "AI" },
   { icon: "users", value: "5", label: "المنافسون" },
   { icon: "bolt", value: "12", label: "فرص التحسين", highlight: true },
 ];
@@ -76,8 +76,8 @@ const TREND_SERIES: { label: string; swatch: string; bar: string; values: number
     bar: "linear-gradient(180deg,#0bbfb1,#7fdcd4)",
     values: [28, 32, 30, 38, 42, 40, 48, 52, 50, 58, 62, 64],
   },
-  { label: "متوسط المنافسين", swatch: "#dbe6e5", bar: "#dbe6e5", values: [42, 44, 41, 45, 43, 46, 44, 47, 45, 46, 44, 45] },
-  { label: "أفضل منافس", swatch: "#9db5b3", bar: "#9db5b3", values: [62, 64, 63, 66, 65, 68, 66, 69, 67, 70, 68, 71] },
+  { label: "المتوسط", swatch: "#dbe6e5", bar: "#dbe6e5", values: [42, 44, 41, 45, 43, 46, 44, 47, 45, 46, 44, 45] },
+  { label: "الأفضل", swatch: "#9db5b3", bar: "#9db5b3", values: [62, 64, 63, 66, 65, 68, 66, 69, 67, 70, 68, 71] },
 ];
 
 const AI_ENGINES: { name: string; pct: number; up: boolean; icon: DashIconName; color: string }[] = [
@@ -87,9 +87,8 @@ const AI_ENGINES: { name: string; pct: number; up: boolean; icon: DashIconName; 
 ];
 
 const OPPORTUNITIES: { title: string; reason: string; impact: string; engine: string; action: string }[] = [
-  { title: "تحسين صفحة الخدمات", reason: "غائب عن 12 سؤالًا", impact: "مرتفع", engine: "ChatGPT + Google", action: "تحسين الآن" },
-  { title: "إضافة FAQ Schema", reason: "8 أسئلة غير مغطاة", impact: "مرتفع", engine: "Google", action: "تطبيق" },
-  { title: "إنشاء مقال", reason: "المنافسون يظهرون وأنت لا", impact: "مرتفع", engine: "AI", action: "إنشاء المقال" },
+  { title: "تحسين صفحة الخدمات", reason: "غائب عن 12 سؤالًا", impact: "مرتفع", engine: "ChatGPT + Google", action: "تحسين" },
+  { title: "إنشاء مقال", reason: "منافسوك يظهرون وأنت لا", impact: "مرتفع", engine: "AI", action: "إنشاء" },
 ];
 
 const MARQUEE_BASE = ["شعار", "منصة", "مجموعة", "شركة", "مؤسسة", "استوديو", "مختبر", "وكالة"];
@@ -585,9 +584,9 @@ function HeroBlock({
       <div
         style={{
           maxWidth: 1000,
-          margin: "56px auto 0",
+          margin: "52px auto 0",
           background: "#fff",
-          borderRadius: 22,
+          borderRadius: 20,
           border: "1px solid #eef3f2",
           boxShadow: "0 3px 8px rgba(4,43,41,0.05),0 48px 100px rgba(4,43,41,0.14)",
           overflow: "hidden",
@@ -599,51 +598,41 @@ function HeroBlock({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "14px 20px",
+            padding: "11px 16px",
             borderBottom: "1px solid #f2f6f5",
             flexWrap: "wrap",
-            gap: 10,
+            gap: 8,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, fontSize: 14, color: DARK }}>
-              <BrandMark className="h-5 w-5" /> ظهور
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, fontWeight: 700, fontSize: 12.5, color: DARK }}>
+              <BrandMark className="h-[18px] w-[18px]" /> ظهور
             </div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>نظرة عامة</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 7,
+                gap: 6,
                 background: "#f5f8f8",
-                borderRadius: 20,
-                padding: "7px 14px",
-                fontSize: 11.5,
+                borderRadius: 16,
+                padding: "5px 11px",
+                fontSize: 10,
                 color: "#9aabaa",
               }}
             >
-              <span style={{ width: 12, height: 12, display: "block", flexShrink: 0 }}>
+              <span style={{ width: 10, height: 10, display: "block", flexShrink: 0 }}>
                 <DashIcon name="search" color="#9aabaa" />
               </span>
               بحث
             </div>
-            <span style={{ width: 15, height: 15, display: "block", flexShrink: 0 }}>
+            <span style={{ width: 13, height: 13, display: "block", flexShrink: 0 }}>
               <DashIcon name="bell" color="#7f9291" />
             </span>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 7,
-                border: "1px solid #eef3f2",
-                borderRadius: 20,
-                padding: "5px 6px 5px 12px",
-              }}
-            >
-              <div style={{ width: 20, height: 20, borderRadius: "50%", background: "#dfeceb" }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: DARK }}>نورة العامر</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #eef3f2", borderRadius: 16, padding: "4px 5px 4px 10px" }}>
+              <div style={{ width: 17, height: 17, borderRadius: "50%", background: "#dfeceb" }} />
+              <span style={{ fontSize: 10.5, fontWeight: 600, color: DARK }}>نورة العامر</span>
             </div>
           </div>
         </div>
@@ -652,7 +641,7 @@ function HeroBlock({
           {/* SIDEBAR */}
           <div
             className="hidden md:flex"
-            style={{ width: 176, borderLeft: "1px solid #f2f6f5", padding: "16px 12px", flexDirection: "column", gap: 3 }}
+            style={{ width: 152, borderLeft: "1px solid #f2f6f5", padding: "12px 10px", flexDirection: "column", gap: 2 }}
           >
             {DASHBOARD_NAV_ITEMS.map((item) => (
               <div
@@ -660,10 +649,10 @@ function HeroBlock({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 9,
-                  fontSize: 12.5,
+                  gap: 8,
+                  fontSize: 11.5,
                   fontWeight: 600,
-                  padding: "6px 9px",
+                  padding: "5px 7px",
                   borderRadius: 9999,
                   background: item.active ? TEAL : "transparent",
                   color: item.active ? "#fff" : MUTED,
@@ -671,14 +660,14 @@ function HeroBlock({
               >
                 <span
                   style={{
-                    width: 24,
-                    height: 24,
+                    width: 21,
+                    height: 21,
                     borderRadius: "50%",
                     flexShrink: 0,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    padding: 5,
+                    padding: 4.5,
                     background: item.active ? "#fff" : "#f4f8f7",
                   }}
                 >
@@ -687,86 +676,72 @@ function HeroBlock({
                 {item.label}
               </div>
             ))}
-            <div style={{ marginTop: "auto", paddingTop: 20, textAlign: "center" }}>
-              <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#dfeceb", margin: "0 auto 8px" }} />
-              <div style={{ fontSize: 12, fontWeight: 700, color: DARK }}>نورة العامر</div>
-              <div style={{ fontSize: 9.5, color: "#a9b8b7", marginTop: 3 }}>noura@example.sa</div>
+            <div style={{ marginTop: "auto", paddingTop: 16, textAlign: "center" }}>
+              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#dfeceb", margin: "0 auto 6px" }} />
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: DARK }}>نورة العامر</div>
             </div>
           </div>
 
           {/* MAIN */}
-          <div style={{ flex: 1, minWidth: 280, padding: 16, display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ flex: 1, minWidth: 280, padding: 13, display: "flex", flexDirection: "column", gap: 11 }}>
             {/* QUICK STATS */}
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: 8 }}>
-              <div style={{ flex: "0 0 104px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ fontSize: 14.5, fontWeight: 700, color: DARK, letterSpacing: "-0.3px" }}>نظرة سريعة</div>
-                <div style={{ fontSize: 10, color: "#9aabaa", marginTop: 5, lineHeight: 1.65 }}>ملخّص ظهورك خلال آخر ٧ أيام</div>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: 7 }}>
+              <div style={{ flex: "0 0 92px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>نظرة سريعة</div>
+                <div style={{ fontSize: 9, color: "#9aabaa", marginTop: 4, lineHeight: 1.6 }}>آخر ٧ أيام</div>
               </div>
               {QUICK_STATS.map((s) => (
                 <div
                   key={s.label}
                   style={{
                     position: "relative",
-                    flex: "1 1 100px",
-                    minWidth: 94,
+                    flex: "1 1 92px",
+                    minWidth: 86,
                     background: "#fff",
                     border: `1px solid ${s.highlight ? "#cdeeea" : "#f1f5f4"}`,
-                    borderRadius: 16,
-                    padding: "15px 7px 13px",
+                    borderRadius: 13,
+                    padding: "11px 6px 10px",
                     textAlign: "center",
-                    boxShadow: s.highlight ? "0 10px 24px rgba(11,158,148,0.18)" : "0 2px 6px rgba(4,43,41,0.04)",
+                    boxShadow: s.highlight ? "0 8px 20px rgba(11,158,148,0.16)" : "0 2px 5px rgba(4,43,41,0.035)",
                   }}
                 >
                   <span
                     style={{
-                      width: 32,
-                      height: 32,
+                      width: 26,
+                      height: 26,
                       borderRadius: "50%",
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      padding: 8,
-                      marginBottom: 8,
+                      padding: 6.5,
+                      marginBottom: 6,
                       background: s.highlight ? TEAL : "#f4f8f7",
                     }}
                   >
                     <DashIcon name={s.icon} color={s.highlight ? "#fff" : "#7f9291"} />
                   </span>
-                  <div style={{ fontSize: 17, fontWeight: 700, color: DARK, letterSpacing: "-0.3px" }}>{s.value}</div>
-                  <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 3, lineHeight: 1.5 }}>{s.label}</div>
-                  {s.delta && (
-                    <div
-                      style={{
-                        marginTop: 6,
-                        display: "inline-block",
-                        background: GOOD_BG,
-                        color: GOOD_FG,
-                        fontSize: 9,
-                        fontWeight: 700,
-                        padding: "2px 7px",
-                        borderRadius: 7,
-                      }}
-                    >
-                      {s.delta}
-                    </div>
-                  )}
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
+                    <span style={{ fontSize: 16, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>{s.value}</span>
+                    {s.delta && <span style={{ fontSize: 8.5, fontWeight: 700, color: GOOD_FG }}>{s.delta}</span>}
+                  </div>
+                  <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 3, lineHeight: 1.45 }}>{s.label}</div>
                   {s.highlight && (
                     <span
                       style={{
                         position: "absolute",
-                        bottom: -13,
+                        bottom: -11,
                         left: "50%",
                         transform: "translateX(-50%)",
-                        width: 26,
-                        height: 26,
+                        width: 22,
+                        height: 22,
                         borderRadius: "50%",
                         background: "#fff",
                         border: "1px solid #eef3f2",
-                        boxShadow: "0 4px 12px rgba(4,43,41,0.12)",
+                        boxShadow: "0 4px 10px rgba(4,43,41,0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: 12,
+                        fontSize: 10,
                         color: TEAL,
                       }}
                     >
@@ -778,18 +753,26 @@ function HeroBlock({
             </div>
 
             {/* TREND + AI ENGINES */}
-            <div className="rl-zh-dash-2" style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 14 }}>
-              <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>تطوّر ظهورك</div>
-                  <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 9999, padding: 3, gap: 2 }}>
+            <div className="rl-zh-dash-2" style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 11 }}>
+              <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: DARK }}>تطوّر ظهورك</span>
+                    {TREND_SERIES.map((s) => (
+                      <span key={s.label} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 8.5, color: "#7f9291" }}>
+                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.swatch, flexShrink: 0 }} />
+                        {s.label}
+                      </span>
+                    ))}
+                  </div>
+                  <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 9999, padding: 2.5, gap: 2 }}>
                     {["الكل", "Google", "AI"].map((t, i) => (
                       <span
                         key={t}
                         style={{
-                          fontSize: 9.5,
+                          fontSize: 8.5,
                           fontWeight: 700,
-                          padding: "4px 11px",
+                          padding: "3px 9px",
                           borderRadius: 9999,
                           background: i === 0 ? "#fff" : "transparent",
                           color: i === 0 ? DARK : "#9aabaa",
@@ -802,24 +785,15 @@ function HeroBlock({
                   </div>
                 </div>
 
-                <div style={{ display: "flex", gap: 14, flexWrap: "wrap", margin: "12px 0 14px" }}>
-                  {TREND_SERIES.map((s) => (
-                    <span key={s.label} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 9.5, color: "#7f9291" }}>
-                      <span style={{ width: 7, height: 7, borderRadius: "50%", background: s.swatch, flexShrink: 0 }} />
-                      {s.label}
-                    </span>
-                  ))}
-                </div>
-
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 6 }}>
                   <div
                     style={{
-                      height: 128,
+                      height: 108,
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "space-between",
                       fontSize: 8.5,
-                      color: "#bcc9c8",
+                      color: "#c3cfce",
                       flexShrink: 0,
                     }}
                   >
@@ -828,17 +802,17 @@ function HeroBlock({
                     ))}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ position: "relative", height: 128 }}>
+                    <div style={{ position: "relative", height: 108 }}>
                       {[0, 25, 50, 75, 100].map((t) => (
                         <span key={t} aria-hidden style={{ position: "absolute", left: 0, right: 0, top: `${t}%`, borderTop: "1px dashed #eef3f2" }} />
                       ))}
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", gap: 4 }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "flex-end", gap: 3 }}>
                         {MONTHS.map((m, i) => (
                           <div key={m} style={{ flex: 1, height: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 1.5 }}>
                             {TREND_SERIES.map((s) => (
                               <span
                                 key={s.label}
-                                style={{ width: 5, height: `${(s.values[i] / TREND_MAX) * 100}%`, background: s.bar, borderRadius: 3 }}
+                                style={{ width: 4, height: `${(s.values[i] / TREND_MAX) * 100}%`, background: s.bar, borderRadius: 2 }}
                               />
                             ))}
                           </div>
@@ -852,11 +826,11 @@ function HeroBlock({
                           left: "37.5%",
                           top: "35%",
                           transform: "translate(-50%,-50%)",
-                          width: 7,
-                          height: 7,
+                          width: 6,
+                          height: 6,
                           borderRadius: "50%",
                           background: TEAL,
-                          border: "2px solid #fff",
+                          border: "1.5px solid #fff",
                           boxShadow: "0 0 0 2px rgba(11,158,148,0.25)",
                         }}
                       />
@@ -869,17 +843,17 @@ function HeroBlock({
                           transform: "translate(-50%,-165%)",
                           background: DARK,
                           color: "#fff",
-                          fontSize: 9.5,
+                          fontSize: 8.5,
                           fontWeight: 700,
-                          padding: "4px 9px",
-                          borderRadius: 9,
+                          padding: "3px 7px",
+                          borderRadius: 7,
                           whiteSpace: "nowrap",
                         }}
                       >
                         52%
                       </span>
                     </div>
-                    <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
+                    <div style={{ display: "flex", gap: 3, marginTop: 6 }}>
                       {MONTHS.map((m) => (
                         <span key={m} style={{ flex: 1, textAlign: "center", fontSize: 8.5, color: "#a9b8b7" }}>
                           {m}
@@ -890,72 +864,54 @@ function HeroBlock({
                 </div>
               </div>
 
-              <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                  <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>الظهور في محركات AI</div>
-                  <span style={{ fontSize: 13, color: "#c3cfce", lineHeight: 1 }}>⋯</span>
+              <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13, display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: DARK }}>محركات AI</div>
+                  <span style={{ fontSize: 12, color: "#c3cfce", lineHeight: 1 }}>⋯</span>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 15 }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
                   {AI_ENGINES.map((e) => (
-                    <div key={e.name}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-                        <span
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: 9,
-                            flexShrink: 0,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: 6,
-                            background: `${e.color}18`,
-                          }}
-                        >
-                          <DashIcon name={e.icon} color={e.color} />
-                        </span>
-                        <span style={{ flex: 1, fontSize: 12.5, fontWeight: 600, color: DARK }}>{e.name}</span>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{e.pct}%</span>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: e.up ? GOOD_FG : "#d9534f" }}>{e.up ? "↑" : "↓"}</span>
-                      </div>
-                      <div style={{ marginTop: 8, height: 5, borderRadius: 5, background: "#eef3f2", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${e.pct}%`, borderRadius: 5, background: e.color }} />
-                      </div>
+                    <div key={e.name} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span
+                        style={{
+                          width: 24,
+                          height: 24,
+                          borderRadius: 8,
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: 5.5,
+                          background: `${e.color}18`,
+                        }}
+                      >
+                        <DashIcon name={e.icon} color={e.color} />
+                      </span>
+                      <span style={{ flex: 1, fontSize: 11.5, fontWeight: 600, color: DARK }}>{e.name}</span>
+                      <span style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>{e.pct}%</span>
+                      <span style={{ fontSize: 9.5, fontWeight: 700, color: e.up ? GOOD_FG : "#d9534f" }}>{e.up ? "↑" : "↓"}</span>
                     </div>
                   ))}
                 </div>
-                <div
-                  style={{
-                    marginTop: 16,
-                    paddingTop: 13,
-                    borderTop: "1px solid #f4f8f7",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <span style={{ fontSize: 10.5, color: "#9aabaa" }}>متوسط الظهور في AI</span>
-                  <span style={{ fontSize: 13.5, fontWeight: 700, color: TEAL }}>53%</span>
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid #f4f8f7", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: 9.5, color: "#9aabaa" }}>المتوسط</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: TEAL }}>53%</span>
                 </div>
               </div>
             </div>
 
             {/* OPPORTUNITIES TABLE */}
-            <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-                <div style={{ fontSize: 13.5, fontWeight: 700, color: DARK }}>فرص التحسين</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ border: "1px solid #eef3f2", borderRadius: 9999, padding: "6px 13px", fontSize: 10.5, color: "#7f9291" }}>
-                    التأثير ⌄
-                  </span>
-                  <span style={{ background: TEAL, color: "#fff", borderRadius: 9999, padding: "6px 15px", fontSize: 10.5, fontWeight: 700 }}>
-                    تصدير
-                  </span>
+            <div style={{ border: "1px solid #f1f5f4", borderRadius: 12, padding: 13 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: DARK }}>فرص التحسين</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ border: "1px solid #eef3f2", borderRadius: 9999, padding: "5px 11px", fontSize: 9.5, color: "#7f9291" }}>التأثير ⌄</span>
+                  <span style={{ background: TEAL, color: "#fff", borderRadius: 9999, padding: "5px 13px", fontSize: 9.5, fontWeight: 700 }}>تصدير</span>
                 </div>
               </div>
               <div style={{ overflowX: "auto" }}>
-                <div style={{ minWidth: 540 }}>
-                  <div style={{ display: "flex", gap: 10, fontSize: 9.5, color: "#a9b8b7", paddingBottom: 10, borderBottom: "1px solid #f4f8f7" }}>
+                <div style={{ minWidth: 520 }}>
+                  <div style={{ display: "flex", gap: 8, fontSize: 8.5, color: "#a9b8b7", paddingBottom: 8, borderBottom: "1px solid #f4f8f7" }}>
                     <span style={{ flex: 1.5 }}>الفرصة</span>
                     <span style={{ flex: 1.5 }}>السبب</span>
                     <span style={{ flex: 0.7 }}>التأثير</span>
@@ -963,24 +919,22 @@ function HeroBlock({
                     <span style={{ flex: 1, textAlign: "left" }}>الإجراء</span>
                   </div>
                   {OPPORTUNITIES.map((o) => (
-                    <div key={o.title} style={{ display: "flex", gap: 10, alignItems: "center", padding: "12px 0", borderBottom: "1px solid #f8fbfa" }}>
-                      <span style={{ flex: 1.5, fontSize: 11.5, fontWeight: 600, color: DARK }}>{o.title}</span>
-                      <span style={{ flex: 1.5, fontSize: 11, color: MUTED }}>{o.reason}</span>
+                    <div key={o.title} style={{ display: "flex", gap: 8, alignItems: "center", padding: "11px 0", borderBottom: "1px solid #f8fbfa" }}>
+                      <span style={{ flex: 1.5, fontSize: 11, fontWeight: 600, color: DARK }}>{o.title}</span>
+                      <span style={{ flex: 1.5, fontSize: 10.5, color: MUTED }}>{o.reason}</span>
                       <span style={{ flex: 0.7 }}>
-                        <span style={{ background: "#fdf1e7", color: "#c07038", fontSize: 9.5, fontWeight: 700, padding: "3px 9px", borderRadius: 8 }}>
-                          {o.impact}
-                        </span>
+                        <span style={{ background: "#fdf1e7", color: "#c07038", fontSize: 8.5, fontWeight: 700, padding: "2px 8px", borderRadius: 7 }}>{o.impact}</span>
                       </span>
-                      <span style={{ flex: 1.2, fontSize: 10.5, color: MUTED }}>{o.engine}</span>
+                      <span style={{ flex: 1.2, fontSize: 10, color: MUTED }}>{o.engine}</span>
                       <span style={{ flex: 1, textAlign: "left" }}>
                         <span
                           style={{
                             display: "inline-block",
                             background: TEAL,
                             color: "#fff",
-                            fontSize: 10,
+                            fontSize: 9,
                             fontWeight: 700,
-                            padding: "6px 13px",
+                            padding: "5px 11px",
                             borderRadius: 9999,
                             whiteSpace: "nowrap",
                           }}
