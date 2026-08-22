@@ -233,3 +233,34 @@
     display: none;
   }
 }
+
+/* Zuhoor Landing handoff (2026-08-22) — partner-logo marquee on the new
+   teal hero. Continuous loop: the track renders the logo list twice back
+   to back and slides exactly half its own width, so the seam is invisible. */
+@keyframes zuhoor-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* The handoff's own markup has no responsive rules (fixed 3/2-column
+   grids, a fixed-width floating stat card) — same situation as the
+   signup wizard above, so the same minimal-bounded-addition approach:
+   collapse to one column and drop the absolutely-positioned floating
+   card instead of letting it overflow/overlap on narrow screens. */
+@media (max-width: 860px) {
+  .rl-zh-grid-3,
+  .rl-zh-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .rl-zh-liveinsight-card {
+    padding: 20px !important;
+  }
+  .rl-zh-liveinsight-stat {
+    position: static !important;
+    margin-top: 14px;
+  }
+}

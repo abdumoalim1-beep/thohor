@@ -1,131 +1,179 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import { type CSSProperties, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 import { joinBetaDirectly } from "@/lib/api";
 
 import "./landing.css";
 
-const WORDS = ["إيرادات", "أرباح", "عملاء"];
+// ---------------------------------------------------------------------------
+// "Zuhoor Landing" design handoff (2026-08-22) — colors, spacing and copy
+// below are ported 1:1 from the approved mockup, not the site's older
+// var(--acc)/var(--tx) token system. Only the hero's link input + "ابدأ
+// الآن" button is intentionally NOT from the mockup (which had two plain
+// buttons there) — that's the live domain -> /preview analysis flow and is
+// carried over unchanged from the previous homepage per explicit instruction.
+// ---------------------------------------------------------------------------
 
-const DEMOS = [
-  { q: "أفضل محل سباكة في الرياض" },
-  { q: "أفضل متجر لأدوات القهوة" },
-  { q: "أفضل شركة تنظيف منازل" },
-  { q: "أفضل متجر أثاث مكتبي" },
-  { q: "أفضل عيادة أسنان للأطفال" },
-  { q: "ورشة صيانة مكيفات" },
+const TEAL = "#0b9e94";
+const TEAL_BRIGHT = "#0fd6c2";
+const TEAL_DEEP = "#066a63";
+const DARK = "#042b29";
+const MUTED = "#5c6a69";
+const MUTED2 = "#3c4b4a";
+const BORDER = "#eff4f3";
+const CARD_BG = "#f6faf9";
+const GOOD_BG = "#eefaf5";
+const GOOD_FG = "#19a06a";
+
+const NAV_LINKS: { label: string; href: string }[] = [
+  { label: "الرئيسية", href: "#top" },
+  { label: "المنصة", href: "#how" },
+  { label: "الحلول", href: "#features" },
+  { label: "الأسعار", href: "#pricing" },
+  { label: "من نحن", href: "#testimonials" },
+  { label: "تواصل", href: "#footer" },
 ];
 
-type Pin = {
-  q: string;
-  pos: CSSProperties;
-  floatAnim: string;
-  haloAnim: string;
-  size: number;
-  labelSize: number;
-  labelPad: string;
-  hideSm?: boolean;
+const DASHBOARD_NAV_ITEMS: { icon: string; label: string; active?: boolean }[] = [
+  { icon: "▦", label: "لوحة التحكم", active: true },
+  { icon: "↗", label: "النمو" },
+  { icon: "👥", label: "الجمهور" },
+  { icon: "📡", label: "الإشارات" },
+  { icon: "▤", label: "التقارير" },
+  { icon: "◎", label: "الدعم" },
+  { icon: "⚙", label: "الإعدادات" },
+];
+
+const KPIS: { label: string; value: string; delta: string }[] = [
+  { label: "الوصول الشهري", value: "٨٧٣٤٠٠", delta: "+٤٫٥٪" },
+  { label: "إجمالي الإشارات", value: "١٢٤٩٧٠", delta: "+٨٫٢٪" },
+  { label: "نسبة الإيجابية", value: "٨٠٫٢٠٪", delta: "+٢٫١٪" },
+];
+
+const BAR_A = [38, 54, 42, 66, 58, 80, 62, 88, 70, 96, 76, 92];
+const BAR_B = [22, 40, 30, 48, 36, 58, 44, 66, 50, 72, 54, 68];
+const BARS = BAR_A.map((a, i) => ({ a, b: BAR_B[i] }));
+const MONTHS = ["ينا", "فبر", "مار", "أبر", "ماي", "يون", "يول", "أغس", "سبت", "أكت", "نوف", "ديس"];
+
+const ACTIVITY: { channel: string; mentions: string; reach: string }[] = [
+  { channel: "الأخبار والصحافة", mentions: "٤٨٢٦", reach: "٣٢٠ ألف" },
+  { channel: "التواصل الاجتماعي", mentions: "١٢٩٠٤", reach: "١٫٢ مليون" },
+  { channel: "البودكاست", mentions: "٣١٨", reach: "٤٦ ألف" },
+];
+
+const MARQUEE_BASE = ["شعار", "منصة", "مجموعة", "شركة", "مؤسسة", "استوديو", "مختبر", "وكالة"];
+const MARQUEE_LOGOS = [...MARQUEE_BASE, ...MARQUEE_BASE];
+
+const SCORE_ROWS: { label: string; value: string; width: string }[] = [
+  { label: "الوصول", value: "٨٢٪", width: "82%" },
+  { label: "الانطباع الإيجابي", value: "٧٤٪", width: "74%" },
+  { label: "حصة الصوت", value: "٦١٪", width: "61%" },
+];
+
+const SPARKLINE = [42, 66, 54, 78, 60, 88, 70, 96, 74, 90];
+
+const REPORT_ROWS: { icon: string; title: string; value: string; delta: string }[] = [
+  { icon: "📰", title: "الأخبار والصحافة", value: "٤٨٢٦ إشارة", delta: "+١٢٪" },
+  { icon: "📱", title: "التواصل الاجتماعي", value: "١٢٩٠٤ إشارة", delta: "+٨٪" },
+  { icon: "🎙", title: "البودكاست", value: "٣١٨ إشارة", delta: "+٥٪" },
+  { icon: "📺", title: "الفيديو", value: "١٢٤٠ إشارة", delta: "+٩٪" },
+];
+
+const FEATURES: { icon: string; title: string; text: string }[] = [
+  { icon: "📡", title: "متابعة التغطية الإعلامية", text: "تابع علامتك في الأخبار والتواصل الاجتماعي والفيديو والبودكاست في مكان واحد." },
+  { icon: "📈", title: "ظهور لحظي", text: "راقب الإشارات والوصول وحصة الصوت لحظة بلحظة." },
+  { icon: "🛡", title: "تنبيهات ذكية", text: "إشعار فوري عند تغيّر الانطباع أو ظهور ارتفاع مفاجئ." },
+  { icon: "📋", title: "تقارير تلقائية", text: "أنشئ تقارير علامة جاهزة للعرض وفق جدول زمني." },
+  { icon: "👁", title: "رؤى الظهور", text: "اعرف القنوات التي تجلب أكبر قدر من الانتباه لعلامتك." },
+  { icon: "👥", title: "عمل جماعي", text: "أضف فريقك، ووزّع الإشارات، وحافظ على تنسيق التقارير." },
+];
+
+const TESTIMONIALS: { quote: string; name: string; company: string }[] = [
+  { quote: "وفّرنا أسابيع من المتابعة اليدوية، ولوحة التحكم تجعل الأمر بسيطاً.", name: "سارة النديّة", company: "إيرث أوبس" },
+  { quote: "سريعة وموثوقة وممتعة في الاستخدام فعلاً، وفريق التسويق أحبّها.", name: "ليو تاناكا", company: "فيوتشر ون" },
+];
+
+type PricingPlan = {
+  name: string;
+  price: string;
+  desc: string;
+  cta: string;
+  features: string[];
+  bg: string;
+  border: string;
+  boxShadow: string;
+  nameColor: string;
+  priceColor: string;
+  mutedColor: string;
+  featColor: string;
+  checkColor: string;
+  btnBg: string;
+  btnColor: string;
+  btnBorder: string;
 };
 
-// All floating query pins are decorative flourish around the hero text —
-// at mobile widths there's no room for them without covering the H1/
-// badge/CTA underneath (that's exactly what real-device testing caught),
-// so every pin hides below the 900px breakpoint via data-pin-sm="hide"
-// (see hideSm below and the matching landing.css media query).
-const PINS: Pin[] = [
+const PLAN_LIGHT = {
+  bg: "#fff",
+  border: `1px solid ${BORDER}`,
+  boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)",
+  nameColor: TEAL,
+  priceColor: DARK,
+  mutedColor: MUTED,
+  featColor: "#33433f",
+  checkColor: TEAL,
+  btnBg: "#fff",
+  btnColor: "#0b8f86",
+  btnBorder: "1px solid #cdeeea",
+};
+
+const PLANS: PricingPlan[] = [
   {
-    q: DEMOS[0].q,
-    pos: { top: "44%", right: "2%" },
-    floatAnim: "rrise .7s .1s ease both, rfa 7.5s 1s ease-in-out infinite",
-    haloAnim: "rhalo 3.4s ease-in-out infinite",
-    size: 26,
-    labelSize: 11.5,
-    labelPad: "7px 14px",
-    hideSm: true,
+    ...PLAN_LIGHT,
+    name: "البداية",
+    price: "١٨٩",
+    desc: "للفرق الصغيرة التي تبدأ بمتابعة ظهور علامتها.",
+    cta: "ابدأ المتابعة",
+    features: ["متابعة حجم الإشارات", "تقرير واحد شهرياً", "لوحة تحكم أساسية", "دعم بالبريد"],
   },
   {
-    q: DEMOS[1].q,
-    pos: { top: "42%", left: "2%" },
-    floatAnim: "rrise .7s .2s ease both, rfb 8.5s .3s ease-in-out infinite",
-    haloAnim: "rhalo 3.8s .4s ease-in-out infinite",
-    size: 26,
-    labelSize: 11.5,
-    labelPad: "7px 14px",
-    hideSm: true,
+    name: "النمو",
+    price: "٣٤٩",
+    desc: "للفرق التي توسّع متابعة علامتها عبر القنوات.",
+    cta: "ترقية الخطة",
+    bg: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
+    border: "none",
+    boxShadow: "0 26px 60px rgba(6,106,99,0.3)",
+    nameColor: "#bff2ec",
+    priceColor: "#fff",
+    mutedColor: "#d6f4f1",
+    featColor: "#eafaf8",
+    checkColor: "#bff2ec",
+    btnBg: "#fff",
+    btnColor: TEAL_DEEP,
+    btnBorder: "none",
+    features: ["كل ما في البداية", "تقارير غير محدودة", "متابعة ظهور لحظية", "هوية مخصصة للتقارير", "دعم فوري بالأولوية"],
   },
   {
-    q: DEMOS[2].q,
-    pos: { bottom: "18%", left: "8%" },
-    floatAnim: "rrise .7s .3s ease both, rfc 10s .5s ease-in-out infinite",
-    haloAnim: "rhalo 3.2s .8s ease-in-out infinite",
-    size: 26,
-    labelSize: 11.5,
-    labelPad: "7px 14px",
-    hideSm: true,
-  },
-  {
-    q: DEMOS[3].q,
-    pos: { bottom: "6%", left: "28%" },
-    floatAnim: "rrise .7s .4s ease both, rfa 9s .8s ease-in-out infinite",
-    haloAnim: "rhalo 4.2s .2s ease-in-out infinite",
-    size: 23,
-    labelSize: 11,
-    labelPad: "6px 13px",
-    hideSm: true,
-  },
-  {
-    q: DEMOS[4].q,
-    pos: { top: "16%", right: "7%" },
-    floatAnim: "rrise .7s .5s ease both, rfb 11s .2s ease-in-out infinite",
-    haloAnim: "rhalo 3.6s .6s ease-in-out infinite",
-    size: 23,
-    labelSize: 11,
-    labelPad: "6px 13px",
-    hideSm: true,
-  },
-  {
-    q: DEMOS[5].q,
-    pos: { top: "11%", left: "8%" },
-    floatAnim: "rrise .7s .6s ease both, rfc 12s .9s ease-in-out infinite",
-    haloAnim: "rhalo 4s 1s ease-in-out infinite",
-    size: 23,
-    labelSize: 11,
-    labelPad: "6px 13px",
-    hideSm: true,
+    ...PLAN_LIGHT,
+    name: "المؤسسات",
+    price: "٦٩٩",
+    desc: "للشركات ذات احتياجات المتابعة المتقدمة.",
+    cta: "اطلب وصولاً كاملاً",
+    features: ["كل ما في النمو", "صلاحيات وأدوار للفريق", "حزمة تقارير للإدارة", "واجهات برمجية وتكاملات", "مدير نجاح مخصص"],
   },
 ];
 
-const FAQS: [string, string][] = [
-  [
-    "ما الذي يفعله ظهور؟",
-    "يساعد علامتك على الظهور أكثر في محادثات العملاء وتحويل هذا الحضور إلى فرص للنمو",
-  ],
-  [
-    "كيف يساعد ظهور علامتي؟",
-    "يكشف أين تظهر علامتك وأين تغيب، ويساعدك على زيادة حضورها في المحادثات المهمة",
-  ],
-  [
-    "متى أبدأ برؤية النتائج؟",
-    "تحصل على صورة واضحة عن ظهور علامتك من البداية، وتتابع نمو حضورها مع الوقت",
-  ],
-  [
-    "هل يساعدني ظهور في صناعة المحتوى؟",
-    "نعم. يحول فرص الظهور إلى محتوى يساعد علامتك على الوصول إلى عملائها",
-  ],
-  [
-    "هل أحتاج خبرة متخصصة؟",
-    "لا. ظهور مصمم ليجعل تحسين حضور علامتك واضحًا وبسيطًا لفريقك",
-  ],
+const FAQS: string[] = [
+  "كيف تحسب منصة ظهور مستوى الظهور؟",
+  "هل يمكنني إنشاء تقارير جاهزة للإدارة؟",
+  "هل المنصة مناسبة للعلامات الناشئة؟",
+  "هل يمكن لفريقي كامل الوصول للمنصة؟",
+  "هل أحتاج خبرة تقنية لاستخدام ظهور؟",
 ];
 
-// The header's "انضم للنسخة التجريبية" button skips the /preview analysis
-// flow entirely, so it can't ask "كيف كان التقرير؟" (REPORT_FEEDBACK_OPTIONS
-// in /preview — assumes a report was seen). Same backend field
-// (report_feedback), different question that fits someone who hasn't
-// run an analysis yet.
 const JOIN_INTEREST_OPTIONS: { value: string; label: string }[] = [
   { value: "search_visibility", label: "تتبع ظهوري في نتائج البحث" },
   { value: "ai_visibility", label: "تتبع ظهوري في إجابات الذكاء الاصطناعي" },
@@ -143,58 +191,846 @@ const JOIN_USAGE_OPTIONS: { value: string; label: string }[] = [
 ];
 
 export default function Home() {
-  const [rotIndex, setRotIndex] = useState(0);
-  const [rotOn, setRotOn] = useState(true);
-  const [ping, setPing] = useState(0);
-  const [activeDemo, setActiveDemo] = useState<number | null>(null);
   const [domain, setDomain] = useState("");
-  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({ 0: true });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRotOn(false);
-      const swap = setTimeout(() => {
-        setRotIndex((i) => (i + 1) % WORDS.length);
-        setRotOn(true);
-      }, 350);
-      return () => clearTimeout(swap);
-    }, 2600);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => setPing((p) => (p + 1) % 6), 2200);
-    return () => clearInterval(timer);
-  }, []);
-
-  const toggleFaq = (index: number) => setOpenFaqs((s) => ({ ...s, [index]: !s[index] }));
-
-  const activeQuery = (activeDemo != null ? DEMOS[activeDemo] : DEMOS[ping]).q;
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <div dir="rtl" className="rasid-landing" style={{ position: "relative", minHeight: "100vh", overflowX: "clip" }}>
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <Header />
-        <Hero
-          ping={ping}
-          onPick={setActiveDemo}
-          activeQuery={activeQuery}
-          rotWord={WORDS[rotIndex]}
-          rotOn={rotOn}
-          domain={domain}
-          onDomainChange={setDomain}
-        />
-        <Features />
-        <Solution />
-        <Faq faqs={FAQS} open={openFaqs} onToggle={toggleFaq} />
-        <Footer />
+    <div dir="rtl" className="rasid-landing" style={{ position: "relative", minHeight: "100vh", background: "#fff", overflowX: "clip" }}>
+      <HeroBlock domain={domain} onDomainChange={setDomain} onOpenModal={() => setModalOpen(true)} />
+      <HowItWorks />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <PricingSection />
+      <FaqSection />
+      <CtaBanner onOpenModal={() => setModalOpen(true)} />
+      <SiteFooter />
+      <JoinModal open={modalOpen} onClose={() => setModalOpen(false)} />
+    </div>
+  );
+}
+
+function SectionBadge({ label }: { label: string }) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        background: "#f2faf9",
+        border: "1px solid #dff2f0",
+        borderRadius: 24,
+        padding: "7px 18px",
+        fontSize: 13,
+        fontWeight: 600,
+        color: "#0b8f86",
+        marginBottom: 22,
+      }}
+    >
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: TEAL_BRIGHT }} />
+      {label}
+    </div>
+  );
+}
+
+function HeroBlock({
+  domain,
+  onDomainChange,
+  onOpenModal,
+}: {
+  domain: string;
+  onDomainChange: (v: string) => void;
+  onOpenModal: () => void;
+}) {
+  return (
+    <div
+      id="top"
+      style={{
+        width: "100%",
+        backgroundColor: "#ecf8f7",
+        backgroundImage:
+          "linear-gradient(to right, rgba(4,43,41,0.06) 1px, transparent 1px),linear-gradient(to bottom, rgba(4,43,41,0.06) 1px, transparent 1px),radial-gradient(120% 90% at 50% -10%, #0fd6c2 0%, #29c9bd 30%, #a9e8e2 58%, rgba(236,248,247,0.85) 78%, rgba(255,255,255,0.95) 100%)",
+        backgroundSize: "64px 64px, 64px 64px, 100% 100%",
+        padding: "0 0 60px",
+      }}
+    >
+      {/* NAV */}
+      <div
+        style={{
+          maxWidth: 1120,
+          margin: "0 auto",
+          padding: "22px 32px 0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
+          flexWrap: "wrap",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#fff", fontWeight: 700, fontSize: 19 }}>
+          <span style={{ filter: "brightness(0) invert(1)", display: "flex" }}>
+            <BrandMark className="h-[26px] w-[26px]" />
+          </span>
+          ظهور
+        </div>
+        <div className="hidden md:flex" style={{ alignItems: "center", gap: 28, fontSize: 14, fontWeight: 600, color: "#fff" }}>
+          {NAV_LINKS.map((l) => (
+            <a key={l.href} href={l.href} style={{ color: "#fff" }}>
+              {l.label}
+            </a>
+          ))}
+        </div>
+        <button
+          onClick={onOpenModal}
+          style={{
+            border: "1px solid rgba(255,255,255,0.7)",
+            background: "rgba(255,255,255,0.16)",
+            color: "#fff",
+            fontSize: 13.5,
+            fontWeight: 700,
+            padding: "9px 22px",
+            borderRadius: 24,
+            whiteSpace: "nowrap",
+            cursor: "pointer",
+          }}
+        >
+          إنشاء حساب
+        </button>
+      </div>
+
+      {/* HERO TEXT */}
+      <div
+        style={{
+          maxWidth: 780,
+          margin: "0 auto",
+          padding: "74px 24px 0",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 22,
+        }}
+      >
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            background: "rgba(255,255,255,0.92)",
+            border: "1px solid rgba(255,255,255,0.8)",
+            borderRadius: 24,
+            padding: "7px 18px",
+            fontSize: 13,
+            fontWeight: 600,
+            color: "#0b8f86",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span style={{ width: 7, height: 7, borderRadius: "50%", background: TEAL_BRIGHT }} /> ظهور — تحليل ظهور
+          العلامات التجارية
+        </div>
+        <h1 style={{ fontSize: 58, lineHeight: 1.15, letterSpacing: "-1px", fontWeight: 700, color: DARK, margin: 0 }}>
+          حوّل ذِكر علامتك إلى قرارات واضحة
+        </h1>
+        <p style={{ fontSize: 16, color: MUTED2, maxWidth: 480, margin: 0, lineHeight: 1.8 }}>
+          منصة ظهور تقيس كل ظهور لعلامتك عبر القنوات، مع لوحات مباشرة ومؤشر ظهور وتحليلات تنبؤية.
+        </p>
+
+        {/* Live domain -> /preview flow, unchanged from the previous homepage */}
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          style={{
+            margin: 0,
+            width: "100%",
+            maxWidth: 500,
+            display: "flex",
+            gap: 7,
+            padding: 7,
+            border: "1px solid var(--line)",
+            borderRadius: 9999,
+            background: "var(--panel)",
+            boxShadow: "0 8px 28px rgba(17,24,39,.09)",
+          }}
+        >
+          <div
+            dir="ltr"
+            style={{
+              flex: 1,
+              minWidth: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              paddingInlineStart: 16,
+            }}
+          >
+            <span className="mono" style={{ fontSize: 12.5, color: "var(--dim)" }}>
+              https://
+            </span>
+            <input
+              placeholder="example.com"
+              dir="ltr"
+              value={domain}
+              onChange={(e) => onDomainChange(e.target.value)}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                background: "transparent",
+                border: 0,
+                outline: "none",
+                color: "var(--tx)",
+                fontSize: 14.5,
+                padding: "9px 0",
+                textAlign: "left",
+              }}
+            />
+          </div>
+          <Link
+            href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
+            className="rl-fill"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              border: 0,
+              cursor: "pointer",
+              background: "var(--tx)",
+              color: "var(--btn-fg)",
+              fontWeight: 600,
+              fontSize: 14,
+              padding: "11px 22px",
+              borderRadius: 9999,
+              whiteSpace: "nowrap",
+            }}
+          >
+            ابدأ الآن
+          </Link>
+        </form>
+      </div>
+
+      {/* DASHBOARD MOCK */}
+      <div
+        style={{
+          maxWidth: 1000,
+          margin: "56px auto 0",
+          background: "#fff",
+          borderRadius: 22,
+          border: "1px solid #eef3f2",
+          boxShadow: "0 3px 8px rgba(4,43,41,0.05),0 48px 100px rgba(4,43,41,0.14)",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "14px 20px",
+            borderBottom: "1px solid #f2f6f5",
+            flexWrap: "wrap",
+            gap: 10,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, fontSize: 14, color: DARK }}>
+              <BrandMark className="h-5 w-5" /> ظهور
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>نظرة عامة</div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ background: "#f5f8f8", borderRadius: 20, padding: "7px 14px", fontSize: 11.5, color: "#9aabaa" }}>
+              بحث 🔍
+            </div>
+            <span style={{ fontSize: 12, color: "#7f9291" }}>🔔</span>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 7,
+                border: "1px solid #eef3f2",
+                borderRadius: 20,
+                padding: "5px 6px 5px 12px",
+              }}
+            >
+              <div style={{ width: 20, height: 20, borderRadius: "50%", background: "#dfeceb" }} />
+              <span style={{ fontSize: 12, fontWeight: 600, color: DARK }}>نورة العامر</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <div
+            className="hidden md:flex"
+            style={{ width: 162, borderLeft: "1px solid #f2f6f5", padding: "16px 12px", flexDirection: "column", gap: 3 }}
+          >
+            {DASHBOARD_NAV_ITEMS.map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 9,
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  padding: "9px 12px",
+                  borderRadius: 10,
+                  background: item.active ? TEAL : "transparent",
+                  color: item.active ? "#fff" : MUTED,
+                }}
+              >
+                <span>{item.icon}</span>
+                {item.label}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ flex: 1, minWidth: 280, padding: 16, display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 14 }}>
+            <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>الظهور خلال السنة</div>
+                <div style={{ border: "1px solid #eef3f2", borderRadius: 10, padding: "4px 10px", fontSize: 10.5, color: "#7f9291" }}>
+                  سنوي ⌄
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 7, height: 104 }}>
+                {BARS.map((bar, i) => (
+                  <div key={i} style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 2.5, height: "100%" }}>
+                    <div style={{ width: 6, height: `${bar.a}%`, background: `linear-gradient(180deg,#0bbfb1,#7fdcd4)`, borderRadius: 3 }} />
+                    <div style={{ width: 6, height: `${bar.b}%`, background: `linear-gradient(180deg,#79d8ce,#cdefeb)`, borderRadius: 3 }} />
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: "#a9b8b7", marginTop: 8 }}>
+                {MONTHS.map((m) => (
+                  <span key={m}>{m}</span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK, marginBottom: 14 }}>المؤشرات</div>
+              {KPIS.map((k) => (
+                <div key={k.label} style={{ marginBottom: 14 }}>
+                  <div style={{ fontSize: 10.5, color: "#9aabaa", marginBottom: 2 }}>{k.label}</div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ fontSize: 19, fontWeight: 700, color: TEAL }}>{k.value}</div>
+                    <div style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 9.5, fontWeight: 700, padding: "3px 7px", borderRadius: 8 }}>
+                      {k.delta}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>آخر النشاط</div>
+                <div style={{ border: "1px solid #eef3f2", borderRadius: 10, padding: "4px 10px", fontSize: 10.5, color: "#7f9291" }}>
+                  آخر ٢٤ ساعة ⌄
+                </div>
+              </div>
+              <div style={{ display: "flex", fontSize: 9.5, color: "#a9b8b7", paddingBottom: 8, borderBottom: "1px solid #f4f8f7" }}>
+                <span style={{ flex: 1.4 }}>القناة</span>
+                <span style={{ flex: 1 }}>الإشارات</span>
+                <span style={{ flex: 1 }}>الوصول</span>
+              </div>
+              {ACTIVITY.map((a) => (
+                <div key={a.channel} style={{ display: "flex", fontSize: 10.5, color: MUTED2, padding: "8px 0", borderBottom: "1px solid #f8fbfa" }}>
+                  <span style={{ flex: 1.4, fontWeight: 600, color: DARK }}>{a.channel}</span>
+                  <span style={{ flex: 1 }}>{a.mentions}</span>
+                  <span style={{ flex: 1 }}>{a.reach}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ border: "1px solid #f1f5f4", borderRadius: 14, padding: 16 }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, color: DARK, marginBottom: 12 }}>مؤشر الظهور</div>
+              <div
+                style={{
+                  width: 96,
+                  height: 48,
+                  margin: "0 auto",
+                  borderRadius: "96px 96px 0 0",
+                  background: `conic-gradient(from 270deg at 50% 100%, ${TEAL_BRIGHT} 0 40%, #e7f5f3 40% 50%, transparent 50%)`,
+                  position: "relative",
+                }}
+              >
+                <div style={{ position: "absolute", right: 16, top: 16, width: 64, height: 32, borderRadius: "64px 64px 0 0", background: "#fff" }} />
+              </div>
+              <div style={{ textAlign: "center", fontSize: 17, fontWeight: 700, color: DARK, marginTop: 6 }}>٨٠٪</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MARQUEE */}
+      <div style={{ textAlign: "center", padding: "52px 0 0" }}>
+        <div style={{ fontSize: 15.5, fontWeight: 600, color: "#33433f", marginBottom: 30 }}>شراكات مع نخبة من خبراء القطاع</div>
+        <div
+          style={{
+            maxWidth: 1000,
+            margin: "0 auto",
+            overflow: "hidden",
+            padding: "0 0 6px",
+            WebkitMaskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)",
+            maskImage: "linear-gradient(to right, transparent, #000 12%, #000 88%, transparent)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 64, width: "max-content", animation: "zuhoor-marquee 26s linear infinite" }}>
+            {MARQUEE_LOGOS.map((logo, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 700, fontSize: 17, color: "#0a2523", whiteSpace: "nowrap" }}>
+                <span style={{ width: 20, height: 20, borderRadius: "50%", background: `linear-gradient(140deg,${TEAL_BRIGHT},${TEAL_DEEP})`, flexShrink: 0 }} />
+                {logo}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function Header() {
-  const [modalOpen, setModalOpen] = useState(false);
+function HowItWorks() {
+  return (
+    <div id="how">
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "96px 32px 0", textAlign: "center" }}>
+        <SectionBadge label="كيف تعمل المنصة" />
+        <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto", maxWidth: 640 }}>
+          كيف يصنع تحليل الظهور فرقاً في نموّك
+        </h2>
+      </div>
+
+      <div style={{ maxWidth: 1120, margin: "52px auto 0", padding: "0 32px", display: "flex", flexDirection: "column", gap: 24 }}>
+        <div style={{ background: CARD_BG, borderRadius: 28, padding: "48px 40px", textAlign: "center" }}>
+          <div
+            style={{
+              width: 46,
+              height: 46,
+              borderRadius: 13,
+              background: "#fff",
+              boxShadow: "0 6px 16px rgba(4,43,41,0.07)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 18px",
+              color: TEAL,
+              fontSize: 18,
+            }}
+          >
+            ▦
+          </div>
+          <div style={{ fontSize: 28, fontWeight: 700, color: DARK, letterSpacing: "-0.4px", marginBottom: 10 }}>رؤى لحظية</div>
+          <p style={{ fontSize: 15, color: MUTED, maxWidth: 460, margin: "0 auto 34px", lineHeight: 1.8 }}>
+            اطّلع على بيانات الإشارات لحظة حدوثها لتتخذ قرارات سريعة وتتفاعل مع تغيّرات السوق.
+          </p>
+          <div style={{ position: "relative", maxWidth: 720, margin: "0 auto" }}>
+            <div
+              className="rl-zh-liveinsight-card"
+              style={{
+                background: "#fff",
+                borderRadius: 18,
+                boxShadow: "0 3px 8px rgba(4,43,41,0.04),0 26px 60px rgba(4,43,41,0.09)",
+                padding: "20px 20px 20px 150px",
+                textAlign: "right",
+              }}
+            >
+              <div style={{ fontSize: 13.5, fontWeight: 700, color: DARK, marginBottom: 18 }}>الظهور خلال السنة</div>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10, height: 110 }}>
+                {BARS.map((bar, i) => (
+                  <div key={i} style={{ flex: 1, display: "flex", alignItems: "flex-end", justifyContent: "center", gap: 3, height: "100%" }}>
+                    <div style={{ width: 8, height: `${bar.a}%`, background: "linear-gradient(180deg,#0bbfb1,#7fdcd4)", borderRadius: 4 }} />
+                    <div style={{ width: 8, height: `${bar.b}%`, background: "linear-gradient(180deg,#79d8ce,#cdefeb)", borderRadius: 4 }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div
+              className="rl-zh-liveinsight-stat"
+              style={{
+                position: "absolute",
+                left: -30,
+                bottom: 34,
+                background: "#fff",
+                borderRadius: 14,
+                boxShadow: "0 3px 8px rgba(4,43,41,0.06),0 20px 44px rgba(4,43,41,0.12)",
+                padding: "14px 18px",
+                textAlign: "right",
+              }}
+            >
+              <div style={{ fontSize: 10.5, color: "#9aabaa", marginBottom: 4 }}>إجمالي الوصول</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ fontSize: 19, fontWeight: 700, color: TEAL }}>٨٧٣٤٠٠</div>
+                <div style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 9.5, fontWeight: 700, padding: "3px 7px", borderRadius: 8 }}>+٤٫٥٪</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rl-zh-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          <div style={{ background: CARD_BG, borderRadius: 28, padding: "40px 34px" }}>
+            <div
+              style={{
+                width: 46,
+                height: 46,
+                borderRadius: 13,
+                background: "#fff",
+                boxShadow: "0 6px 16px rgba(4,43,41,0.07)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 18,
+                color: TEAL,
+                fontSize: 18,
+              }}
+            >
+              ◈
+            </div>
+            <div style={{ fontSize: 23, fontWeight: 700, color: DARK, marginBottom: 10 }}>مؤشر الظهور</div>
+            <p style={{ fontSize: 14.5, color: MUTED, margin: "0 0 26px", lineHeight: 1.8 }}>
+              يقيس الذكاء الاصطناعي كل إشارة حسب الوصول والانطباع لتعرف ما أحدث فرقاً فعلياً.
+            </p>
+            <div style={{ background: "#fff", borderRadius: 18, padding: 22, boxShadow: "0 3px 8px rgba(4,43,41,0.04),0 18px 44px rgba(4,43,41,0.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20 }}>
+                <div
+                  style={{
+                    width: 104,
+                    height: 104,
+                    borderRadius: "50%",
+                    background: `conic-gradient(${TEAL} 0 76%, #e7f5f3 0)`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <div style={{ width: 74, height: 74, borderRadius: "50%", background: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: DARK }}>٧٦</div>
+                    <div style={{ fontSize: 9.5, color: "#9aabaa" }}>مؤشر الظهور</div>
+                  </div>
+                </div>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
+                  {SCORE_ROWS.map((s) => (
+                    <div key={s.label}>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: MUTED, marginBottom: 5 }}>
+                        <span>{s.label}</span>
+                        <span style={{ fontWeight: 700, color: DARK }}>{s.value}</span>
+                      </div>
+                      <div style={{ height: 6, borderRadius: 6, background: "#e7f5f3", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: s.width, background: "linear-gradient(90deg,#0bbfb1,#7fdcd4)", borderRadius: 6 }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 10 }}>
+                {SPARKLINE.map((sp, i) => (
+                  <div key={i} style={{ flex: 1, height: 34, display: "flex", alignItems: "flex-end" }}>
+                    <div style={{ width: "100%", height: `${sp}%`, background: "#d6f0ec", borderRadius: 3 }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ background: CARD_BG, borderRadius: 28, padding: "40px 34px" }}>
+            <div
+              style={{
+                width: 46,
+                height: 46,
+                borderRadius: 13,
+                background: "#fff",
+                boxShadow: "0 6px 16px rgba(4,43,41,0.07)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 18,
+                color: TEAL,
+                fontSize: 18,
+              }}
+            >
+              ⤢
+            </div>
+            <div style={{ fontSize: 23, fontWeight: 700, color: DARK, marginBottom: 10 }}>تقارير جاهزة للمشاركة</div>
+            <p style={{ fontSize: 14.5, color: MUTED, margin: "0 0 26px", lineHeight: 1.8 }}>صدّر تقريراً واضحاً للإدارة أو العملاء بضغطة واحدة.</p>
+            <div style={{ background: "#fff", borderRadius: 18, padding: 22, boxShadow: "0 3px 8px rgba(4,43,41,0.04),0 18px 44px rgba(4,43,41,0.07)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>تقرير الظهور — أغسطس</div>
+                <div style={{ background: TEAL, color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "6px 12px", borderRadius: 14 }}>تصدير PDF</div>
+              </div>
+              {REPORT_ROWS.map((r) => (
+                <div key={r.title} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 0", borderBottom: "1px solid #f2f6f5" }}>
+                  <span style={{ width: 26, height: 26, borderRadius: 8, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, flexShrink: 0 }}>
+                    {r.icon}
+                  </span>
+                  <span style={{ flex: 1, fontSize: 12.5, fontWeight: 600, color: DARK }}>{r.title}</span>
+                  <span style={{ fontSize: 12, color: MUTED }}>{r.value}</span>
+                  <span style={{ fontSize: 10.5, fontWeight: 700, color: GOOD_FG, background: GOOD_BG, padding: "3px 8px", borderRadius: 8 }}>{r.delta}</span>
+                </div>
+              ))}
+              <div style={{ display: "flex", gap: 6, marginTop: 16, alignItems: "flex-end", height: 44 }}>
+                {SPARKLINE.map((sp, i) => (
+                  <div key={i} style={{ flex: 1, height: `${sp}%`, background: "linear-gradient(180deg,#0bbfb1,#cdefeb)", borderRadius: 3 }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeaturesSection() {
+  return (
+    <div id="features" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
+      <SectionBadge label="الميزات" />
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 16px", maxWidth: 660 }}>
+        كل ما تحتاجه لمتابعة علامتك التجارية
+      </h2>
+      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 480, margin: "0 auto 52px", lineHeight: 1.8 }}>
+        تابع الإشارات، وقِس الظهور، وشارك النتائج مع فريقك وأصحاب المصلحة.
+      </p>
+      <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, textAlign: "right" }}>
+        {FEATURES.map((f) => (
+          <div key={f.title} style={{ border: `1px solid ${BORDER}`, borderRadius: 22, padding: 28, boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)" }}>
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17, marginBottom: 18 }}>
+              {f.icon}
+            </div>
+            <div style={{ fontSize: 18.5, fontWeight: 700, color: DARK, marginBottom: 8 }}>{f.title}</div>
+            <div style={{ fontSize: 14, color: MUTED, lineHeight: 1.75 }}>{f.text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TestimonialsSection() {
+  return (
+    <div id="testimonials" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
+      <SectionBadge label="آراء العملاء" />
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 52px", maxWidth: 560 }}>
+        فرق طموحة تثق بـظهور
+      </h2>
+      <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1.25fr 1fr 1fr", gap: 24, textAlign: "right" }}>
+        <div
+          style={{
+            background: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
+            borderRadius: 24,
+            padding: 32,
+            color: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            boxShadow: "0 24px 56px rgba(6,106,99,0.28)",
+          }}
+        >
+          <div>
+            <div style={{ color: "#bff2ec", fontSize: 13, marginBottom: 14 }}>★★★★★</div>
+            <div style={{ fontSize: 17.5, lineHeight: 1.8 }}>
+              منحتنا منصة ظهور وضوحاً وتنظيماً وسرعة. لأول مرة تقاريرنا عن الظهور جاهزة فعلاً للعرض على الإدارة.
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}>
+            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.25)" }} />
+            <div style={{ fontSize: 13.5, lineHeight: 1.5 }}>
+              <b>عامر الطالب</b>
+              <div style={{ opacity: 0.75, fontSize: 12.5 }}>شركة كليماكور</div>
+            </div>
+          </div>
+        </div>
+        {TESTIMONIALS.map((t) => (
+          <div
+            key={t.name}
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 24,
+              padding: 28,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)",
+            }}
+          >
+            <div>
+              <div style={{ color: "#8fdcd4", fontSize: 12, marginBottom: 12 }}>★★★★★</div>
+              <div style={{ fontSize: 14.5, color: "#33433f", lineHeight: 1.8 }}>{t.quote}</div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 26 }}>
+              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#e8f2f1" }} />
+              <div style={{ fontSize: 13, lineHeight: 1.5 }}>
+                <b style={{ color: DARK }}>{t.name}</b>
+                <div style={{ color: "#8fa4a2", fontSize: 12 }}>{t.company}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PricingSection() {
+  return (
+    <div id="pricing" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
+      <SectionBadge label="الأسعار" />
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 16px", maxWidth: 520 }}>
+        أسعار واضحة تناسب كل فريق
+      </h2>
+      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 420, margin: "0 auto 30px", lineHeight: 1.8 }}>
+        ابدأ بخطة صغيرة، وارتقِ عندما تتوسّع تغطية علامتك.
+      </p>
+      <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 26, padding: 5, gap: 4, marginBottom: 44 }}>
+        <div style={{ background: TEAL, color: "#fff", fontSize: 13, fontWeight: 700, padding: "9px 24px", borderRadius: 22, whiteSpace: "nowrap" }}>شهري</div>
+        <div style={{ color: MUTED, fontSize: 13, fontWeight: 700, padding: "9px 24px", whiteSpace: "nowrap" }}>سنوي · خصم ٣٠٪</div>
+      </div>
+      <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, textAlign: "right" }}>
+        {PLANS.map((plan) => (
+          <div key={plan.name} style={{ borderRadius: 24, padding: "32px 28px", display: "flex", flexDirection: "column", background: plan.bg, border: plan.border, boxShadow: plan.boxShadow }}>
+            <div style={{ fontSize: 13.5, fontWeight: 700, color: plan.nameColor, marginBottom: 10 }}>{plan.name}</div>
+            <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: "-0.8px", color: plan.priceColor }}>
+              {plan.price}
+              <span style={{ fontSize: 13.5, fontWeight: 600, color: plan.mutedColor, letterSpacing: 0 }}> ر.س / شهرياً</span>
+            </div>
+            <div style={{ fontSize: 14, color: plan.mutedColor, margin: "12px 0 26px", lineHeight: 1.75 }}>{plan.desc}</div>
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: 13.5,
+                fontWeight: 700,
+                padding: 12,
+                borderRadius: 24,
+                marginBottom: 26,
+                background: plan.btnBg,
+                color: plan.btnColor,
+                border: plan.btnBorder,
+              }}
+            >
+              {plan.cta}
+            </div>
+            {plan.features.map((pf) => (
+              <div key={pf} style={{ display: "flex", gap: 9, fontSize: 13.5, color: plan.featColor, padding: "6px 0" }}>
+                <span style={{ color: plan.checkColor }}>✓</span>
+                {pf}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FaqSection() {
+  return (
+    <div id="faq" style={{ maxWidth: 820, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
+      <SectionBadge label="الأسئلة الشائعة" />
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 44px" }}>
+        لديك أسئلة؟ لدينا الإجابات
+      </h2>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12, textAlign: "right" }}>
+        {FAQS.map((q) => (
+          <div
+            key={q}
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 18,
+              padding: "20px 24px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontSize: 15,
+              fontWeight: 600,
+              color: DARK,
+              boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 12px 30px rgba(4,43,41,0.04)",
+            }}
+          >
+            {q}
+            <span style={{ width: 28, height: 28, borderRadius: "50%", background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0, marginRight: 16 }}>
+              +
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CtaBanner({ onOpenModal }: { onOpenModal: () => void }) {
+  return (
+    <div style={{ maxWidth: 1120, margin: "104px auto 0", padding: "0 32px" }}>
+      <div
+        style={{
+          background: `radial-gradient(120% 140% at 50% 0%, ${TEAL_BRIGHT} 0%, #0ab3a6 45%, ${TEAL_DEEP} 100%)`,
+          borderRadius: 32,
+          padding: "72px 40px",
+          textAlign: "center",
+          color: "#fff",
+          boxShadow: "0 30px 70px rgba(6,106,99,0.3)",
+        }}
+      >
+        <h2 style={{ fontSize: 38, lineHeight: 1.3, letterSpacing: "-0.6px", fontWeight: 700, margin: "0 auto 14px", maxWidth: 560 }}>
+          اعرف كل ظهور لعلامتك التجارية
+        </h2>
+        <p style={{ fontSize: 15.5, color: "#dcf6f3", maxWidth: 440, margin: "0 auto 30px", lineHeight: 1.8 }}>
+          جهّز المتابعة في دقائق، وشارك أول تقرير ظهور اليوم.
+        </p>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <Link
+            href="/preview"
+            style={{ background: "#fff", color: TEAL_DEEP, fontSize: 14, fontWeight: 700, padding: "13px 32px", borderRadius: 26, whiteSpace: "nowrap" }}
+          >
+            ابدأ الآن
+          </Link>
+          <button
+            onClick={onOpenModal}
+            style={{
+              border: "1px solid rgba(255,255,255,0.55)",
+              color: "#fff",
+              background: "transparent",
+              fontSize: 14,
+              fontWeight: 700,
+              padding: "13px 30px",
+              borderRadius: 26,
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+          >
+            احجز عرضاً توضيحياً
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer id="footer">
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "56px 32px 40px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 28 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 17, color: DARK }}>
+            <BrandMark className="h-[26px] w-[26px]" /> ظهور
+          </div>
+          <div style={{ display: "flex", gap: 20, fontSize: 13.5, color: MUTED, fontWeight: 600, flexWrap: "wrap" }}>
+            <a href="#" style={{ color: MUTED }}>المنصة</a>
+            <a href="#pricing" style={{ color: MUTED }}>الأسعار</a>
+            <a href="#" style={{ color: MUTED }}>المدونة</a>
+            <a href="#" style={{ color: MUTED }}>تواصل</a>
+            <a href="#" style={{ color: MUTED }}>الخصوصية</a>
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>📷</div>
+          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>𝕏</div>
+          <div style={{ width: 36, height: 36, borderRadius: 11, background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center" }}>in</div>
+        </div>
+      </div>
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px 44px", fontSize: 13, color: "#8fa4a2", borderTop: `1px solid #f2f6f5` }}>
+        <div style={{ paddingTop: 22 }}>© ٢٠٢٦ ظهور. جميع الحقوق محفوظة.</div>
+      </div>
+    </footer>
+  );
+}
+
+function JoinModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [step, setStep] = useState<0 | 1 | 2>(0);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -204,10 +1040,11 @@ function Header() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const closeModal = () => {
+  if (!open) return null;
+
+  const close = () => {
     if (submitting) return;
-    setModalOpen(false);
-    // reset for next open, after the close animation-less unmount
+    onClose();
     setStep(0);
     setName("");
     setEmail("");
@@ -267,1328 +1104,112 @@ function Header() {
   });
 
   return (
-    <>
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        background: "var(--fade-top)",
-        backdropFilter: "blur(16px)",
-        borderBottom: "1px solid var(--line)",
-      }}
-    >
-      <nav
-        style={{
-          width: "min(1180px,100%)",
-          margin: "0 auto",
-          padding: "0 28px",
-          height: 62,
-          display: "flex",
-          alignItems: "center",
-          gap: 26,
-        }}
-      >
-        <a href="#top" style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 600, fontSize: 16.5 }}>
-          <BrandMark className="h-[22px] w-[22px]" />
-          ظهور
-        </a>
-        <div
-          className="hidden md:flex"
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 26,
-            fontSize: 13.5,
-            color: "var(--mut)",
-          }}
-        >
-          <a href="#features" style={{ color: "inherit" }}>لماذا ظهور</a>
-          <a href="#solution" style={{ color: "inherit" }}>كيف يعمل</a>
-          <a href="#faq" style={{ color: "inherit" }}>الأسئلة الشائعة</a>
-        </div>
-        <div style={{ flex: 1 }} className="md:hidden" />
-        <button
-          onClick={() => setModalOpen(true)}
-          className="rl-fill"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            border: 0,
-            cursor: "pointer",
-            fontSize: 13,
-            fontWeight: 500,
-            color: "var(--btn-fg)",
-            background: "var(--tx)",
-            padding: "9px 16px",
-            borderRadius: 9999,
-            whiteSpace: "nowrap",
-          }}
-        >
-          انضم للنسخة التجريبية
-        </button>
-      </nav>
-    </header>
-
-      {modalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          style={{
-            position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", display: "flex",
-            alignItems: "center", justifyContent: "center", padding: 20, zIndex: 60,
-          }}
-          onClick={closeModal}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 20,
-              width: "100%", maxWidth: 420, maxHeight: "85vh", padding: "22px 24px 24px",
-              display: "flex", flexDirection: "column", overflowY: "auto", textAlign: "right",
-            }}
-          >
-            {submitted ? (
-              <>
-                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>تم! وصلنا طلبك</h2>
-                <p style={{ margin: "12px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>
-                  راح نتواصل معك قريبًا لتفعيل نسختك التجريبية
-                </p>
-                <button onClick={closeModal} className="rl-fill-soft" style={{ ...nextBtn }}>
-                  تمام
-                </button>
-              </>
-            ) : (
-              <>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>انضم للنسخة التجريبية</h2>
-                  <span className="mono" style={{ fontSize: 11, color: "var(--dim)" }}>{step + 1}/3</span>
-                </div>
-
-                {step === 0 && (
-                  <>
-                    <div style={fieldLabel}>الاسم</div>
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="اسمك" style={textInput} />
-                    <div style={fieldLabel}>البريد الإلكتروني</div>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
-                      dir="ltr"
-                      style={{ ...textInput, textAlign: "left" }}
-                    />
-                    <button
-                      onClick={() => setStep(1)}
-                      disabled={!name.trim() || !email.trim()}
-                      className="rl-fill-soft"
-                      style={{ ...nextBtn, opacity: !name.trim() || !email.trim() ? 0.6 : 1 }}
-                    >
-                      التالي
-                    </button>
-                  </>
-                )}
-
-                {step === 1 && (
-                  <>
-                    <div style={fieldLabel}>وش يشدك أكثر بظهور؟</div>
-                    <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-                      {JOIN_INTEREST_OPTIONS.map((opt) => (
-                        <label key={opt.value} style={optionRow(interest === opt.value)}>
-                          <input
-                            type="radio"
-                            name="join_interest"
-                            value={opt.value}
-                            checked={interest === opt.value}
-                            onChange={() => setInterest(opt.value)}
-                          />
-                          {opt.label}
-                        </label>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => setStep(2)}
-                      disabled={!interest}
-                      className="rl-fill-soft"
-                      style={{ ...nextBtn, opacity: !interest ? 0.6 : 1 }}
-                    >
-                      التالي
-                    </button>
-                  </>
-                )}
-
-                {step === 2 && (
-                  <>
-                    <div style={fieldLabel}>قد إيش مهتم تستخدم ظهور لمتابعة علامتك؟</div>
-                    <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
-                      {JOIN_USAGE_OPTIONS.map((opt) => (
-                        <label key={opt.value} style={optionRow(usage === opt.value)}>
-                          <input
-                            type="radio"
-                            name="join_usage"
-                            value={opt.value}
-                            checked={usage === opt.value}
-                            onChange={() => setUsage(opt.value)}
-                          />
-                          {opt.label}
-                        </label>
-                      ))}
-                    </div>
-                    {error && <div style={{ marginTop: 10, fontSize: 12.5, color: "#dc4c4c" }}>{error}</div>}
-                    <button
-                      onClick={submit}
-                      disabled={!usage || submitting}
-                      className="rl-fill-soft"
-                      style={{ ...nextBtn, opacity: !usage || submitting ? 0.6 : 1 }}
-                    >
-                      {submitting ? "جاري الإرسال..." : "تم"}
-                    </button>
-                  </>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-function Pinned({ pin, index, ping, onPick }: { pin: Pin; index: number; ping: number; onPick: (i: number) => void }) {
-  const active = index === ping;
-  const inset = pin.size === 26 ? { ring: 0, white: 5, dot: 8 } : { ring: 0, white: 4, dot: 7 };
-  return (
-    <button
-      onClick={() => onPick(index)}
-      data-pin-sm={pin.hideSm ? "hide" : undefined}
-      style={{
-        position: "absolute",
-        ...pin.pos,
-        border: 0,
-        background: "transparent",
-        padding: 0,
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: pin.size === 26 ? 8 : 7,
-        animation: pin.floatAnim,
-      }}
-    >
-      <span
-        style={{
-          whiteSpace: "nowrap",
-          fontSize: pin.labelSize,
-          color: "#fff",
-          background: "#16181d",
-          borderRadius: 9999,
-          padding: pin.labelPad,
-          boxShadow: "0 8px 20px rgba(17,24,39,.28)",
-        }}
-      >
-        {pin.q}
-      </span>
-      <span style={{ position: "relative", width: pin.size, height: pin.size, display: "block" }}>
-        <span
-          style={{
-            position: "absolute",
-            inset: inset.ring,
-            borderRadius: "50%",
-            background: "rgba(22,24,29,.16)",
-            animation: pin.haloAnim,
-          }}
-        />
-        <span style={{ position: "absolute", inset: inset.white, borderRadius: "50%", background: "#fff" }} />
-        <span
-          style={{
-            position: "absolute",
-            inset: inset.dot,
-            borderRadius: "50%",
-            background: active ? "var(--acc)" : "#16181d",
-            transition: "background .3s ease",
-          }}
-        />
-      </span>
-    </button>
-  );
-}
-
-function Hero({
-  ping,
-  onPick,
-  activeQuery,
-  rotWord,
-  rotOn,
-  domain,
-  onDomainChange,
-}: {
-  ping: number;
-  onPick: (i: number) => void;
-  activeQuery: string;
-  rotWord: string;
-  rotOn: boolean;
-  domain: string;
-  onDomainChange: (v: string) => void;
-}) {
-  return (
-    <section
-      id="top"
-      style={{
-        position: "relative",
-        height: "calc(100svh - 62px)",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px 28px 32px",
-      }}
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="rasid-landing"
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, zIndex: 60 }}
+      onClick={close}
     >
       <div
-        aria-hidden
+        dir="rtl"
+        onClick={(e) => e.stopPropagation()}
         style={{
-          position: "absolute",
-          inset: 0,
-          overflow: "hidden",
-          backgroundImage: "url('/landing/city-map.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 45%",
-          opacity: "var(--map-opacity)",
-          filter: "var(--map-filter)",
-          maskImage: "radial-gradient(120% 100% at 50% 45%,#000 45%,transparent 92%)",
-          WebkitMaskImage: "radial-gradient(120% 100% at 50% 45%,#000 45%,transparent 92%)",
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          background:
-            "radial-gradient(680px 380px at 50% 50%,var(--fade-core) 40%,var(--fade-mid) 70%,var(--fade-soft) 100%),linear-gradient(to bottom,var(--fade-top),transparent 30%,transparent 72%,var(--bg))",
-        }}
-      />
-
-      {PINS.map((pin, i) => (
-        <Pinned key={pin.q} pin={pin} index={i} ping={ping} onPick={onPick} />
-      ))}
-
-      <div
-        data-pin-sm="hide"
-        style={{
-          position: "absolute",
-          bottom: "2%",
-          right: "1.5%",
-          width: 215,
+          background: "var(--panel)",
           border: "1px solid var(--line)",
           borderRadius: 20,
-          background: "var(--panel)",
-          boxShadow: "0 20px 50px rgba(17,24,39,.16)",
-          padding: 16,
-          textAlign: "right",
-          animation: "rrise .7s .3s ease both",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "var(--acc)",
-              animation: "rpulse 2s ease-in-out infinite",
-            }}
-          />
-          <span style={{ fontSize: 11, color: "var(--dim)" }}>تنبيه مباشر</span>
-        </div>
-        <div style={{ marginTop: 10, fontSize: 13.5, fontWeight: 600, lineHeight: 1.6 }}>
-          ظهر موقعك في عملية بحث جديدة
-        </div>
-        <div style={{ marginTop: 6, fontSize: 11.5, color: "var(--mut)", lineHeight: 1.7 }}>«{activeQuery}»</div>
-        <div style={{ marginTop: 12, display: "flex", alignItems: "baseline", gap: 7 }}>
-          <span style={{ fontSize: 12, color: "var(--dim)" }}>المركز</span>
-          <span className="mono" style={{ fontSize: 20, fontWeight: 600, color: "var(--acc)" }}>3</span>
-          <span style={{ fontSize: 11, color: "var(--dim)" }}>ذُكرت في 4 من 5 منصات</span>
-        </div>
-        <div style={{ marginTop: 10, display: "flex", gap: 5 }}>
-          {[0, 1, 2, 3].map((i) => (
-            <span key={i} style={{ flex: 1, height: 6, borderRadius: 3, background: "var(--acc)" }} />
-          ))}
-          <span style={{ flex: 1, height: 6, borderRadius: 3, background: "#e6e3ea" }} />
-        </div>
-      </div>
-
-      <div
-        style={{
-          position: "relative",
-          zIndex: 3,
-          width: "min(720px,100%)",
-          margin: "0 auto",
-          textAlign: "center",
-          animation: "rrise .6s ease both",
-        }}
-      >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 9,
-            padding: "5px 6px 5px 15px",
-            border: "1px solid var(--line)",
-            borderRadius: 9999,
-            background: "var(--panel)",
-            fontSize: 12.5,
-            color: "var(--mut)",
-            whiteSpace: "nowrap",
-            boxShadow: "0 2px 10px rgba(17,24,39,.05)",
-          }}
-        >
-          <span
-            className="mono"
-            style={{
-              fontSize: 10,
-              letterSpacing: ".08em",
-              padding: "3px 9px",
-              borderRadius: 9999,
-              background: "rgba(14,157,134,.16)",
-              color: "var(--acc)",
-            }}
-          >
-            جديد
-          </span>
-          تتبّع الاستشهادات داخل خمس منصات ذكاء اصطناعي
-        </div>
-
-        <h1
-          style={{
-            margin: "14px auto 0",
-            fontSize: "clamp(28px,3.8vw,46px)",
-            lineHeight: 1.26,
-            letterSpacing: "-.02em",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}
-        >
-          حوّل محادثاتك إلى{" "}
-          <span
-            style={{
-              display: "inline-block",
-              color: "var(--acc)",
-              transition: "opacity .35s ease",
-              opacity: rotOn ? 1 : 0,
-            }}
-          >
-            {rotWord}
-          </span>
-        </h1>
-        <p
-          style={{
-            margin: "14px auto 0",
-            maxWidth: 560,
-            fontSize: 15.5,
-            lineHeight: 1.85,
-            color: "var(--mut)",
-          }}
-        >
-          اجعل علامتك التجارية حاضرة في المحادثات التي تصنع قرارات الشراء
-        </p>
-
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          style={{
-            margin: "22px auto 0",
-            maxWidth: 500,
-            display: "flex",
-            gap: 7,
-            padding: 7,
-            border: "1px solid var(--line)",
-            borderRadius: 9999,
-            background: "var(--panel)",
-            boxShadow: "0 8px 28px rgba(17,24,39,.09)",
-          }}
-        >
-          <div
-            dir="ltr"
-            style={{
-              flex: 1,
-              minWidth: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              paddingInlineStart: 16,
-            }}
-          >
-            <span className="mono" style={{ fontSize: 12.5, color: "var(--dim)" }}>https://</span>
-            <input
-              placeholder="example.com"
-              dir="ltr"
-              value={domain}
-              onChange={(e) => onDomainChange(e.target.value)}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                background: "transparent",
-                border: 0,
-                outline: "none",
-                color: "var(--tx)",
-                fontSize: 14.5,
-                padding: "9px 0",
-                textAlign: "left",
-              }}
-            />
-          </div>
-          <Link
-            href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
-            className="rl-fill"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              border: 0,
-              cursor: "pointer",
-              background: "var(--tx)",
-              color: "var(--btn-fg)",
-              fontWeight: 600,
-              fontSize: 14,
-              padding: "11px 22px",
-              borderRadius: 9999,
-              whiteSpace: "nowrap",
-            }}
-          >
-            ابدأ مجاناً
-          </Link>
-        </form>
-        <div style={{ marginTop: 10, fontSize: 12, color: "var(--dim)" }}>بدون بطاقة ائتمانية · أول تقرير خلال 3 دقائق</div>
-
-        <div style={{ margin: "18px auto 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-          <div style={{ fontSize: 13, color: "var(--mut)" }}>موثوق من أكثر من 500 نشاط محلي</div>
-          <div style={{ display: "flex", alignItems: "center" }} dir="ltr">
-            {BRAND_MARKS.map((m) => (
-              <div
-                key={m.icon}
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: "50%",
-                  border: "2px solid var(--panel)",
-                  marginLeft: -8,
-                  background: m.bg,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <BrandMarkIcon name={m.icon} />
-              </div>
-            ))}
-            <span
-              style={{
-                height: 34,
-                display: "flex",
-                alignItems: "center",
-                padding: "0 12px",
-                marginLeft: -8,
-                borderRadius: 9999,
-                background: "rgba(14,157,134,.16)",
-                border: "2px solid var(--panel)",
-                fontFamily: "var(--font-jetbrains-mono),monospace",
-                fontSize: 12,
-                color: "var(--acc)",
-              }}
-            >
-              +500
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-type BrandMarkIconName = "bag" | "tag" | "store" | "spark";
-
-// Stand-ins for the "trusted by" row — generic store/brand marks, not
-// photos of unrelated strangers (the previous pravatar.cc placeholders
-// implied fake customer testimonials) and not reproductions of any real
-// company's logo (trademark risk).
-const BRAND_MARKS: { icon: BrandMarkIconName; bg: string }[] = [
-  { icon: "bag", bg: "#c8785a" },
-  { icon: "tag", bg: "#5b7a9d" },
-  { icon: "store", bg: "#c99a4a" },
-  { icon: "spark", bg: "#0e9d86" },
-];
-
-function BrandMarkIcon({ name }: { name: BrandMarkIconName }) {
-  const s = { stroke: "#fff", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-  const paths: Record<BrandMarkIconName, ReactNode> = {
-    bag: (
-      <>
-        <path d="M4.5 6.5h7a1 1 0 011 1V13a1.5 1.5 0 01-1.5 1.5h-6A1.5 1.5 0 013.5 13V7.5a1 1 0 011-1z" fill="none" {...s} />
-        <path d="M6 6.5V5a2 2 0 014 0v1.5" fill="none" {...s} />
-      </>
-    ),
-    tag: (
-      <>
-        <path d="M2.5 7.4L7.4 2.5h4.1a2 2 0 012 2v4.1L8.6 13.5a1.6 1.6 0 01-2.3 0l-3.8-3.8a1.6 1.6 0 010-2.3z" fill="none" {...s} />
-        <circle cx="10" cy="6" r="0.9" fill="#fff" stroke="none" />
-      </>
-    ),
-    store: (
-      <>
-        <path d="M3 6.2L3.8 3h8.4l.8 3.2" fill="none" {...s} />
-        <path d="M3.4 6.5v6h9.2v-6" fill="none" {...s} />
-        <path d="M6.6 12.5V9.3h2.8v3.2" fill="none" {...s} />
-      </>
-    ),
-    spark: <path d="M8 2.3l1.15 4.55L13.7 8l-4.55 1.15L8 13.7l-1.15-4.55L2.3 8l4.55-1.15z" fill="none" {...s} />,
-  };
-  return (
-    <svg width="15" height="15" viewBox="0 0 16 16">
-      {paths[name]}
-    </svg>
-  );
-}
-
-type PlatformIconName = "search" | "chat" | "assistant" | "social" | "article" | "news" | "video" | "forum";
-
-// Generic representative marks for "search engines / AI chat / AI
-// assistants / social platforms" — deliberately not reproductions of any
-// specific brand's logo (trademark risk), just enough visual variety to
-// read as "different platforms" at a glance, in our own line-icon style.
-function PlatformIcon({ name, color }: { name: PlatformIconName; color?: string }) {
-  const common = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
-  const s = { stroke: color ?? "var(--acc)", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-  switch (name) {
-    case "search":
-      return (
-        <svg {...common}>
-          <circle cx="10.5" cy="10.5" r="6.5" {...s} />
-          <path d="M19.5 19.5l-4.3-4.3" {...s} />
-        </svg>
-      );
-    case "chat":
-      return (
-        <svg {...common}>
-          <rect x="3" y="4.5" width="18" height="11.5" rx="4" {...s} />
-          <path d="M8 20l2.5-4" {...s} />
-        </svg>
-      );
-    case "assistant":
-      return (
-        <svg {...common}>
-          <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" {...s} strokeLinejoin="round" />
-        </svg>
-      );
-    case "social":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="8.2" r="3.2" {...s} />
-          <path d="M5 19c0-3.4 3-5.5 7-5.5s7 2.1 7 5.5" {...s} />
-        </svg>
-      );
-    case "article":
-      return (
-        <svg {...common}>
-          <rect x="5" y="3.5" width="14" height="17" rx="2" {...s} />
-          <path d="M8.3 8h7.4M8.3 12h7.4M8.3 16h4.5" {...s} />
-        </svg>
-      );
-    case "news":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="8.5" {...s} />
-          <path d="M12 3.5c-2.6 2.3-4 5.3-4 8.5s1.4 6.2 4 8.5c2.6-2.3 4-5.3 4-8.5s-1.4-6.2-4-8.5z" {...s} />
-          <path d="M3.5 12h17" {...s} />
-        </svg>
-      );
-    case "video":
-      return (
-        <svg {...common}>
-          <rect x="3" y="5" width="18" height="14" rx="3" {...s} />
-          <path d="M10 9.3l5 2.7-5 2.7V9.3z" {...s} strokeLinejoin="round" fill="var(--acc)" />
-        </svg>
-      );
-    case "forum":
-      return (
-        <svg {...common}>
-          <path d="M4 6.5h13a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H10l-4 3.5V16H4a2 2 0 0 1-2-2V8.5a2 2 0 0 1 2-2z" {...s} strokeLinejoin="round" />
-        </svg>
-      );
-  }
-}
-
-// A short dashed line into a downward chevron — the "many things feed
-// into one" connector reused wherever a panel needs to show convergence
-// (row 1: one question -> platforms; row 3: sources -> one answer).
-function DownConnector() {
-  return (
-    <div aria-hidden style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-      <span style={{ width: 1.5, height: 14, background: "var(--line)" }} />
-      <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
-        <path d="M1 1l6 6 6-6" stroke="var(--dim)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
-  );
-}
-
-// Three small traffic-light dots atop a "visual" panel — a cheap, familiar
-// signal that reads as "a real app window" instead of an abstract diagram.
-function WindowChrome() {
-  return (
-    <div aria-hidden style={{ display: "flex", gap: 5, marginBottom: 18 }}>
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e5646b" }} />
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e8b34a" }} />
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#3fae6a" }} />
-    </div>
-  );
-}
-
-// A single result row inside the card-1 "search" scene — solid for a real
-// result (with a favicon-style monogram + fake URL line, like an actual
-// search result), dashed+faded for the merchant's own missing listing.
-function SearchResultRow({ label, url, muted }: { label: string; url?: string; muted?: boolean }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: "9px 12px",
-        borderRadius: 10,
-        border: muted ? "1px dashed var(--line)" : "1px solid var(--line)",
-        background: muted ? "transparent" : "var(--panel)",
-        boxShadow: muted ? "none" : "0 3px 10px rgba(17,24,39,.05)",
-        opacity: muted ? 0.6 : 1,
-      }}
-    >
-      <span
-        style={{
-          width: 24,
-          height: 24,
-          borderRadius: 7,
-          flexShrink: 0,
+          width: "100%",
+          maxWidth: 420,
+          maxHeight: "85vh",
+          padding: "22px 24px 24px",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 10.5,
-          fontWeight: 700,
-          color: "#fff",
-          background: muted ? "var(--line)" : "var(--acc)",
+          flexDirection: "column",
+          overflowY: "auto",
+          textAlign: "right",
         }}
       >
-        {muted ? "" : label.trim().charAt(0)}
-      </span>
-      <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 12.5, color: muted ? "var(--dim)" : "var(--tx)", fontWeight: muted ? 400 : 600 }}>{label}</div>
-        {!muted && url && (
-          <div className="mono" dir="ltr" style={{ fontSize: 10, color: "var(--acc)", marginTop: 2, textAlign: "right" }}>
-            {url}
-          </div>
+        {submitted ? (
+          <>
+            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>تم! وصلنا طلبك</h2>
+            <p style={{ margin: "12px 0 0", fontSize: 13.5, color: "var(--mut)", lineHeight: 1.9 }}>راح نتواصل معك قريبًا لتفعيل نسختك التجريبية</p>
+            <button onClick={close} className="rl-fill-soft" style={{ ...nextBtn }}>
+              تمام
+            </button>
+          </>
+        ) : (
+          <>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>إنشاء حساب</h2>
+              <span className="mono" style={{ fontSize: 11, color: "var(--dim)" }}>{step + 1}/3</span>
+            </div>
+
+            {step === 0 && (
+              <>
+                <div style={fieldLabel}>الاسم</div>
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="اسمك" style={textInput} />
+                <div style={fieldLabel}>البريد الإلكتروني</div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  dir="ltr"
+                  style={{ ...textInput, textAlign: "left" }}
+                />
+                <button
+                  onClick={() => setStep(1)}
+                  disabled={!name.trim() || !email.trim()}
+                  className="rl-fill-soft"
+                  style={{ ...nextBtn, opacity: !name.trim() || !email.trim() ? 0.6 : 1 }}
+                >
+                  التالي
+                </button>
+              </>
+            )}
+
+            {step === 1 && (
+              <>
+                <div style={fieldLabel}>وش يشدك أكثر بظهور؟</div>
+                <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                  {JOIN_INTEREST_OPTIONS.map((opt) => (
+                    <label key={opt.value} style={optionRow(interest === opt.value)}>
+                      <input
+                        type="radio"
+                        name="join_interest"
+                        value={opt.value}
+                        checked={interest === opt.value}
+                        onChange={() => setInterest(opt.value)}
+                      />
+                      {opt.label}
+                    </label>
+                  ))}
+                </div>
+                <button onClick={() => setStep(2)} disabled={!interest} className="rl-fill-soft" style={{ ...nextBtn, opacity: !interest ? 0.6 : 1 }}>
+                  التالي
+                </button>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <div style={fieldLabel}>قد إيش مهتم تستخدم ظهور لمتابعة علامتك؟</div>
+                <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                  {JOIN_USAGE_OPTIONS.map((opt) => (
+                    <label key={opt.value} style={optionRow(usage === opt.value)}>
+                      <input type="radio" name="join_usage" value={opt.value} checked={usage === opt.value} onChange={() => setUsage(opt.value)} />
+                      {opt.label}
+                    </label>
+                  ))}
+                </div>
+                {error && <div style={{ marginTop: 10, fontSize: 12.5, color: "#dc4c4c" }}>{error}</div>}
+                <button onClick={submit} disabled={!usage || submitting} className="rl-fill-soft" style={{ ...nextBtn, opacity: !usage || submitting ? 0.6 : 1 }}>
+                  {submitting ? "جاري الإرسال..." : "تم"}
+                </button>
+              </>
+            )}
+          </>
         )}
       </div>
     </div>
-  );
-}
-
-// A single ranking row inside the card-2 "ranking" scene — a colored
-// monogram chip per store plus a share-of-visibility bar, so the rank
-// isn't just a bare number.
-function RankRow({
-  rank,
-  name,
-  pct,
-  pctNum,
-  strong,
-  muted,
-}: {
-  rank: string;
-  name: string;
-  pct: string;
-  pctNum: number;
-  strong?: boolean;
-  muted?: boolean;
-}) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, opacity: muted ? 0.65 : 1 }}>
-      <span
-        className="mono"
-        style={{
-          width: 26,
-          height: 26,
-          borderRadius: 8,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 11.5,
-          fontWeight: 700,
-          flexShrink: 0,
-          background: strong ? "var(--acc)" : "var(--panel)",
-          border: strong ? "none" : "1px solid var(--line)",
-          color: strong ? "#fff" : "var(--mut)",
-          boxShadow: strong ? "0 0 0 4px rgba(14,157,134,.15)" : "none",
-        }}
-      >
-        {rank}
-      </span>
-      <span
-        style={{
-          width: 22,
-          height: 22,
-          borderRadius: 6,
-          flexShrink: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 10,
-          fontWeight: 700,
-          color: "#fff",
-          background: muted ? "var(--dim)" : strong ? "#0b7c69" : "#5b7a9d",
-        }}
-      >
-        {name.trim().charAt(0)}
-      </span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12.5, fontWeight: strong ? 600 : 400 }}>{name}</div>
-        <div style={{ marginTop: 5, height: 3, borderRadius: 9999, background: "var(--line)", overflow: "hidden" }}>
-          <div
-            style={{
-              height: "100%",
-              width: `${pctNum}%`,
-              borderRadius: 9999,
-              background: strong ? "var(--acc)" : muted ? "var(--dim)" : "#5b7a9d",
-            }}
-          />
-        </div>
-      </div>
-      <span className="mono" style={{ fontSize: 11.5, fontWeight: 700, color: strong ? "var(--acc)" : "var(--dim)" }}>{pct}</span>
-    </div>
-  );
-}
-
-function Features() {
-  const rowGrid: CSSProperties = {
-    padding: "64px 0",
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))",
-    gap: 48,
-    alignItems: "center",
-  };
-  const visual: CSSProperties = {
-    border: "1px solid var(--line)",
-    borderRadius: 28,
-    background: "linear-gradient(165deg, rgba(14,157,134,.07), var(--panel) 55%)",
-    boxShadow: "0 24px 60px rgba(17,24,39,.08)",
-    padding: "34px 30px",
-  };
-  const h3: CSSProperties = { margin: "16px 0 0", fontSize: "clamp(22px,2.4vw,28px)", fontWeight: 600, letterSpacing: "-.02em", lineHeight: 1.35 };
-  const body: CSSProperties = { margin: "12px 0 0", fontSize: 14.5, lineHeight: 1.9, color: "var(--mut)", maxWidth: 400 };
-
-  const engines: { label: string; icon: PlatformIconName; mention: string; color: string }[] = [
-    { label: "Google", icon: "search", mention: "منافس أ", color: "#4C8DFF" },
-    { label: "ChatGPT", icon: "assistant", mention: "منافس ب", color: "#1a1a1a" },
-    { label: "Gemini", icon: "chat", mention: "منافس أ", color: "#8B5CF6" },
-    { label: "Perplexity", icon: "social", mention: "منافس ج", color: "#F0A34D" },
-  ];
-
-  return (
-    <section id="features" style={{ padding: "48px 28px 40px" }}>
-      <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
-        <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>01 — المشكلة</div>
-        <h2
-          style={{
-            margin: "14px auto 0",
-            maxWidth: 700,
-            fontSize: "clamp(24px,2.8vw,34px)",
-            lineHeight: 1.4,
-            letterSpacing: "-.02em",
-            fontWeight: 600,
-          }}
-        >
-          قواعد الظهور تغيّرت
-        </h2>
-        <p style={{ margin: "14px auto 0", maxWidth: 520, fontSize: 15.5, lineHeight: 1.85, fontWeight: 700, color: "var(--tx)" }}>
-          والغياب عن المحادثة قد يعني الغياب عن قرار الشراء
-        </p>
-
-        <div style={{ marginTop: 20, display: "flex", flexDirection: "column", textAlign: "right" }}>
-          {/* 1 — عملاؤك لا يجدونك: a real query, real results, your own listing absent */}
-          <div style={rowGrid}>
-            <div style={{ padding: 8 }}>
-              <h3 style={h3}>عملاؤك لا يجدونك</h3>
-              <p style={body}>تظهر أقل في عمليات البحث التي تقود العملاء لمنتجاتك</p>
-            </div>
-            <div style={visual}>
-              <WindowChrome />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  background: "var(--panel)",
-                  border: "1px solid var(--line)",
-                  borderRadius: 9999,
-                  padding: "13px 18px",
-                  fontSize: 14.5,
-                  color: "var(--tx)",
-                  boxShadow: "0 3px 10px rgba(17,24,39,.05)",
-                }}
-              >
-                <span style={{ width: 17, height: 17, flexShrink: 0 }}>
-                  <PlatformIcon name="search" />
-                </span>
-                <span style={{ flex: 1 }}>أفضل متجر للعناية بالبشرة؟</span>
-                <span
-                  aria-hidden
-                  style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--acc)", flexShrink: 0, animation: "rpulse 1.8s ease-in-out infinite" }}
-                />
-              </div>
-              <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 10 }}>
-                <SearchResultRow label="متجر العناية الفاخر" url="luxury-care.sa" />
-                <SearchResultRow label="بيوتي كلينك" url="beautyclinic.sa" />
-                <SearchResultRow label="متجرك — غير موجود" muted />
-              </div>
-            </div>
-          </div>
-
-          {/* 2 — منافسوك يسبقونك: a ranking list, your row low and faded */}
-          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
-            <div style={{ padding: 8 }}>
-              <h3 style={h3}>منافسوك يسبقونك</h3>
-              <p style={body}>يظهرون في الأسئلة المهمة، وأنت لا تعرف لماذا</p>
-            </div>
-            <div style={visual}>
-              <WindowChrome />
-              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-                <RankRow rank="1" name="منافس أ" pct="82%" pctNum={82} strong />
-                <RankRow rank="2" name="منافس ب" pct="61%" pctNum={61} />
-                <RankRow rank="7" name="متجرك" pct="28%" pctNum={28} muted />
-              </div>
-            </div>
-          </div>
-
-          {/* 3 — البحث لم يعد Google فقط: one question branching to 4 engines, none mentioning you */}
-          <div style={{ ...rowGrid, borderTop: "1px solid var(--line)" }}>
-            <div style={{ padding: 8 }}>
-              <h3 style={h3}>البحث لم يعد Google فقط</h3>
-              <p style={body}>عملاؤك يسألون ChatGPT ومحركات الذكاء الاصطناعي قبل الشراء</p>
-            </div>
-            <div style={visual}>
-              <WindowChrome />
-              <div style={{ textAlign: "center" }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    fontSize: 13.5,
-                    color: "var(--tx)",
-                    background: "var(--panel)",
-                    border: "1px solid var(--line)",
-                    borderRadius: 9999,
-                    padding: "10px 18px",
-                    boxShadow: "0 3px 10px rgba(17,24,39,.05)",
-                  }}
-                >
-                  وين أشتري منتج عناية أصلي؟
-                </span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "center", marginTop: 14 }}>
-                <DownConnector />
-              </div>
-              <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }}>
-                {engines.map((e) => (
-                  <div
-                    key={e.label}
-                    style={{
-                      background: "var(--panel)",
-                      border: "1px solid var(--line)",
-                      borderRadius: 16,
-                      padding: "16px 8px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 8,
-                      boxShadow: `0 10px 22px ${e.color}22`,
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 11,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: `${e.color}17`,
-                      }}
-                    >
-                      <span style={{ width: 19, height: 19 }}>
-                        <PlatformIcon name={e.icon} color={e.color} />
-                      </span>
-                    </span>
-                    <span style={{ fontSize: 11.5, fontWeight: 600 }}>{e.label}</span>
-                    <span style={{ fontSize: 10, color: "var(--dim)" }}>{e.mention}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-type OrbitIconName =
-  | "questions"
-  | "visibility"
-  | "answers"
-  | "citations"
-  | "competitors"
-  | "content"
-  | "publish"
-  | "reports";
-
-function OrbitIcon({ name }: { name: OrbitIconName }) {
-  const common = { width: "100%", height: "100%", viewBox: "0 0 24 24", fill: "none" as const };
-  const stroke = { stroke: "var(--acc)", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-  switch (name) {
-    case "questions":
-      return (
-        <svg {...common}>
-          <rect x="3" y="4.5" width="18" height="11.5" rx="4" {...stroke} />
-          <path d="M8 20l2.5-4" {...stroke} />
-          <circle cx="8.2" cy="10.2" r="1" fill="var(--acc)" />
-          <circle cx="12" cy="10.2" r="1" fill="var(--acc)" />
-          <circle cx="15.8" cy="10.2" r="1" fill="var(--acc)" />
-        </svg>
-      );
-    case "visibility":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="8" {...stroke} />
-          <circle cx="12" cy="12" r="4.3" {...stroke} />
-          <circle cx="12" cy="12" r="1.2" fill="var(--acc)" />
-        </svg>
-      );
-    case "answers":
-      return (
-        <svg {...common}>
-          <rect x="4.6" y="12" width="3.4" height="7" rx="1" {...stroke} />
-          <rect x="10.3" y="8" width="3.4" height="11" rx="1" {...stroke} />
-          <rect x="16" y="4.5" width="3.4" height="14.5" rx="1" {...stroke} />
-        </svg>
-      );
-    case "citations":
-      return (
-        <svg {...common}>
-          <path d="M8.5 8c-2.2 0-3.9 1.8-3.9 4v3.5h3.9V12H6.7c0-1.2.9-2.1 1.8-2.1V8z" {...stroke} strokeLinejoin="round" />
-          <path d="M17.4 8c-2.2 0-3.9 1.8-3.9 4v3.5h3.9V12h-1.8c0-1.2.9-2.1 1.8-2.1V8z" {...stroke} strokeLinejoin="round" />
-        </svg>
-      );
-    case "competitors":
-      return (
-        <svg {...common}>
-          <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" {...stroke} />
-          <circle cx="12" cy="12" r="2.7" {...stroke} />
-        </svg>
-      );
-    case "content":
-      return (
-        <svg {...common}>
-          <path d="M4.5 19.5l1-4.6L14.7 5.7l3.6 3.6-9.2 9.2-4.6 1z" {...stroke} />
-          <path d="M13.2 7.2l3.6 3.6" {...stroke} />
-        </svg>
-      );
-    case "publish":
-      return (
-        <svg {...common}>
-          <path d="M3 12L20 4l-8 17-2.7-6.3L3 12z" {...stroke} strokeLinejoin="round" />
-        </svg>
-      );
-    case "reports":
-      return (
-        <svg {...common}>
-          <rect x="4" y="5.5" width="16" height="14.5" rx="2.5" {...stroke} />
-          <path d="M4 9.5h16" {...stroke} />
-          <path d="M8 3.5v4M16 3.5v4" {...stroke} />
-        </svg>
-      );
-  }
-}
-
-function Solution() {
-  // 8 items on a circle, 45° apart starting from the top — positions
-  // pre-computed (θ=0° at top, clockwise) so no client-side layout math
-  // is needed to place them.
-  const items: { label: string; icon: OrbitIconName; top: string; left: string }[] = [
-    { label: "رصد الأسئلة", icon: "questions", top: "8%", left: "50%" },
-    { label: "قياس الظهور", icon: "visibility", top: "20.3%", left: "79.7%" },
-    { label: "تحليل الإجابات", icon: "answers", top: "50%", left: "92%" },
-    { label: "تتبّع الاستشهادات", icon: "citations", top: "79.7%", left: "79.7%" },
-    { label: "مراقبة المنافسين", icon: "competitors", top: "92%", left: "50%" },
-    { label: "توليد المحتوى", icon: "content", top: "79.7%", left: "20.3%" },
-    { label: "النشر إلى موقعك", icon: "publish", top: "50%", left: "8%" },
-    { label: "تقارير أسبوعية", icon: "reports", top: "20.3%", left: "20.3%" },
-  ];
-
-  // translate(-50%,-50%) centers the card on its top/left orbit point —
-  // kept on a static outer wrapper, never animated, so the per-card
-  // float/fade animation (on the inner element below) can set its own
-  // `transform` in keyframes without clobbering this centering offset
-  // (nested transforms compose; a shared one on the same element doesn't).
-  const cellOuter: CSSProperties = { position: "absolute", display: "inline-block", transform: "translate(-50%,-50%)" };
-  const cell: CSSProperties = {
-    border: "1px solid var(--line)",
-    borderRadius: 16,
-    background: "var(--panel)",
-    boxShadow: "0 4px 14px rgba(17,24,39,.06)",
-    display: "inline-flex",
-    flexDirection: "column",
-    alignItems: "center",
-  };
-
-  return (
-    <section id="solution" style={{ padding: "0 28px 60px" }}>
-      <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
-        <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>02 — الحل</div>
-        <h2
-          style={{
-            margin: "14px auto 0",
-            maxWidth: 720,
-            fontSize: "clamp(24px,2.8vw,34px)",
-            lineHeight: 1.4,
-            letterSpacing: "-.02em",
-            fontWeight: 600,
-          }}
-        >
-          من الظهور إلى النمو
-        </h2>
-        <p style={{ margin: "14px auto 0", maxWidth: 540, fontSize: 14.5, lineHeight: 1.85, color: "var(--mut)" }}>
-          كل ما تحتاجه لتكسب حضورًا أكبر وتحوله إلى نتائج لأعمالك
-        </p>
-
-        <div
-          style={{
-            position: "relative",
-            // calc(100vw - 64px) instead of a raw vw fraction: the parent
-            // section already spends 28px of padding on each side, so a
-            // plain "92vw" ignored that and could size wider than the
-            // padded content area — on real mobile this bled the circle
-            // past the left edge (clipped by the page's overflowX:clip)
-            // instead of staying centered.
-            width: "min(480px, calc(100vw - 64px))",
-            aspectRatio: "1 / 1",
-            margin: "56px auto 0",
-          }}
-        >
-          {/* dashed orbit path — slow continuous rotation for ambient motion */}
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: "8%",
-              borderRadius: "50%",
-              border: "1.5px dashed var(--line)",
-              animation: "rspin 60s linear infinite",
-            }}
-          />
-
-          {/* pulsing rings behind the center mark */}
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: 120,
-              height: 120,
-              transform: "translate(-50%,-50%)",
-              pointerEvents: "none",
-            }}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(14,157,134,.32) 0%, rgba(14,157,134,0) 70%)",
-                  animation: `rping 3s ${i * 1}s ease-out infinite`,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* center — ظهور itself */}
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%,-50%)",
-              zIndex: 2,
-              padding: "18px 26px",
-              border: "1px solid var(--line)",
-              borderRadius: 22,
-              background: "var(--panel)",
-              boxShadow: "0 10px 30px rgba(14,157,134,.18)",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <BrandMark className="h-7 w-7" />
-            <span style={{ fontSize: 19, fontWeight: 600 }}>ظهور</span>
-          </div>
-
-          {items.map((item, i) => (
-            <div key={item.label} style={{ ...cellOuter, top: item.top, left: item.left, zIndex: 1 }}>
-              <div
-                className="rl-orbit-item"
-                style={{
-                  ...cell,
-                  animation: `ofade .5s ${i * 0.06}s ease both, rfa ${6 + (i % 3)}s ${i * 0.3 + 0.5}s ease-in-out infinite`,
-                }}
-              >
-                <span
-                  className="rl-orbit-item-icon"
-                  style={{ borderRadius: 10, background: "rgba(14,157,134,.12)", display: "flex", alignItems: "center", justifyContent: "center", padding: 5 }}
-                >
-                  <OrbitIcon name={item.icon} />
-                </span>
-                <span className="rl-orbit-item-label" style={{ fontWeight: 600, textAlign: "center", lineHeight: 1.4 }}>{item.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Faq({
-  faqs,
-  open,
-  onToggle,
-}: {
-  faqs: [string, string][];
-  open: Record<number, boolean>;
-  onToggle: (i: number) => void;
-}) {
-  return (
-    <section id="faq" style={{ padding: "0 28px 60px" }}>
-      <div style={{ width: "min(1180px,100%)", margin: "0 auto", textAlign: "center" }}>
-        <div className="mono" style={{ fontSize: 11, letterSpacing: ".16em", color: "var(--acc)" }}>03 — الأسئلة الشائعة</div>
-        <h2 style={{ margin: "14px 0 0", fontSize: "clamp(24px,2.8vw,34px)", letterSpacing: "-.02em", fontWeight: 600 }}>
-          كل ما تحتاج معرفته قبل أن تبدأ
-        </h2>
-        <div
-          style={{
-            margin: "34px auto 0",
-            maxWidth: 780,
-            border: "1px solid var(--line)",
-            borderRadius: 24,
-            background: "var(--panel)",
-            overflow: "hidden",
-            textAlign: "right",
-          }}
-        >
-          {faqs.map(([q, a], i) => (
-            <div key={q} style={{ borderTop: i === 0 ? "none" : "1px solid var(--line)" }}>
-              <button
-                onClick={() => onToggle(i)}
-                className="rl-faq-row"
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 16,
-                  textAlign: "right",
-                  background: "transparent",
-                  border: 0,
-                  cursor: "pointer",
-                  color: "var(--tx)",
-                  fontSize: 14.5,
-                  fontWeight: 500,
-                  padding: "18px 22px",
-                }}
-              >
-                <span style={{ flex: 1 }}>{q}</span>
-                <span style={{ fontSize: 20, fontWeight: 300, color: "var(--mut)" }}>{open[i] ? "−" : "+"}</span>
-              </button>
-              {open[i] && (
-                <p style={{ margin: 0, padding: "0 22px 18px 54px", fontSize: 13.5, lineHeight: 1.95, color: "var(--mut)" }}>
-                  {a}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-        <div
-          style={{
-            margin: "48px auto 0",
-            maxWidth: 780,
-            border: "1px solid var(--line)",
-            borderRadius: 24,
-            background: "radial-gradient(600px 220px at 50% 100%,rgba(14,157,134,.14),transparent 70%),var(--panel)",
-            padding: "48px 28px",
-          }}
-        >
-          <h3 style={{ margin: 0, fontSize: "clamp(21px,2.4vw,28px)", fontWeight: 600, letterSpacing: "-.02em" }}>
-            حان وقت ظهور علامتك
-          </h3>
-          <p style={{ margin: "12px auto 0", maxWidth: 440, fontSize: 14, lineHeight: 1.85, color: "var(--mut)" }}>
-            ابدأ اليوم، وكن حاضرًا في المحادثات التي تصنع قرار الشراء
-          </p>
-          <Link
-            href="/preview"
-            className="rl-fill"
-            style={{
-              display: "inline-block",
-              marginTop: 22,
-              fontSize: 13.5,
-              fontWeight: 600,
-              color: "var(--btn-fg)",
-              background: "var(--tx)",
-              padding: "11px 24px",
-              borderRadius: 9999,
-              whiteSpace: "nowrap",
-            }}
-          >
-            ابدأ مجانًا
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer style={{ borderTop: "1px solid var(--line)", padding: "28px 28px 36px" }}>
-      <div style={{ width: "min(1180px,100%)", margin: "0 auto", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 9, fontWeight: 600, fontSize: 15 }}>
-          <BrandMark className="h-5 w-5" />
-          ظهور
-        </div>
-        <div style={{ flex: 1 }} />
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            fontSize: 12,
-            color: "var(--mut)",
-            border: "1px solid var(--line)",
-            borderRadius: 9999,
-            padding: "6px 13px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          ظهور — أحد منتجات TAU
-        </div>
-        <div style={{ fontSize: 12, color: "var(--dim)" }}>© 2026 ظهور. جميع الحقوق محفوظة</div>
-      </div>
-    </footer>
   );
 }
