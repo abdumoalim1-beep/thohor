@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
 
 import { BrandMark } from "@/components/ui/BrandMark";
 import { joinBetaDirectly } from "@/lib/api";
@@ -127,6 +127,19 @@ const STEP_3_FIXES: { label: string; status: string; done?: boolean }[] = [
 // curve climbs leftward toward أكت — i.e. upward as time advances.
 const STEP_3_TREND = [24, 30, 38, 44, 52, 57, 66, 74, 79];
 const STEP_3_MONTHS = ["ينا", "أبر", "يول", "أكت"];
+
+// Order is DOM order, so under RTL the first entry renders right-most —
+// matching the design's WordPress-on-the-right layout.
+const INTEGRATIONS: { name: string; slug: string; desc: string }[] = [
+  { name: "WordPress", slug: "wordpress", desc: "تطبيق التحسينات والنشر مباشرة" },
+  { name: "Shopify", slug: "shopify", desc: "تحسين صفحات متجرك ومدوّنته" },
+  { name: "Framer", slug: "framer", desc: "نشر تلقائي إلى موقعك" },
+  { name: "Wix", slug: "wix", desc: "إرسال التحسينات إلى Wix" },
+  { name: "Notion", slug: "notion", desc: "تعبئة قواعد المحتوى" },
+  { name: "Ghost", slug: "ghost", desc: "تكامل مباشر مع Ghost" },
+  { name: "WordPress.com", slug: "wordpress-com", desc: "للمواقع المستضافة" },
+  { name: "Webhook", slug: "webhook", desc: "اربط أي نظام لديك" },
+];
 
 const TESTIMONIALS: { quote: string; company: string }[] = [
   {
@@ -316,6 +329,7 @@ export default function Home() {
       />
       <PlatformFeatures />
       <HowStepsSection />
+      <IntegrationsSection />
       <TestimonialsSection />
       <PricingSection onOpenModal={() => setModalOpen(true)} />
       <FaqSection />
@@ -465,10 +479,18 @@ function HeroBlock({
       id="top"
       style={{
         width: "100%",
-        backgroundColor: "#ecf8f7",
+        backgroundColor: "#fff",
+        // Colour is concentrated at the top and fully resolved to white by
+        // ~46%, so the headline reads on light ground and the dashboard
+        // below sits on plain white. The previous radial was sized 90% of
+        // a 1300px-tall hero, which stretched the teal down over almost
+        // the whole section instead of banding it across the top.
         backgroundImage:
-          "linear-gradient(to right, rgba(4,43,41,0.06) 1px, transparent 1px),linear-gradient(to bottom, rgba(4,43,41,0.06) 1px, transparent 1px),radial-gradient(120% 90% at 50% -10%, #0fd6c2 0%, #29c9bd 30%, #a9e8e2 58%, rgba(236,248,247,0.85) 78%, rgba(255,255,255,0.95) 100%)",
-        backgroundSize: "64px 64px, 64px 64px, 100% 100%",
+          "linear-gradient(to right, rgba(4,43,41,0.055) 1px, transparent 1px)," +
+          "linear-gradient(to bottom, rgba(4,43,41,0.055) 1px, transparent 1px)," +
+          "radial-gradient(72% 34% at 50% 0%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 72%)," +
+          "linear-gradient(to bottom, #1fc9ba 0%, #4ed5c7 8%, #90e4d7 15%, #c6f0e8 22%, #e6f7f3 30%, #f7fcfb 38%, #ffffff 46%)",
+        backgroundSize: "64px 64px, 64px 64px, 100% 100%, 100% 100%",
         padding: "0 0 60px",
       }}
     >
@@ -549,7 +571,9 @@ function HeroBlock({
         </div>
         <h1 style={{ fontSize: 58, lineHeight: 1.15, letterSpacing: "-1px", fontWeight: 700, color: DARK, margin: 0 }}>
           حوّل محادثاتك إلى{" "}
-          <span style={{ display: "inline-block", color: "#fff", transition: "opacity .35s ease", opacity: rotOn ? 1 : 0 }}>
+          {/* Deep teal, not white: the headline now sits on the light part
+              of the gradient, where white text would disappear. */}
+          <span style={{ display: "inline-block", color: TEAL_DEEP, transition: "opacity .35s ease", opacity: rotOn ? 1 : 0 }}>
             {rotWord}
           </span>
         </h1>
@@ -1477,6 +1501,95 @@ function StepTrendChart() {
         <span>100</span>
         <span>50</span>
         <span>0</span>
+      </div>
+    </div>
+  );
+}
+
+// Renders the platform's real logo from /public/integrations/<slug>.svg,
+// falling back to a lettered tile while a file is missing — so the
+// section is presentable before the logo assets land and upgrades on its
+// own once they do, with no code change.
+function IntegrationLogo({ name, slug }: { name: string; slug: string }) {
+  const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+
+  // The img is server-rendered, so a missing file usually errors before
+  // hydration attaches onError and the handler never runs. Re-check the
+  // element's own state once mounted: a finished load with zero intrinsic
+  // width is a failed one.
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+  }, []);
+
+  if (failed) {
+    return (
+      <span style={{ fontSize: 20, fontWeight: 700, color: TEAL_DEEP, lineHeight: 1 }} aria-hidden>
+        {name.charAt(0)}
+      </span>
+    );
+  }
+  return (
+    // A plain <img> rather than next/image: these are 30px static brand
+    // marks, so the LCP/bandwidth concern the rule guards against does not
+    // apply, and onError is what drives the fallback above.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      ref={ref}
+      src={`/integrations/${slug}.svg`}
+      alt={name}
+      width={30}
+      height={30}
+      onError={() => setFailed(true)}
+      style={{ width: 30, height: 30, objectFit: "contain" }}
+    />
+  );
+}
+
+function IntegrationsSection() {
+  return (
+    <div id="integrations" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
+      <SectionBadge label="التكاملات" />
+      <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: TEAL, margin: "0 auto 16px", maxWidth: 620 }}>
+        نقرة واحدة إلى أي منصة
+      </h2>
+      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 480, margin: "0 auto 52px", lineHeight: 1.8 }}>
+        اربط ظهور بمنصتك وطبّق التحسينات وانشر المحتوى مباشرة.
+      </p>
+      <div className="rl-zh-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 24 }}>
+        {INTEGRATIONS.map((it) => (
+          <div
+            key={it.slug}
+            style={{
+              border: `1px solid ${BORDER}`,
+              borderRadius: 22,
+              padding: "34px 18px",
+              background: "#fff",
+              boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: 16,
+                background: "#f4faf9",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 18,
+              }}
+            >
+              <IntegrationLogo name={it.name} slug={it.slug} />
+            </span>
+            <div style={{ fontSize: 16.5, fontWeight: 700, color: DARK, marginBottom: 8 }}>{it.name}</div>
+            <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.7 }}>{it.desc}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

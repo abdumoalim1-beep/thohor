@@ -251,6 +251,19 @@
    signup wizard above, so the same minimal-bounded-addition approach:
    collapse to one column and drop the absolutely-positioned floating
    card instead of letting it overflow/overlap on narrow screens. */
+/* Integrations grid: 4 across, halving twice on the way down rather than
+   dropping straight to one column — the cards are small enough to pair up. */
+@media (max-width: 1000px) {
+  .rl-zh-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  .rl-zh-grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 860px) {
   .rl-zh-grid-3,
   .rl-zh-grid-2,
