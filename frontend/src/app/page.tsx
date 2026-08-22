@@ -128,14 +128,24 @@ const STEP_3_FIXES: { label: string; status: string; done?: boolean }[] = [
 const STEP_3_TREND = [24, 30, 38, 44, 52, 57, 66, 74, 79];
 const STEP_3_MONTHS = ["ينا", "أبر", "يول", "أكت"];
 
-const TESTIMONIALS: { quote: string; name: string; company: string }[] = [
-  { quote: "وفّرنا أسابيع من المتابعة اليدوية، ولوحة التحكم تجعل الأمر بسيطاً.", name: "سارة النديّة", company: "إيرث أوبس" },
-  { quote: "سريعة وموثوقة وممتعة في الاستخدام فعلاً، وفريق التسويق أحبّها.", name: "ليو تاناكا", company: "فيوتشر ون" },
+const TESTIMONIALS: { quote: string; company: string }[] = [
+  {
+    quote: "ظهور اختصر علينا ساعات من التحليل والمتابعة وجمع لنا الصورة كاملة من الظهور إلى فرص التحسين في مكان واحد",
+    company: "وكالة Trigger",
+  },
+  { quote: "ظهور كشف لنا فرصًا ما كنا نشوفها والأهم أنه وضّح لنا وش نغيّر ووش نبدأ فيه", company: "شركة راصد" },
+  {
+    quote: "صار عندنا تصور أوضح عن ظهورنا ومنافسينا وما يحتاجه الموقع للتحسن بدل الاعتماد على التخمين",
+    company: "منصة بوصلة",
+  },
 ];
 
 type PricingPlan = {
   name: string;
+  badge?: string;
+  oldPrice?: string;
   price: string;
+  period?: string;
   desc: string;
   cta: string;
   features: string[];
@@ -166,20 +176,37 @@ const PLAN_LIGHT = {
   btnBorder: "1px solid #cdeeea",
 };
 
+// The 50% launch discount is stated once, on the toggle above the cards —
+// the struck-through original price carries it per card without repeating
+// the wording three more times.
 const PLANS: PricingPlan[] = [
   {
     ...PLAN_LIGHT,
     name: "البداية",
-    price: "189",
-    desc: "للفرق الصغيرة التي تبدأ بمتابعة ظهور علامتها.",
-    cta: "ابدأ المتابعة",
-    features: ["متابعة حجم الإشارات", "تقرير واحد شهرياً", "لوحة تحكم أساسية", "دعم بالبريد"],
+    oldPrice: "250 ر.س",
+    price: "125",
+    period: " ر.س / شهريًا",
+    desc: "لبداية قوية في Google ومحركات الذكاء الاصطناعي",
+    cta: "ابدأ الآن",
+    features: [
+      "موقع واحد",
+      "Google وChatGPT وGemini وPerplexity",
+      "25 سؤالًا للمتابعة",
+      "تحليل حتى 500 صفحة",
+      "متابعة 3 منافسين",
+      "اكتشاف فرص التحسين",
+      "تحسينات بنقرة واحدة",
+      "تحديث أسبوعي",
+    ],
   },
   {
     name: "النمو",
-    price: "349",
-    desc: "للفرق التي توسّع متابعة علامتها عبر القنوات.",
-    cta: "ترقية الخطة",
+    badge: "الأكثر اختيارًا",
+    oldPrice: "598 ر.س",
+    price: "299",
+    period: " ر.س / شهريًا",
+    desc: "للمواقع التي تريد تحسين ظهورها بشكل مستمر",
+    cta: "ابدأ مع النمو",
     bg: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
     border: "none",
     boxShadow: "0 26px 60px rgba(6,106,99,0.3)",
@@ -191,24 +218,57 @@ const PLANS: PricingPlan[] = [
     btnBg: "#fff",
     btnColor: TEAL_DEEP,
     btnBorder: "none",
-    features: ["كل ما في البداية", "تقارير غير محدودة", "متابعة ظهور لحظية", "هوية مخصصة للتقارير", "دعم فوري بالأولوية"],
+    features: [
+      "كل ما في البداية",
+      "100 سؤال للمتابعة",
+      "تحليل حتى 2,000 صفحة",
+      "متابعة 10 منافسين",
+      "تحديث يومي للظهور",
+      "تحسين الصفحات والمحتوى والصور",
+      "إنشاء صفحات ومحتوى عند الحاجة",
+      "فرص تحسين أكثر",
+    ],
   },
   {
     ...PLAN_LIGHT,
-    name: "المؤسسات",
-    price: "699",
-    desc: "للشركات ذات احتياجات المتابعة المتقدمة.",
-    cta: "اطلب وصولاً كاملاً",
-    features: ["كل ما في النمو", "صلاحيات وأدوار للفريق", "حزمة تقارير للإدارة", "واجهات برمجية وتكاملات", "مدير نجاح مخصص"],
+    name: "الأعمال",
+    price: "تواصل معنا",
+    desc: "للشركات والوكالات ذات الاحتياجات الأكبر",
+    cta: "تواصل معنا",
+    features: [
+      "كل ما في النمو",
+      "مواقع متعددة",
+      "حدود متابعة مخصصة",
+      "زحف وتحليل مخصص",
+      "عدد أكبر من المنافسين",
+      "أعضاء فريق متعددون",
+      "API وتكاملات",
+      "دعم وإعداد مخصص",
+    ],
   },
 ];
 
-const FAQS: string[] = [
-  "كيف تحسب منصة ظهور مستوى الظهور؟",
-  "هل يمكنني إنشاء تقارير جاهزة للإدارة؟",
-  "هل المنصة مناسبة للعلامات الناشئة؟",
-  "هل يمكن لفريقي كامل الوصول للمنصة؟",
-  "هل أحتاج خبرة تقنية لاستخدام ظهور؟",
+const FAQS: [string, string][] = [
+  [
+    "كيف يعرف ظهور ما الذي يحتاجه موقعي للتحسين؟",
+    "يحلل ظهور موقعك ومنافسيك ويفحص صفحات موقعك ليحدد المشاكل والفرص الأكثر تأثيرًا على ظهورك",
+  ],
+  [
+    "ما التحسينات التي يستطيع ظهور تنفيذها على موقعي؟",
+    "يحدد ظهور التحسين المناسب حسب احتياج موقعك من تحسين الصفحات والمحتوى والصور والعناصر التقنية إلى إنشاء صفحات ومحتوى جديد عند الحاجة",
+  ],
+  [
+    "هل يتابع ظهور موقعي في Google ومحركات الذكاء الاصطناعي؟",
+    "نعم يتابع ظهورك ومنافسيك في Google وChatGPT وGemini وPerplexity لتعرف أين تظهر وأين تحتاج للتحسين",
+  ],
+  [
+    "هل أحتاج خبرة في SEO أو البرمجة لاستخدام ظهور؟",
+    "لا يحول ظهور التحليل إلى خطوات واضحة وتحسينات قابلة للتنفيذ دون الحاجة إلى خبرة تقنية",
+  ],
+  [
+    "كيف أربط موقعي بظهور وأبدأ التحسين؟",
+    "اربط موقعك بظهور عبر إضافة رابط بسيط إلى موقعك ثم اربط Google Analytics وبعدها يبدأ ظهور بتحليل موقعك ويمكنك تطبيق التحسينات المقترحة مباشرة بضغطة زر",
+  ],
 ];
 
 const JOIN_INTEREST_OPTIONS: { value: string; label: string }[] = [
@@ -257,7 +317,7 @@ export default function Home() {
       <PlatformFeatures />
       <HowStepsSection />
       <TestimonialsSection />
-      <PricingSection />
+      <PricingSection onOpenModal={() => setModalOpen(true)} />
       <FaqSection />
       <CtaBanner onOpenModal={() => setModalOpen(true)} />
       <SiteFooter />
@@ -1422,152 +1482,252 @@ function StepTrendChart() {
   );
 }
 
+// The first testimonial gets the filled teal treatment; the rest are
+// plain cards. Rendered from one keyed map rather than a static element
+// plus a map, so every child carries a key.
 function TestimonialsSection() {
   return (
     <div id="testimonials" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="آراء العملاء" />
       <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 52px", maxWidth: 560 }}>
-        فرق طموحة تثق بـظهور
+        قالوا عن ظهور
       </h2>
       <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1.25fr 1fr 1fr", gap: 24, textAlign: "right" }}>
-        <div
-          style={{
-            background: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
-            borderRadius: 24,
-            padding: 32,
-            color: "#fff",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            boxShadow: "0 24px 56px rgba(6,106,99,0.28)",
-          }}
-        >
-          <div>
-            <div style={{ color: "#bff2ec", fontSize: 13, marginBottom: 14 }}>★★★★★</div>
-            <div style={{ fontSize: 17.5, lineHeight: 1.8 }}>
-              منحتنا منصة ظهور وضوحاً وتنظيماً وسرعة. لأول مرة تقاريرنا عن الظهور جاهزة فعلاً للعرض على الإدارة.
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}>
-            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.25)" }} />
-            <div style={{ fontSize: 13.5, lineHeight: 1.5 }}>
-              <b>عامر الطالب</b>
-              <div style={{ opacity: 0.75, fontSize: 12.5 }}>شركة كليماكور</div>
-            </div>
-          </div>
-        </div>
-        {TESTIMONIALS.map((t) => (
-          <div
-            key={t.name}
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 24,
-              padding: 28,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)",
-            }}
-          >
-            <div>
-              <div style={{ color: "#8fdcd4", fontSize: 12, marginBottom: 12 }}>★★★★★</div>
-              <div style={{ fontSize: 14.5, color: "#33433f", lineHeight: 1.8 }}>{t.quote}</div>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 26 }}>
-              <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#e8f2f1" }} />
-              <div style={{ fontSize: 13, lineHeight: 1.5 }}>
-                <b style={{ color: DARK }}>{t.name}</b>
-                <div style={{ color: "#8fa4a2", fontSize: 12 }}>{t.company}</div>
+        {TESTIMONIALS.map((t, i) =>
+          i === 0 ? (
+            <div
+              key={t.company}
+              style={{
+                background: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
+                borderRadius: 24,
+                padding: 32,
+                color: "#fff",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                boxShadow: "0 24px 56px rgba(6,106,99,0.28)",
+              }}
+            >
+              <div>
+                <div style={{ color: "#bff2ec", fontSize: 13, marginBottom: 14 }}>★★★★★</div>
+                <div style={{ fontSize: 17.5, lineHeight: 1.8 }}>{t.quote}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}>
+                <div style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.25)" }} />
+                <b style={{ fontSize: 13.5 }}>{t.company}</b>
               </div>
             </div>
-          </div>
-        ))}
+          ) : (
+            <div
+              key={t.company}
+              style={{
+                border: `1px solid ${BORDER}`,
+                borderRadius: 24,
+                padding: 28,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 16px 40px rgba(4,43,41,0.04)",
+              }}
+            >
+              <div>
+                <div style={{ color: "#8fdcd4", fontSize: 12, marginBottom: 12 }}>★★★★★</div>
+                <div style={{ fontSize: 14.5, color: "#33433f", lineHeight: 1.8 }}>{t.quote}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 26 }}>
+                <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#e8f2f1" }} />
+                <b style={{ fontSize: 13, color: DARK }}>{t.company}</b>
+              </div>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
 }
 
-function PricingSection() {
+function PricingSection({ onOpenModal }: { onOpenModal: () => void }) {
   return (
     <div id="pricing" style={{ maxWidth: 1120, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="الأسعار" />
       <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 16px", maxWidth: 520 }}>
-        أسعار واضحة تناسب كل فريق
+        اختر الخطة المناسبة لظهورك
       </h2>
-      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 420, margin: "0 auto 30px", lineHeight: 1.8 }}>
-        ابدأ بخطة صغيرة، وارتقِ عندما تتوسّع تغطية علامتك.
+      <p style={{ fontSize: 15.5, color: MUTED, maxWidth: 460, margin: "0 auto 30px", lineHeight: 1.8 }}>
+        ابدأ بتحسين ظهور موقعك واختر الخطة المناسبة لاحتياجك
       </p>
       <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 26, padding: 5, gap: 4, marginBottom: 44 }}>
         <div style={{ background: TEAL, color: "#fff", fontSize: 13, fontWeight: 700, padding: "9px 24px", borderRadius: 22, whiteSpace: "nowrap" }}>شهري</div>
-        <div style={{ color: MUTED, fontSize: 13, fontWeight: 700, padding: "9px 24px", whiteSpace: "nowrap" }}>سنوي · خصم 30%</div>
+        <div style={{ color: MUTED, fontSize: 13, fontWeight: 700, padding: "9px 24px", whiteSpace: "nowrap" }}>سنوي · خصم 50%</div>
       </div>
       <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, textAlign: "right" }}>
-        {PLANS.map((plan) => (
-          <div key={plan.name} style={{ borderRadius: 24, padding: "32px 28px", display: "flex", flexDirection: "column", background: plan.bg, border: plan.border, boxShadow: plan.boxShadow }}>
-            <div style={{ fontSize: 13.5, fontWeight: 700, color: plan.nameColor, marginBottom: 10 }}>{plan.name}</div>
-            <div style={{ fontSize: 38, fontWeight: 700, letterSpacing: "-0.8px", color: plan.priceColor }}>
-              {plan.price}
-              <span style={{ fontSize: 13.5, fontWeight: 600, color: plan.mutedColor, letterSpacing: 0 }}> ر.س / شهرياً</span>
-            </div>
-            <div style={{ fontSize: 14, color: plan.mutedColor, margin: "12px 0 26px", lineHeight: 1.75 }}>{plan.desc}</div>
+        {PLANS.map((plan) => {
+          const isContact = !plan.period;
+          return (
             <div
+              key={plan.name}
               style={{
-                textAlign: "center",
-                fontSize: 13.5,
-                fontWeight: 700,
-                padding: 12,
+                position: "relative",
                 borderRadius: 24,
-                marginBottom: 26,
-                background: plan.btnBg,
-                color: plan.btnColor,
-                border: plan.btnBorder,
+                padding: "32px 28px",
+                display: "flex",
+                flexDirection: "column",
+                background: plan.bg,
+                border: plan.border,
+                boxShadow: plan.boxShadow,
               }}
             >
-              {plan.cta}
-            </div>
-            {plan.features.map((pf) => (
-              <div key={pf} style={{ display: "flex", gap: 9, fontSize: 13.5, color: plan.featColor, padding: "6px 0" }}>
-                <span style={{ color: plan.checkColor }}>✓</span>
-                {pf}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 13.5, fontWeight: 700, color: plan.nameColor }}>{plan.name}</span>
+                {plan.badge && (
+                  <span
+                    style={{
+                      background: "rgba(255,255,255,0.22)",
+                      color: "#fff",
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      padding: "4px 11px",
+                      borderRadius: 9999,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {plan.badge}
+                  </span>
+                )}
               </div>
-            ))}
-          </div>
-        ))}
+
+              {plan.oldPrice && (
+                <div style={{ fontSize: 14, color: plan.mutedColor, textDecoration: "line-through", marginBottom: 4 }}>{plan.oldPrice}</div>
+              )}
+              <div style={{ fontSize: isContact ? 27 : 38, fontWeight: 700, letterSpacing: "-0.8px", color: plan.priceColor }}>
+                {plan.price}
+                {plan.period && (
+                  <span style={{ fontSize: 13.5, fontWeight: 600, color: plan.mutedColor, letterSpacing: 0 }}>{plan.period}</span>
+                )}
+              </div>
+
+              <div style={{ fontSize: 14, color: plan.mutedColor, margin: "12px 0 26px", lineHeight: 1.75 }}>{plan.desc}</div>
+
+              {isContact ? (
+                <button
+                  onClick={onOpenModal}
+                  className="rl-fill-soft"
+                  style={{
+                    textAlign: "center",
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    padding: 12,
+                    borderRadius: 24,
+                    marginBottom: 26,
+                    cursor: "pointer",
+                    background: plan.btnBg,
+                    color: plan.btnColor,
+                    border: plan.btnBorder,
+                  }}
+                >
+                  {plan.cta}
+                </button>
+              ) : (
+                <Link
+                  href="/preview"
+                  className="rl-fill-soft"
+                  style={{
+                    textAlign: "center",
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    padding: 12,
+                    borderRadius: 24,
+                    marginBottom: 26,
+                    background: plan.btnBg,
+                    color: plan.btnColor,
+                    border: plan.btnBorder,
+                  }}
+                >
+                  {plan.cta}
+                </Link>
+              )}
+
+              {plan.features.map((pf) => (
+                <div key={pf} style={{ display: "flex", gap: 9, fontSize: 13.5, color: plan.featColor, padding: "6px 0" }}>
+                  <span style={{ color: plan.checkColor, flexShrink: 0 }}>✓</span>
+                  {pf}
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 function FaqSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   return (
     <div id="faq" style={{ maxWidth: 820, margin: "0 auto", padding: "104px 32px 0", textAlign: "center" }}>
       <SectionBadge label="الأسئلة الشائعة" />
       <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto 44px" }}>
-        لديك أسئلة؟ لدينا الإجابات
+        لديك سؤال؟ لدينا الإجابة
       </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, textAlign: "right" }}>
-        {FAQS.map((q) => (
-          <div
-            key={q}
-            style={{
-              border: `1px solid ${BORDER}`,
-              borderRadius: 18,
-              padding: "20px 24px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              fontSize: 15,
-              fontWeight: 600,
-              color: DARK,
-              boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 12px 30px rgba(4,43,41,0.04)",
-            }}
-          >
-            {q}
-            <span style={{ width: 28, height: 28, borderRadius: "50%", background: "#eefaf8", color: TEAL, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0, marginRight: 16 }}>
-              +
-            </span>
-          </div>
-        ))}
+        {FAQS.map(([q, a], i) => {
+          const open = openIndex === i;
+          return (
+            <div
+              key={q}
+              style={{
+                border: `1px solid ${BORDER}`,
+                borderRadius: 18,
+                background: "#fff",
+                boxShadow: "0 2px 4px rgba(4,43,41,0.02),0 12px 30px rgba(4,43,41,0.04)",
+                overflow: "hidden",
+              }}
+            >
+              <button
+                onClick={() => setOpenIndex(open ? null : i)}
+                aria-expanded={open}
+                className="rl-faq-row"
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: 16,
+                  textAlign: "right",
+                  background: "transparent",
+                  border: 0,
+                  cursor: "pointer",
+                  padding: "20px 24px",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: DARK,
+                }}
+              >
+                <span style={{ flex: 1 }}>{q}</span>
+                <span
+                  aria-hidden
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: "50%",
+                    background: "#eefaf8",
+                    color: TEAL,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 16,
+                    flexShrink: 0,
+                  }}
+                >
+                  {open ? "−" : "+"}
+                </span>
+              </button>
+              {open && (
+                <p style={{ margin: 0, padding: "0 24px 20px", fontSize: 14, lineHeight: 1.95, color: MUTED }}>{a}</p>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
