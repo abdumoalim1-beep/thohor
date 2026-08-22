@@ -253,7 +253,8 @@
    card instead of letting it overflow/overlap on narrow screens. */
 @media (max-width: 860px) {
   .rl-zh-grid-3,
-  .rl-zh-grid-2 {
+  .rl-zh-grid-2,
+  .rl-zh-dash-2 {
     grid-template-columns: 1fr !important;
   }
   .rl-zh-liveinsight-card {
