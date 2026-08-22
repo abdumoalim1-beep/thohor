@@ -51,12 +51,12 @@ const DASHBOARD_NAV_ITEMS: { icon: DashIconName; label: string; active?: boolean
 ];
 
 const QUICK_STATS: { icon: DashIconName; value: string; label: string }[] = [
-  { icon: "target", value: "٨٧٣ ألف", label: "الوصول الشهري" },
-  { icon: "signal", value: "١٢٤٩٧٠", label: "إجمالي الإشارات" },
-  { icon: "triangle", value: "٨٠٪", label: "نسبة الإيجابية" },
-  { icon: "doc", value: "٣٢٠ ألف", label: "وصول الأخبار" },
-  { icon: "spark", value: "٤٨", label: "حملات نشطة" },
-  { icon: "alert", value: "١٢", label: "تنبيهات سلبية" },
+  { icon: "target", value: "873 ألف", label: "الوصول الشهري" },
+  { icon: "signal", value: "124970", label: "إجمالي الإشارات" },
+  { icon: "triangle", value: "80%", label: "نسبة الإيجابية" },
+  { icon: "doc", value: "320 ألف", label: "وصول الأخبار" },
+  { icon: "spark", value: "48", label: "حملات نشطة" },
+  { icon: "alert", value: "12", label: "تنبيهات سلبية" },
 ];
 
 const BAR_A = [38, 54, 42, 66, 58, 80, 62, 88, 70, 96, 76, 92];
@@ -65,7 +65,7 @@ const BARS = BAR_A.map((a, i) => ({ a, b: BAR_B[i] }));
 const MONTHS = ["ينا", "فبر", "مار", "أبر", "ماي", "يون", "يول", "أغس", "سبت", "أكت", "نوف", "ديس"];
 
 // Two-series year chart. Values are "in hundreds" so the axis reads
-// ٢/٤/٦/٨ ألف, and أغس lands on ٦٤ -> the ٦٤٠٠ tooltip.
+// 2/4/6/8 ألف, and أغس lands on 64 -> the 6400 tooltip.
 const CHART_MAX = 80;
 const CHART_SERIES: { label: string; color: string; values: number[] }[] = [
   { label: "الإشارات", color: "#0d9e88", values: [40, 78, 46, 56, 52, 70, 48, 64, 44, 72, 54, 66] },
@@ -73,44 +73,44 @@ const CHART_SERIES: { label: string; color: string; values: number[] }[] = [
 ];
 
 const APPROVALS: { icon: DashIconName; name: string; date: string }[] = [
-  { icon: "doc", name: "الأخبار والصحافة", date: "١٠ يونيو ٠٣:٢٠" },
-  { icon: "audience", name: "التواصل الاجتماعي", date: "١٢ يونيو ٠٤:٣٠" },
-  { icon: "signal", name: "البودكاست", date: "١٤ يونيو ٠٥:٤٠" },
+  { icon: "doc", name: "الأخبار والصحافة", date: "10 يونيو 03:20" },
+  { icon: "audience", name: "التواصل الاجتماعي", date: "12 يونيو 04:30" },
+  { icon: "signal", name: "البودكاست", date: "14 يونيو 05:40" },
 ];
 
 const MENTIONS: { title: string; icon: DashIconName; channel: string; source: string; status: string; ended?: boolean; date: string }[] = [
-  { title: "تقرير أداء الحملة", icon: "doc", channel: "الأخبار", source: "الرياض", status: "قيد المراجعة", date: "١٠ يونيو ٠٣:٢٠" },
-  { title: "ذكر العلامة في مقابلة", icon: "signal", channel: "بودكاست", source: "جدة", status: "نشط", date: "٠٨ يونيو ٠٤:٣٠" },
-  { title: "حملة الوعي الرقمي", icon: "audience", channel: "اجتماعي", source: "الدمام", status: "منتهي", ended: true, date: "٠٢ فبراير ٠٥:٤٠" },
+  { title: "تقرير أداء الحملة", icon: "doc", channel: "الأخبار", source: "الرياض", status: "قيد المراجعة", date: "10 يونيو 03:20" },
+  { title: "ذكر العلامة في مقابلة", icon: "signal", channel: "بودكاست", source: "جدة", status: "نشط", date: "08 يونيو 04:30" },
+  { title: "حملة الوعي الرقمي", icon: "audience", channel: "اجتماعي", source: "الدمام", status: "منتهي", ended: true, date: "02 فبراير 05:40" },
 ];
 
 const MARQUEE_BASE = ["شعار", "منصة", "مجموعة", "شركة", "مؤسسة", "استوديو", "مختبر", "وكالة"];
 const MARQUEE_LOGOS = [...MARQUEE_BASE, ...MARQUEE_BASE];
 
 const SCORE_ROWS: { label: string; value: string; width: string }[] = [
-  { label: "الوصول", value: "٨٢٪", width: "82%" },
-  { label: "الانطباع الإيجابي", value: "٧٤٪", width: "74%" },
-  { label: "حصة الصوت", value: "٦١٪", width: "61%" },
+  { label: "الوصول", value: "82%", width: "82%" },
+  { label: "الانطباع الإيجابي", value: "74%", width: "74%" },
+  { label: "حصة الصوت", value: "61%", width: "61%" },
 ];
 
 const SPARKLINE = [42, 66, 54, 78, 60, 88, 70, 96, 74, 90];
 
 const REPORT_ROWS: { icon: string; title: string; value: string; delta: string }[] = [
-  { icon: "📰", title: "الأخبار والصحافة", value: "٤٨٢٦ إشارة", delta: "+١٢٪" },
-  { icon: "📱", title: "التواصل الاجتماعي", value: "١٢٩٠٤ إشارة", delta: "+٨٪" },
-  { icon: "🎙", title: "البودكاست", value: "٣١٨ إشارة", delta: "+٥٪" },
-  { icon: "📺", title: "الفيديو", value: "١٢٤٠ إشارة", delta: "+٩٪" },
+  { icon: "📰", title: "الأخبار والصحافة", value: "4826 إشارة", delta: "+12%" },
+  { icon: "📱", title: "التواصل الاجتماعي", value: "12904 إشارة", delta: "+8%" },
+  { icon: "🎙", title: "البودكاست", value: "318 إشارة", delta: "+5%" },
+  { icon: "📺", title: "الفيديو", value: "1240 إشارة", delta: "+9%" },
 ];
 
 const STEP_1_ROWS: { label: string; value: string; icon: DashIconName; pending?: boolean }[] = [
-  { label: "صفحات الموقع", value: "٢٤٨ صفحة", icon: "doc" },
+  { label: "صفحات الموقع", value: "248 صفحة", icon: "doc" },
   { label: "نشاطك وسوقك", value: "مُحدّد", icon: "target" },
   { label: "ربط Google", value: "جاري", icon: "signal", pending: true },
 ];
 
 const STEP_2_STATS: { label: string; display: string; pct: number }[] = [
-  { label: "الظهور في Google", display: "٦٢٪", pct: 62 },
-  { label: "محركات الذكاء", display: "٤١٪", pct: 41 },
+  { label: "الظهور في Google", display: "62%", pct: 62 },
+  { label: "محركات الذكاء", display: "41%", pct: 41 },
 ];
 
 const STEP_2_ISSUES: { label: string; impact: string; color: string; bg: string }[] = [
@@ -170,14 +170,14 @@ const PLANS: PricingPlan[] = [
   {
     ...PLAN_LIGHT,
     name: "البداية",
-    price: "١٨٩",
+    price: "189",
     desc: "للفرق الصغيرة التي تبدأ بمتابعة ظهور علامتها.",
     cta: "ابدأ المتابعة",
     features: ["متابعة حجم الإشارات", "تقرير واحد شهرياً", "لوحة تحكم أساسية", "دعم بالبريد"],
   },
   {
     name: "النمو",
-    price: "٣٤٩",
+    price: "349",
     desc: "للفرق التي توسّع متابعة علامتها عبر القنوات.",
     cta: "ترقية الخطة",
     bg: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
@@ -196,7 +196,7 @@ const PLANS: PricingPlan[] = [
   {
     ...PLAN_LIGHT,
     name: "المؤسسات",
-    price: "٦٩٩",
+    price: "699",
     desc: "للشركات ذات احتياجات المتابعة المتقدمة.",
     cta: "اطلب وصولاً كاملاً",
     features: ["كل ما في النمو", "صلاحيات وأدوار للفريق", "حزمة تقارير للإدارة", "واجهات برمجية وتكاملات", "مدير نجاح مخصص"],
@@ -666,7 +666,7 @@ function HeroBlock({
                     border: "2px solid #fff",
                   }}
                 >
-                  ٩
+                  9
                 </span>
               </div>
               <div style={{ fontSize: 11.5, fontWeight: 700, color: DARK }}>نورة العامر</div>
@@ -680,7 +680,7 @@ function HeroBlock({
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", gap: 8 }}>
               <div style={{ flex: "0 0 108px", display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 2px" }}>
                 <div style={{ fontSize: 14.5, fontWeight: 700, color: DARK, letterSpacing: "-0.2px" }}>مؤشرات سريعة</div>
-                <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 6, lineHeight: 1.65 }}>قياس الظهور خلال آخر ٧ أيام</div>
+                <div style={{ fontSize: 9.5, color: "#9aabaa", marginTop: 6, lineHeight: 1.65 }}>قياس الظهور خلال آخر 7 أيام</div>
               </div>
               {QUICK_STATS.map((s) => (
                 <div
@@ -743,7 +743,7 @@ function HeroBlock({
                           </div>
                         ))}
                       </div>
-                      {/* أغس sits at ٦٤ — the tooltip the design shows */}
+                      {/* أغس sits at 64 — the tooltip the design shows */}
                       <span
                         aria-hidden
                         style={{
@@ -760,7 +760,7 @@ function HeroBlock({
                           whiteSpace: "nowrap",
                         }}
                       >
-                        ٦٤٠٠
+                        6400
                       </span>
                     </div>
                     <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
@@ -785,7 +785,7 @@ function HeroBlock({
                       paddingRight: 7,
                     }}
                   >
-                    {["٨ ألف", "٦ ألف", "٤ ألف", "٢ ألف", "٠"].map((v) => (
+                    {["8 ألف", "6 ألف", "4 ألف", "2 ألف", "0"].map((v) => (
                       <span key={v}>{v}</span>
                     ))}
                   </div>
@@ -1030,8 +1030,8 @@ function PlatformFeatures() {
             >
               <div style={{ fontSize: 10.5, color: "#9aabaa", marginBottom: 4 }}>إجمالي الوصول</div>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ fontSize: 19, fontWeight: 700, color: TEAL }}>٨٧٣٤٠٠</div>
-                <div style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 9.5, fontWeight: 700, padding: "3px 7px", borderRadius: 8 }}>+٤٫٥٪</div>
+                <div style={{ fontSize: 19, fontWeight: 700, color: TEAL }}>873400</div>
+                <div style={{ background: GOOD_BG, color: GOOD_FG, fontSize: 9.5, fontWeight: 700, padding: "3px 7px", borderRadius: 8 }}>+4.5%</div>
               </div>
             </div>
           </div>
@@ -1075,7 +1075,7 @@ function PlatformFeatures() {
                   }}
                 >
                   <div style={{ width: 74, height: 74, borderRadius: "50%", background: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                    <div style={{ fontSize: 20, fontWeight: 700, color: DARK }}>٧٦</div>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: DARK }}>76</div>
                     <div style={{ fontSize: 9.5, color: "#9aabaa" }}>مؤشر الظهور</div>
                   </div>
                 </div>
@@ -1166,7 +1166,7 @@ function HowStepsSection() {
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 32, marginBottom: 60 }}>
           <h2 style={{ fontSize: 44, lineHeight: 1.25, letterSpacing: "-0.8px", fontWeight: 700, color: TEAL, margin: 0 }}>
-            كيف تبدأ في ٣ خطوات
+            كيف تبدأ في 3 خطوات
           </h2>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 18, maxWidth: 360, textAlign: "right" }}>
             <p style={{ margin: 0, fontSize: 14.5, color: MUTED, lineHeight: 1.85 }}>
@@ -1287,7 +1287,7 @@ function Step2Mock() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 14 }}>
         <span style={{ fontSize: 12.5, fontWeight: 700, color: DARK }}>تحليل الظهور</span>
         <span style={{ background: TEAL, color: "#fff", fontSize: 9.5, fontWeight: 700, padding: "5px 11px", borderRadius: 9999, whiteSpace: "nowrap" }}>
-          ٤٨ فرصة
+          48 فرصة
         </span>
       </div>
 
@@ -1359,7 +1359,7 @@ function Step3Mock() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 12 }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: DARK }}>مؤشر الظهور بعد التحسين</span>
           <span style={{ background: "#e8f6f3", color: "#0b8f7d", fontSize: 9.5, fontWeight: 700, padding: "4px 10px", borderRadius: 9999, whiteSpace: "nowrap" }}>
-            +١٨٪
+            +18%
           </span>
         </div>
         <StepTrendChart />
@@ -1406,9 +1406,9 @@ function StepTrendChart() {
         </div>
       </div>
       <div style={{ height: 54, display: "flex", flexDirection: "column", justifyContent: "space-between", fontSize: 7, color: "#cfdcda", flexShrink: 0 }}>
-        <span>١٠٠</span>
-        <span>٥٠</span>
-        <span>٠</span>
+        <span>100</span>
+        <span>50</span>
+        <span>0</span>
       </div>
     </div>
   );
@@ -1491,7 +1491,7 @@ function PricingSection() {
       </p>
       <div style={{ display: "inline-flex", background: "#f5f8f8", borderRadius: 26, padding: 5, gap: 4, marginBottom: 44 }}>
         <div style={{ background: TEAL, color: "#fff", fontSize: 13, fontWeight: 700, padding: "9px 24px", borderRadius: 22, whiteSpace: "nowrap" }}>شهري</div>
-        <div style={{ color: MUTED, fontSize: 13, fontWeight: 700, padding: "9px 24px", whiteSpace: "nowrap" }}>سنوي · خصم ٣٠٪</div>
+        <div style={{ color: MUTED, fontSize: 13, fontWeight: 700, padding: "9px 24px", whiteSpace: "nowrap" }}>سنوي · خصم 30%</div>
       </div>
       <div className="rl-zh-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, textAlign: "right" }}>
         {PLANS.map((plan) => (
@@ -1636,7 +1636,7 @@ function SiteFooter() {
         </div>
       </div>
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px 44px", fontSize: 13, color: "#8fa4a2", borderTop: `1px solid #f2f6f5` }}>
-        <div style={{ paddingTop: 22 }}>© ٢٠٢٦ ظهور. جميع الحقوق محفوظة.</div>
+        <div style={{ paddingTop: 22 }}>© 2026 ظهور. جميع الحقوق محفوظة.</div>
       </div>
     </footer>
   );
