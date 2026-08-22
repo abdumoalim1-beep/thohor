@@ -161,7 +161,7 @@ const PAYMENT_METHODS: { name: string; slug: string }[] = [
   { name: "stc pay", slug: "stcpay" },
   { name: "Apple Pay", slug: "applepay" },
   { name: "VISA", slug: "visa" },
-  { name: "mada", slug: "mada" },
+  { name: "مدى", slug: "mada" },
 ];
 
 // Order is DOM order, so under RTL the first entry renders right-most —
@@ -1594,7 +1594,7 @@ function BrandAsset({
 function IntegrationLogo({ name, slug }: { name: string; slug: string }) {
   return (
     <BrandAsset
-      src={`/integrations/${slug}.svg`}
+      src={`/integrations/${slug}.png`}
       label={name}
       height={30}
       fallback={name.charAt(0)}
@@ -1931,201 +1931,218 @@ function SocialIcon({ name }: { name: "linkedin" | "x" | "instagram" }) {
   }
 }
 
+// Gradient, radius and palette come straight from the Zuhoor Landing
+// handoff — the same linear-gradient(160deg,#0fbfb0,#066a63) the pricing
+// "النمو" card and the featured testimonial already use, so the three
+// filled surfaces on the page are one colour.
 function SiteFooter({ onOpenModal }: { onOpenModal: () => void }) {
   const [domain, setDomain] = useState("");
-  const colTitle: CSSProperties = { fontSize: 14.5, fontWeight: 700, color: "#fff", marginBottom: 18 };
-  const colLink: CSSProperties = { display: "block", fontSize: 13.5, color: "rgba(255,255,255,0.78)", marginBottom: 14 };
+  const shell: CSSProperties = { maxWidth: 1120, margin: "0 auto" };
+  const colLink: CSSProperties = { fontSize: 14.5, color: "#eafcfa" };
 
   return (
-    <footer id="footer" style={{ marginTop: 104, padding: "0 14px 14px" }}>
-      <div
-        style={{
-          borderRadius: 40,
-          color: "#fff",
-          background: "linear-gradient(140deg,#1aae99 0%,#109080 50%,#0a7a68 100%)",
-          padding: "62px 48px 40px",
-        }}
-      >
-        {/* CTA — same domain -> /preview flow as the hero */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap", marginBottom: 76 }}>
-          <div style={{ maxWidth: 430 }}>
-            <h2 style={{ margin: 0, fontSize: 30, fontWeight: 700, letterSpacing: "-0.5px", lineHeight: 1.4 }}>ابدأ بتحسين ظهورك اليوم</h2>
-            <p style={{ margin: "12px 0 0", fontSize: 14.5, color: "rgba(255,255,255,0.82)", lineHeight: 1.8 }}>
-              أضف رابط موقعك واحصل على تحليل مجاني خلال دقائق.
-            </p>
+    <footer
+      id="footer"
+      style={{
+        marginTop: 104,
+        background: `linear-gradient(160deg,${TEAL_BRIGHT},${TEAL_DEEP})`,
+        borderRadius: "44px 44px 0 0",
+        overflow: "hidden",
+      }}
+    >
+      {/* CTA — same domain -> /preview flow as the hero */}
+      <div style={{ ...shell, padding: "64px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40, flexWrap: "wrap" }}>
+        <div style={{ maxWidth: 460 }}>
+          <div style={{ fontSize: 30, fontWeight: 700, color: "#fff", letterSpacing: "-0.6px", lineHeight: 1.35, marginBottom: 12 }}>
+            ابدأ بتحسين ظهورك اليوم
           </div>
-          <form
-            onSubmit={(e) => e.preventDefault()}
+          <p style={{ fontSize: 15, color: "#d6f4f1", lineHeight: 1.85, margin: 0 }}>أضف رابط موقعك واحصل على تحليل مجاني خلال دقائق.</p>
+        </div>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            background: "rgba(255,255,255,0.12)",
+            border: "1px solid rgba(255,255,255,0.24)",
+            borderRadius: 32,
+            padding: 8,
+            minWidth: "min(340px,100%)",
+          }}
+        >
+          <input
+            placeholder="https://yourbrand.sa"
+            dir="ltr"
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
+            className="rl-footer-url"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              width: "min(420px,100%)",
-              background: "rgba(255,255,255,0.14)",
-              border: "1px solid rgba(255,255,255,0.22)",
-              borderRadius: 9999,
-              padding: 6,
+              flex: 1,
+              minWidth: 0,
+              background: "transparent",
+              border: 0,
+              outline: "none",
+              color: "#fff",
+              fontSize: 14,
+              padding: "0 14px",
+              textAlign: "right",
+            }}
+          />
+          <Link
+            href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
+            className="rl-fill-soft"
+            style={{
+              background: "#fff",
+              color: DARK,
+              fontSize: 14,
+              fontWeight: 700,
+              borderRadius: 26,
+              padding: "13px 24px",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
           >
-            <div dir="ltr" style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", paddingInlineStart: 18 }}>
-              <input
-                placeholder="https://yourbrand.sa"
-                dir="ltr"
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  background: "transparent",
-                  border: 0,
-                  outline: "none",
-                  color: "#fff",
-                  fontSize: 13.5,
-                  padding: "9px 0",
-                  textAlign: "right",
-                }}
-              />
-            </div>
-            <Link
-              href={domain.trim() ? `/preview?domain=${encodeURIComponent(domain.trim())}` : "/preview"}
-              className="rl-fill-soft"
-              style={{
-                background: "#fff",
-                color: TEAL_DEEP,
-                fontSize: 13.5,
-                fontWeight: 700,
-                padding: "11px 22px",
-                borderRadius: 9999,
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-              }}
-            >
-              تحليل مجاني
-            </Link>
-          </form>
-        </div>
+            تحليل مجاني
+          </Link>
+        </form>
+      </div>
 
-        {/* link columns — brand block is first, so RTL puts it right-most */}
-        <div className="rl-zh-footer-cols" style={{ display: "grid", gridTemplateColumns: "1.7fr 1fr 1fr 1fr", gap: 32, marginBottom: 52 }}>
-          <div style={{ maxWidth: 330 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 20, marginBottom: 18 }}>
-              <span style={{ filter: "brightness(0) invert(1)", display: "flex" }}>
-                <BrandMark className="h-[24px] w-[24px]" />
-              </span>
-              ظهور
-            </div>
-            <p style={{ margin: 0, fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.95 }}>
-              منصة سعودية لمراقبة ظهور علامتك في Google ومحركات الذكاء الاصطناعي، وتحسين موقعك ومحتواك من مكان واحد.
-            </p>
-            <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
-              {(["linkedin", "x", "instagram"] as const).map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  aria-label={s}
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 12,
-                    background: "rgba(255,255,255,0.14)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 9,
-                  }}
-                >
-                  <SocialIcon name={s} />
-                </a>
-              ))}
-            </div>
+      <div style={{ ...shell, padding: "0 32px" }}>
+        <div
+          aria-hidden
+          style={{
+            height: 1,
+            background:
+              "linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.32) 30%, rgba(255,255,255,0.32) 70%, rgba(255,255,255,0) 100%)",
+          }}
+        />
+      </div>
+
+      {/* link columns — brand block is first, so RTL puts it right-most */}
+      <div className="rl-zh-footer-cols" style={{ ...shell, padding: "52px 32px 0", display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr 1fr", gap: 44 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700, fontSize: 20, color: "#fff" }}>
+            <span style={{ filter: "brightness(0) invert(1)", display: "flex" }}>
+              <BrandMark className="h-[28px] w-[28px]" />
+            </span>
+            ظهور
           </div>
-
-          {FOOTER_COLUMNS.map((col) => (
-            <div key={col.title}>
-              <div style={colTitle}>{col.title}</div>
-              {col.links.map((l) =>
-                l.modal ? (
-                  <button
-                    key={l.label}
-                    onClick={onOpenModal}
-                    style={{ ...colLink, background: "transparent", border: 0, padding: 0, cursor: "pointer", textAlign: "right", fontFamily: "inherit" }}
-                  >
-                    {l.label}
-                  </button>
-                ) : (
-                  <a key={l.label} href={l.href} style={colLink}>
-                    {l.label}
-                  </a>
-                )
-              )}
-            </div>
-          ))}
+          <p style={{ fontSize: 14.5, color: "#d6f4f1", lineHeight: 1.9, margin: 0, maxWidth: 330 }}>
+            منصة سعودية لمراقبة ظهور علامتك في Google ومحركات الذكاء الاصطناعي، وتحسين موقعك ومحتواك من مكان واحد.
+          </p>
+          <div style={{ display: "flex", gap: 12 }}>
+            {(["instagram", "x", "linkedin"] as const).map((s) => (
+              <a
+                key={s}
+                href="#"
+                aria-label={s}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 13,
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.22)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 10,
+                }}
+              >
+                <SocialIcon name={s} />
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* payment methods */}
+        {FOOTER_COLUMNS.map((col) => (
+          <div key={col.title} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#bff2ec", letterSpacing: "1.5px", marginBottom: 2 }}>{col.title}</div>
+            {col.links.map((l) =>
+              l.modal ? (
+                <button
+                  key={l.label}
+                  onClick={onOpenModal}
+                  style={{ ...colLink, background: "transparent", border: 0, padding: 0, cursor: "pointer", textAlign: "right", fontFamily: "inherit" }}
+                >
+                  {l.label}
+                </button>
+              ) : (
+                <a key={l.label} href={l.href} style={colLink}>
+                  {l.label}
+                </a>
+              )
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* payment methods */}
+      <div style={{ ...shell, padding: "52px 32px 0" }}>
         <div
           style={{
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.14)",
-            borderRadius: 20,
-            padding: "16px 22px",
+            border: "1px solid rgba(255,255,255,0.22)",
+            borderRadius: 22,
+            padding: "22px 26px",
+            background: "rgba(255,255,255,0.07)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 20,
+            gap: 24,
             flexWrap: "wrap",
           }}
         >
-          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.82)" }}>وسائل الدفع المتاحة</span>
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div style={{ fontSize: 13.5, color: "#bff2ec" }}>وسائل الدفع المتاحة</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
             {PAYMENT_METHODS.map((pm) => (
               <span
                 key={pm.slug}
                 style={{
+                  width: 76,
                   height: 40,
-                  minWidth: 70,
-                  padding: "0 14px",
-                  borderRadius: 11,
-                  background: "#fff",
+                  borderRadius: 14,
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.22)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  padding: "0 10px",
                 }}
               >
                 <BrandAsset
-                  src={`/payments/${pm.slug}.svg`}
+                  src={`/payments/${pm.slug}.png`}
                   label={pm.name}
-                  height={20}
-                  fallbackStyle={{ fontSize: 12.5, fontWeight: 700, color: "#0a2523", whiteSpace: "nowrap" }}
+                  height={22}
+                  fallbackStyle={{ fontSize: 11.5, fontWeight: 700, color: "#fff", whiteSpace: "nowrap" }}
                 />
               </span>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* bottom bar */}
-        <div style={{ marginTop: 36, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 9,
-              background: "rgba(4,43,41,0.38)",
-              borderRadius: 9999,
-              padding: "10px 20px",
-              fontSize: 13,
-              fontWeight: 600,
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: "#fff" }} />
-            أحد منتجات TAU
-          </span>
-          <div style={{ display: "flex", alignItems: "center", gap: 26, flexWrap: "wrap", fontSize: 13, color: "rgba(255,255,255,0.75)" }}>
-            <a href="#" style={{ color: "inherit" }}>شروط الاستخدام</a>
-            <a href="#" style={{ color: "inherit" }}>سياسة الخصوصية</a>
-            <span>جميع الحقوق محفوظة لـ ظهور © 2026</span>
-          </div>
+      {/* bottom bar */}
+      <div style={{ ...shell, padding: "32px 32px 44px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+            fontSize: 13.5,
+            fontWeight: 600,
+            color: "#fff",
+            background: "rgba(255,255,255,0.14)",
+            borderRadius: 20,
+            padding: "8px 14px",
+          }}
+        >
+          <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: "#fff", display: "block" }} />
+          أحد منتجات TAU
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap" }}>
+          <a href="#" style={{ fontSize: 13.5, color: "#bff2ec" }}>شروط الاستخدام</a>
+          <a href="#" style={{ fontSize: 13.5, color: "#bff2ec" }}>سياسة الخصوصية</a>
+          <span style={{ fontSize: 13.5, color: "#9fe6df" }}>جميع الحقوق محفوظة لـ ظهور © 2026</span>
         </div>
       </div>
     </footer>

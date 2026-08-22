@@ -264,6 +264,13 @@
   }
 }
 
+/* The footer's URL field sits on the teal panel, so its placeholder needs
+   the panel's own muted tone rather than the page-wide --dim grey. */
+.rasid-landing .rl-footer-url::placeholder {
+  color: #bff2ec;
+  opacity: 1;
+}
+
 /* Footer: brand block over the three link columns, then all stacked. */
 @media (max-width: 900px) {
   .rl-zh-footer-cols {
