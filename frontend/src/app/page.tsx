@@ -963,7 +963,12 @@ function HeroBlock({
 
 function PlatformFeatures() {
   return (
-    <div id="features">
+    // Bottom padding is load-bearing: every other section on this page
+    // relies on the *next* one's top padding for separation, which works
+    // only while they share a background. The steps section that follows
+    // paints its own tinted band, so without this the cards here end
+    // exactly on that band's top edge.
+    <div id="features" style={{ paddingBottom: 104 }}>
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "96px 32px 0", textAlign: "center" }}>
         <SectionBadge label="مميزات المنصة" />
         <h2 style={{ fontSize: 42, lineHeight: 1.25, letterSpacing: "-0.6px", fontWeight: 700, color: DARK, margin: "0 auto", maxWidth: 640 }}>
@@ -1161,6 +1166,9 @@ function HowStepsSection() {
         backgroundImage:
           "linear-gradient(to right, rgba(4,43,41,0.035) 1px, transparent 1px),linear-gradient(to bottom, rgba(4,43,41,0.035) 1px, transparent 1px)",
         backgroundSize: "52px 52px",
+        // Rounded top corners, as in the design — the band reads as its
+        // own panel instead of a hard rule across the page.
+        borderRadius: "44px 44px 0 0",
       }}
     >
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 32px" }}>
